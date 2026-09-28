@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reaching Out Initiative (ROI) | Youth Empowerment Platform Mombasa</title>
+    <meta name="description" content="Official platform of Reaching Out Initiative (ROI) in Mombasa, Kenya. Uplifting youth through mentorship, education, social impact, and Vijana Na Maadili." />
+
+    <!-- Official ROI Favicons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;circle cx='50' cy='50' r='45' fill='%230284c7'/&gt;&lt;text x='50' y='57' font-family='sans-serif' font-size='40' font-weight='bold' fill='white' text-anchor='middle'&gt;ROI&lt;/text&gt;&lt;/svg&gt;" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/frontend/dist/assets/tailwind.css">
+
+    <!-- M-3: Content-Security-Policy. script-src 'self' only — no inline event
+         handlers or injected scripts can execute even if a sink is missed.
+         frame-ancestors is enforced by the backend SecurityHeaders HTTP header
+         (ignored when delivered via meta). -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.youtube.com; base-uri 'self'; form-action 'self'">
+
+    <!--
+      Deploy-time runtime configuration (optional): serve a tiny same-origin
+      ./js/roi-config.js BEFORE main.js to override defaults:
+        window.ROI_API_BASE_URL = 'http://localhost:8000/api'; // static-file dev against Laravel
+        window.ROI_STRICT_API_MODE = false;                    // enable demo fallbacks (NEVER in production)
+      Strict API mode is ON by default in code; nothing to enable here.
+    -->
+  </head>
+  <body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-sky-500 selection:text-white overflow-x-hidden">
+    <!-- Fallback transparency banner mounts here (prepend) -->
+    <div id="header-root"></div>
+
+    <main class="flex-1">
+      <div id="app"></div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script type="module" src="/frontend/dist/js/main.js"></script>
+  </body>
+</html>

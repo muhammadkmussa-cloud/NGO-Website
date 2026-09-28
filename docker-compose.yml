@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: ./laravel-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - laravel-db:/var/www/html/database
+      - laravel-uploads:/var/www/html/storage
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install --no-audit --no-fund && npm run build && npx --yes serve -l 3000 dist"
+    volumes:
+      - ./frontend:/app
+
+volumes:
+  laravel-db:
+  laravel-uploads:

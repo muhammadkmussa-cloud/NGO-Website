@@ -1,0 +1,23 @@
+{
+  "name": "roi-frontend",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Reaching Out Initiative — vanilla HTML/CSS/JS SPA (Tailwind CSS compiled via CLI)",
+  "scripts": {
+    "dev": "npm run build && npx serve -l 3000 dist",
+    "build": "tailwindcss -i ./src/css/app.css -o ./dist/assets/tailwind.css --minify && node scripts/build.mjs",
+    "watch:css": "tailwindcss -i ./src/css/app.css -o ./dist/assets/tailwind.css --watch",
+    "test": "node --test scripts/ticketing.test.mjs",
+    "test:responsive": "npm run build && node scripts/responsive.test.mjs"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.4",
+    "playwright": "^1.62.1",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^3.4.19"
+  },
+  "dependencies": {
+    "qrcode-generator": "^2.0.4"
+  }
+}

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /checking
+
+Sitemap: https://reachingoutinitiative.org/sitemap.xml

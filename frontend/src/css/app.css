@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  min-width: 320px;
+}
+
+#app,
+#header-root,
+#footer-root {
+  min-width: 0;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+table {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+p,
+li,
+dd,
+td,
+th {
+  overflow-wrap: anywhere;
+}
+
+.mobile-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom utilities ported from index.css */
+.hover-scale {
+  @apply transition-colors transition-shadow transform duration-300 ease-out hover:scale-[1.02] hover:shadow-xl hover:shadow-sky-500/10;
+}
+
+/* Respect prefers-reduced-motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide native disclosure triangle on FAQ <summary> (Safari keeps it despite list:none) */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Custom scrollbar (dark coastal theme) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0284c7;
+}
+
+/* Line clamping (core Tailwind v3.3+, declared explicitly for the CLI build) */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.line-clamp-4 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+/*
+ * Animation keyframes. In the React build, animate-fadeIn / animate-shake /
+ * animate-slideUp / animate-scaleUp classes were referenced but never defined
+ * (silent no-ops). They are implemented here as a deliberate enhancement.
+ */
+@keyframes roi-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes roi-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+@keyframes roi-slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes roi-scale-up {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn { animation: roi-fade-in 0.35s ease-out both; }
+.animate-shake { animation: roi-shake 0.45s ease-in-out both; }
+.animate-slideUp { animation: roi-slide-up 0.35s ease-out both; }
+.animate-scaleUp { animation: roi-scale-up 0.3s ease-out both; }
+
+/* Framer Motion hero entrances (Hero.jsx) converted to CSS */
+@keyframes roi-hero-left {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes roi-hero-right {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.anim-hero-left { animation: roi-hero-left 0.6s ease-out both; }
+.anim-hero-right { animation: roi-hero-right 0.6s ease-out 0.2s both; }
