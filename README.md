@@ -2,7 +2,7 @@
 
 https://github.com/user-attachments/assets/0329efd8-90ca-4a1c-b6f0-41320b3913df
 
-![Reaching Out Initiative (ROI) - Digital Platform project film](./ngo-website-film-poster.webp)
+[![Reaching Out Initiative (ROI) - Digital Platform project film](./ngo-website-film-poster.webp)](https://GitHub.com/user-attachments/assets/0329efd8-90ca-4a1c-b6f0-41320b3913df)
 
 **Production Turnover & Architecture Report**
 
