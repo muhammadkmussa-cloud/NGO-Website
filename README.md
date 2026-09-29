@@ -1,4 +1,9 @@
 # Reaching Out Initiative (ROI) - Digital Platform
+
+https://github.com/user-attachments/assets/0329efd8-90ca-4a1c-b6f0-41320b3913df
+
+![Reaching Out Initiative (ROI) - Digital Platform project film](./ngo-website-film-poster.webp)
+
 **Production Turnover & Architecture Report**
 
 * **Organization:** Reaching Out Initiative (ROI)
@@ -196,3 +201,4 @@ Covers: health/readiness, password-only auth flow, public content endpoints, adm
 * **TikTok:** `https://www.tiktok.com/@reachingoutinitiative.ke`
 * **Registration:** CBO/MSA/2021/8841
 * **Legal Compliance Timestamp:** `© 2026 Reaching Out Initiative. All Rights Reserved.`
+
