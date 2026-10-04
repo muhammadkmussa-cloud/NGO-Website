@@ -50,7 +50,7 @@ export function renderAdminLogin(root) {
         </form>
 
         <div class="mt-8 text-center border-t border-slate-800/80 pt-6">
-          <span class="text-[11px] text-slate-500">Secured by rate-limited password auth + session token (in-memory, not persisted) • Reaching Out Initiative Mombasa</span>
+          <span class="text-[11px] text-slate-500">Secured by rate-limited password auth + session token (in-memory, not persisted) • Demo NGO Harbor City</span>
         </div>
 
       </div>

@@ -175,12 +175,12 @@ class SecurityFixesRegressionTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'H3 Buyer',
-            'buyer_email' => 'h3.buyer@test.ke',
+            'buyer_email' => 'h3.buyer@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201)->json();
 
-        return [$checkout['reference'], 'h3.buyer@test.ke'];
+        return [$checkout['reference'], 'h3.buyer@test.example'];
     }
 
     public function test_h03_reference_alone_cannot_read_order(): void
@@ -189,10 +189,10 @@ class SecurityFixesRegressionTest extends TestCase
 
         // No email / wrong email must look identical to an unknown reference.
         $this->getJson("/api/tickets/orders/{$reference}")->assertStatus(404);
-        $this->getJson("/api/tickets/orders/{$reference}?email=attacker@evil.ke")->assertStatus(404);
+        $this->getJson("/api/tickets/orders/{$reference}?email=attacker@evil.example")->assertStatus(404);
         $this->getJson("/api/tickets/orders/{$reference}/verify")->assertStatus(404);
         $this->getJson("/api/tickets/orders/{$reference}/pass")->assertStatus(404);
-        $this->getJson("/api/tickets/orders/{$reference}?email=H3.BUYER@test.ke")->assertOk();
+        $this->getJson("/api/tickets/orders/{$reference}?email=H3.BUYER@test.example")->assertOk();
     }
 
     public function test_h03_public_gate_is_open_but_order_access_stays_email_gated(): void
@@ -208,12 +208,12 @@ class SecurityFixesRegressionTest extends TestCase
         // The open gate station inspects any valid issued code (by design, no
         // email needed at the door) but must not confirm or deny unknown codes.
         $this->getJson("/api/gate/tickets/{$code}")->assertOk()->assertJsonPath('code', $code);
-        $this->getJson('/api/gate/tickets/ROI-NOPE-XXXX')->assertNotFound();
+        $this->getJson('/api/gate/tickets/DEMO-NOPE-XXXX')->assertNotFound();
 
         // Accessing the buyer's own order/portal still requires the matching
         // email (enumeration-safe): no email looks identical to an unknown ref.
         $this->getJson("/api/tickets/orders/{$reference}")->assertNotFound();
-        $this->getJson("/api/tickets/orders/{$reference}?email=h3.buyer@test.ke")->assertOk();
+        $this->getJson("/api/tickets/orders/{$reference}?email=h3.buyer@test.example")->assertOk();
     }
 
     public function test_h03_stk_retry_requires_email_and_resend_removed(): void
@@ -223,7 +223,7 @@ class SecurityFixesRegressionTest extends TestCase
 
         // The email-resend endpoint no longer exists (tickets are downloaded, not mailed).
         $this->postJson("/api/tickets/orders/{$reference}/resend", [])->assertNotFound();
-        $this->postJson("/api/tickets/orders/{$reference}/resend", ['email' => 'attacker@evil.ke'])->assertNotFound();
+        $this->postJson("/api/tickets/orders/{$reference}/resend", ['email' => 'attacker@evil.example'])->assertNotFound();
 
         // STK retry still requires the matching email.
         $this->postJson("/api/tickets/orders/{$reference}/stk-retry", [])->assertStatus(422);
@@ -246,7 +246,7 @@ class SecurityFixesRegressionTest extends TestCase
         $this->assertArrayNotHasKey('donor_name', $sanitized);
         $this->assertArrayNotHasKey('email', $sanitized);
         $this->assertArrayNotHasKey('tickets', $sanitized);
-        $this->assertStringNotContainsString('h3.buyer@test.ke', json_encode($sanitized));
+        $this->assertStringNotContainsString('h3.buyer@test.example', json_encode($sanitized));
 
         // Confirming the buyer email unlocks the full payload again.
         $this->getJson("/api/payments/verify/{$reference}?email={$email}")
@@ -263,7 +263,7 @@ class SecurityFixesRegressionTest extends TestCase
         $payload = [
             'amount' => 100,
             'gateway' => 'paystack',
-            'email' => 'm1@test.ke',
+            'email' => 'm1@test.example',
         ];
         for ($i = 0; $i < 10; $i++) {
             $this->postJson('/api/payments/checkout', $payload)->assertStatus(200);
@@ -282,7 +282,7 @@ class SecurityFixesRegressionTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'M1 Buyer',
-            'buyer_email' => 'm1.stk@test.ke',
+            'buyer_email' => 'm1.stk@test.example',
             'buyer_phone' => '0710000001',
             'gateway' => 'M-Pesa',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
@@ -290,10 +290,10 @@ class SecurityFixesRegressionTest extends TestCase
 
         $reference = $checkout->json('reference');
         for ($i = 0; $i < 5; $i++) {
-            $this->postJson("/api/tickets/orders/{$reference}/stk-retry", ['email' => 'm1.stk@test.ke'])
+            $this->postJson("/api/tickets/orders/{$reference}/stk-retry", ['email' => 'm1.stk@test.example'])
                 ->assertStatus(200);
         }
-        $this->postJson("/api/tickets/orders/{$reference}/stk-retry", ['email' => 'm1.stk@test.ke'])
+        $this->postJson("/api/tickets/orders/{$reference}/stk-retry", ['email' => 'm1.stk@test.example'])
             ->assertStatus(429);
     }
 
@@ -302,12 +302,12 @@ class SecurityFixesRegressionTest extends TestCase
         // M-1/H-3: lookup exposes attendee PII by ticket code — cap enumeration.
         [$reference] = $this->completedFreeOrder();
         $ticket = \App\Models\TicketOrder::where('reference', $reference)->first()->tickets->first();
-        $ticket->update(['code' => 'ROI-M1CODE']);
+        $ticket->update(['code' => 'DEMO-M1CODE']);
 
         for ($i = 0; $i < 20; $i++) {
-            $this->getJson('/api/tickets/lookup/ROI-M1CODE')->assertStatus(200);
+            $this->getJson('/api/tickets/lookup/DEMO-M1CODE')->assertStatus(200);
         }
-        $this->getJson('/api/tickets/lookup/ROI-M1CODE')->assertStatus(429);
+        $this->getJson('/api/tickets/lookup/DEMO-M1CODE')->assertStatus(429);
     }
 
     // ------------------------------------------------------------- M-2
@@ -329,7 +329,7 @@ class SecurityFixesRegressionTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'M2 Buyer',
-            'buyer_email' => 'm2@test.ke',
+            'buyer_email' => 'm2@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -357,7 +357,7 @@ class SecurityFixesRegressionTest extends TestCase
 
         $this->postJson('/api/payments/webhook/paystack', [
             'event' => 'charge.success',
-            'data' => ['reference' => 'ROI-FAKE-REF'],
+            'data' => ['reference' => 'DEMO-FAKE-REF'],
         ])->assertStatus(400);
     }
 
@@ -479,14 +479,14 @@ class SecurityFixesRegressionTest extends TestCase
     public function test_f05_csv_export_neutralizes_formula_injection(): void
     {
         \App\Models\Volunteer::create([
-            'full_name' => '=2+5EVIL', 'email' => '+cmd@x.ke', 'phone' => '@sum(1)',
+            'full_name' => '=2+5EVIL', 'email' => '+cmd@x.example', 'phone' => '@sum(1)',
             'primary_skill' => 'Mentorship', 'availability' => 'Weekends',
         ]);
 
         $body = $this->withAdmin()->get('/api/admin/volunteers/export')->getContent();
 
         $this->assertStringContainsString("'=2+5EVIL", $body);
-        $this->assertStringContainsString("'+cmd@x.ke", $body);
+        $this->assertStringContainsString("'+cmd@x.example", $body);
         $this->assertStringContainsString("'@sum(1)", $body);
         $this->assertStringNotContainsString("\n=2+5EVIL", $body);
     }

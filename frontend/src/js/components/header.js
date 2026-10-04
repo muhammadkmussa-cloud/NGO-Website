@@ -23,13 +23,13 @@ export function renderHeader(container, onOpenDonate) {
     <header id="roi-header" class="sticky top-0 z-50 overflow-x-hidden transition-colors transition-shadow duration-300 bg-slate-900/80 py-3 sm:py-4 xl:py-5">
       <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-3 min-w-0">
 
-        <a href="#/" id="roi-logo-link" class="flex items-center space-x-3 group shrink-0" aria-label="Reaching Out Initiative home">
-          <img src="${ROI_LOGO_DATA_URI}" alt="Reaching Out Initiative Official Logo"
+        <a href="#/" id="roi-logo-link" class="flex items-center space-x-3 group shrink-0" aria-label="Demo NGO home">
+          <img src="${ROI_LOGO_DATA_URI}" alt="Demo NGO Official Logo"
                class="h-9 sm:h-11 md:h-12 lg:h-14 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md">
           <div class="hidden 2xl:flex flex-col border-l border-slate-700/80 pl-3">
             <span class="text-[10px] uppercase tracking-widest text-amber-400 font-extrabold flex items-center gap-1">
               <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-              Mombasa, Kenya
+              Harbor City, Kenya
             </span>
             <span class="text-[9px] text-slate-400 font-mono">Coastal Headquarters</span>
           </div>
@@ -38,12 +38,6 @@ export function renderHeader(container, onOpenDonate) {
         <nav id="roi-desktop-nav" class="hidden lg:flex items-center space-x-0.5 xl:space-x-1 bg-slate-800/60 p-1.5 rounded-full border border-slate-700/60 backdrop-blur-sm mx-2 min-w-0"></nav>
 
         <div class="hidden lg:flex items-center space-x-2 xl:space-x-3 shrink-0">
-          <a href="tel:+254745273556" title="Primary Phone Line"
-             class="hidden 2xl:flex items-center space-x-1.5 text-xs font-semibold text-slate-300 hover:text-amber-400 transition-colors bg-slate-800/80 px-3 py-2 rounded-lg border border-slate-700">
-            ${icon('phone', 'w-3.5 h-3.5 text-amber-400 animate-bounce')}
-            <span>+254 745 273 556</span>
-          </a>
-
           <a href="#/volunteer" class="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-sky-400 border border-sky-500/40 hover:bg-sky-500/10 transition-colors hover:scale-105 transform">
             ${icon('users', 'w-3.5 h-3.5')}
             <span>Volunteer</span>
@@ -67,10 +61,6 @@ export function renderHeader(container, onOpenDonate) {
       <div id="roi-mobile-drawer" class="hidden lg:hidden bg-slate-900/95 border-y border-slate-800 px-3 sm:px-6 pt-3 pb-6 space-y-3 mt-3 animate-fadeIn shadow-2xl shadow-black/40">
         <div id="roi-mobile-links" class="flex flex-col space-y-1"></div>
         <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
-          <a href="tel:+254745273556" class="flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-semibold bg-slate-800 text-amber-400 border border-slate-700">
-            ${icon('phone', 'w-4 h-4')}
-            <span>Call: +254 745 273 556</span>
-          </a>
           <a href="#/volunteer" id="roi-mobile-volunteer" class="flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold bg-sky-500/20 text-sky-300 border border-sky-500/40">
             ${icon('users', 'w-4 h-4')}
             <span>Volunteer Now</span>

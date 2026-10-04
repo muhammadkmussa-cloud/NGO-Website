@@ -1,5 +1,5 @@
-// ROI Digital Solutions — public branch page.
-// Sections: hero, mission, relationship to ROI, services, industries, tech
+// DEMO Digital Solutions — public branch page.
+// Sections: hero, mission, relationship to DEMO, services, industries, tech
 // capabilities, digital transformation, development process, portfolio,
 // FAQs, request-a-solution form, contact CTA.
 import { getSolutions, getFaqs, getIndustries, getTechCapabilities, getPortfolio, inquireSolution } from '../api.js';
@@ -34,10 +34,10 @@ export function renderSolutions(root) {
           <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold uppercase tracking-widest">
               ${icon('globe', 'w-3.5 h-3.5')}
-              <span>A Division of Reaching Out Initiative</span>
+              <span>A Division of Demo NGO</span>
             </div>
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1]">
-              Digital Transformation &amp; Software Solutions for Coastal Kenya
+              Digital Transformation &amp; Software Solutions for the coast
             </h1>
             <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
               We help businesses, institutions, NGOs, schools, and community organizations solve real operational problems using digital technology — from M-Pesa payment systems to full management platforms.
@@ -74,31 +74,31 @@ export function renderSolutions(root) {
             <div class="bg-slate-950 border border-slate-800 rounded-3xl p-8 space-y-3">
               <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">${icon('heart-handshake', 'w-6 h-6')}</div>
               <h3 class="text-xl font-black text-white">Mission-aligned</h3>
-              <p class="text-sm text-slate-300 leading-relaxed">Every engagement funds mentorship cohorts and digital labs for vulnerable youth in Tudor, Kisauni, and Likoni.</p>
+              <p class="text-sm text-slate-300 leading-relaxed">Every engagement funds mentorship cohorts and digital labs for vulnerable youth in Riverside, Northside, and Southside.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 3. RELATIONSHIP TO ROI -->
+      <!-- 3. RELATIONSHIP TO DEMO -->
       <section id="about-roi" class="py-20 sm:py-24 bg-slate-950 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             <div class="space-y-5">
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider">Part of something bigger</div>
-              <h2 class="text-3xl sm:text-4xl font-black text-white">ROI Digital Solutions is the technology arm of Reaching Out Initiative</h2>
+              <h2 class="text-3xl sm:text-4xl font-black text-white">DEMO Digital Solutions is the technology arm of Demo NGO</h2>
               <p class="text-base text-slate-300 leading-relaxed">
-                Reaching Out Initiative (ROI) is a registered community-based organization in Mombasa that has mentored hundreds of coastal youth through ethical leadership training, digital education, and its flagship Vijana Na Maadili conference.
+                Demo NGO (DEMO) is a registered community-based organization in Harbor City that has mentored hundreds of coastal youth through ethical leadership training, digital education, and its flagship Youth Leadership Summit conference.
               </p>
               <p class="text-base text-slate-300 leading-relaxed">
-                ROI Digital Solutions is the division that builds and maintains the platforms behind that mission — the conference ticketing system, the media hub, and the digital labs. The same engineering team now offers those capabilities commercially, so every shilling earned strengthens programs for vulnerable young people.
+                DEMO Digital Solutions is the division that builds and maintains the platforms behind that mission — the conference ticketing system, the media hub, and the digital labs. The same engineering team now offers those capabilities commercially, so every shilling earned strengthens programs for vulnerable young people.
               </p>
               <a href="#/" class="inline-flex items-center gap-2 text-sm font-bold text-sky-400 hover:text-sky-300">Learn about the nonprofit ${icon('arrow-right', 'w-4 h-4')}</a>
             </div>
             <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6">
               <div class="flex items-start gap-4">
                 <div class="w-11 h-11 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 shrink-0">${icon('award', 'w-5 h-5')}</div>
-                <div><h4 class="font-black text-white text-sm">Registered CBO</h4><p class="text-xs text-slate-400 mt-1">Operating in Mombasa since 2021, headquartered in Tudor with programs across Kisauni and Likoni.</p></div>
+                <div><h4 class="font-black text-white text-sm">Registered CBO</h4><p class="text-xs text-slate-400 mt-1">Operating in Harbor City since 2021, headquartered in Riverside with programs across Northside and Southside.</p></div>
               </div>
               <div class="flex items-start gap-4">
                 <div class="w-11 h-11 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0">${icon('tv', 'w-5 h-5')}</div>
@@ -231,8 +231,7 @@ export function renderSolutions(root) {
               <p class="text-base text-slate-300 leading-relaxed">Tell us the operational problem you face. We will respond within two business days with questions, options, and an honest assessment of fit — including when we are not the right partner.</p>
               <div class="pt-4 space-y-3 border-t border-slate-800">
                 <a href="#/contact" class="flex items-center gap-3 text-sm font-bold text-sky-400 hover:text-sky-300">${icon('message-square', 'w-4 h-4')} Prefer to talk? Use the general contact desk</a>
-                <a href="tel:+254745273556" class="flex items-center gap-3 text-sm font-bold text-sky-400 hover:text-sky-300">${icon('phone', 'w-4 h-4')} +254 745 273 556</a>
-                <a href="mailto:reachingoutinitiative2021@gmail.com" class="flex items-center gap-3 text-sm font-bold text-sky-400 hover:text-sky-300 break-all">${icon('mail', 'w-4 h-4')} reachingoutinitiative2021@gmail.com</a>
+                <a href="mailto:hello@example.org" class="flex items-center gap-3 text-sm font-bold text-sky-400 hover:text-sky-300 break-all">${icon('mail', 'w-4 h-4')} hello@example.org</a>
               </div>
             </div>
             <form id="roi-solution-inquire" class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-4">
@@ -264,7 +263,7 @@ export function renderSolutions(root) {
                 ${icon('send', 'w-4 h-4')}
                 <span>Send Inquiry</span>
               </button>
-              <p class="text-xs text-slate-500 text-center pt-1">Replies come from the ROI Digital Solutions desk within two business days.</p>
+              <p class="text-xs text-slate-500 text-center pt-1">Replies come from the DEMO Digital Solutions desk within two business days.</p>
             </form>
           </div>
         </div>
@@ -356,7 +355,7 @@ export function renderSolutions(root) {
     grid.innerHTML = list.map((p) => `
       <article class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden flex flex-col hover:border-amber-500/40 transition-colors">
         <div class="aspect-[16/9] bg-slate-950">
-          ${imageWithFallback(p.image_url || '', p.title, 'w-full h-full object-cover opacity-90', p.client || 'ROI')}
+          ${imageWithFallback(p.image_url || '', p.title, 'w-full h-full object-cover opacity-90', p.client || 'DEMO')}
         </div>
         <div class="p-6 space-y-2 flex-1 flex flex-col">
           <span class="text-[10px] uppercase text-sky-400 font-bold tracking-wider">${escapeHtml([p.client, p.location].filter(Boolean).join(' · '))}</span>
@@ -397,7 +396,7 @@ export function renderSolutions(root) {
     submitBtn.style.opacity = '0.6';
     try {
       await inquireSolution(payload);
-      showToast('Inquiry received. ROI Digital Solutions will follow up.');
+      showToast('Inquiry received. DEMO Digital Solutions will follow up.');
       e.target.reset();
     } catch (err) {
       showToast(err.response?.data?.detail || 'Could not send inquiry. Please try again or email us directly.');

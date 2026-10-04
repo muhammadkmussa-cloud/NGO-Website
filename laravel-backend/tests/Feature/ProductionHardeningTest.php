@@ -37,7 +37,7 @@ class ProductionHardeningTest extends TestCase
         $json = $this->getJson('/api/health')
             ->assertOk()
             ->assertJsonPath('status', 'online')
-            ->assertJsonPath('location', 'Mombasa, Kenya')
+            ->assertJsonPath('location', 'Harbor City, Kenya')
             ->json();
 
         $this->assertArrayNotHasKey('database_engine', $json);
@@ -80,7 +80,7 @@ class ProductionHardeningTest extends TestCase
 
         $this->postJson('/api/payments/webhook/paystack', [
             'event' => 'charge.success',
-            'data' => ['reference' => 'ROI-PAY-NONE'],
+            'data' => ['reference' => 'DEMO-PAY-NONE'],
         ])->assertStatus(403);
     }
 
@@ -90,7 +90,7 @@ class ProductionHardeningTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Idem Buyer',
-            'buyer_email' => 'idem@test.ke',
+            'buyer_email' => 'idem@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -115,7 +115,7 @@ class ProductionHardeningTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'E2E Buyer',
-            'buyer_email' => 'e2e@test.ke',
+            'buyer_email' => 'e2e@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -125,17 +125,17 @@ class ProductionHardeningTest extends TestCase
             ->assertOk()
             ->assertJsonPath('status', 'Completed');
 
-        $this->getJson("/api/tickets/orders/{$reference}?email=e2e@test.ke")
+        $this->getJson("/api/tickets/orders/{$reference}?email=e2e@test.example")
             ->assertOk()
             ->assertJsonPath('status', 'Completed');
 
-        $this->postJson('/api/tickets/recover', ['email' => 'e2e@test.ke'])->assertOk();
+        $this->postJson('/api/tickets/recover', ['email' => 'e2e@test.example'])->assertOk();
 
         $solutionId = \App\Models\DigitalSolution::where('slug', 'community-event-ticketing')->value('id');
         $this->postJson('/api/public/solutions/inquire', [
             'digital_solution_id' => $solutionId,
             'name' => 'E2E Org',
-            'email' => 'org@test.ke',
+            'email' => 'org@test.example',
             'organization' => 'Coast Lab',
             'message' => 'Need ticketing for a 400-seat hall.',
         ])->assertStatus(201)->assertJsonPath('status', 'New');

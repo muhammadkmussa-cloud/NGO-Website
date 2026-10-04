@@ -75,7 +75,7 @@ class AdminController extends Controller
         ]);
 
         $data['category'] ??= 'Social Impact';
-        $data['author'] ??= 'ROI Communications';
+        $data['author'] ??= 'DEMO Communications';
         if (!array_key_exists('image_url', $data)) {
             $data['image_url'] = null;
         }
@@ -149,7 +149,7 @@ class AdminController extends Controller
         ]);
 
         $data['time'] ??= '09:00 AM EAT';
-        $data['location'] ??= 'Mombasa, Kenya';
+        $data['location'] ??= 'Harbor City, Kenya';
         $data['category'] ??= 'Conference';
         if (!array_key_exists('image_url', $data)) {
             $data['image_url'] = null;
@@ -315,7 +315,7 @@ class AdminController extends Controller
             } else {
                 MediaItem::create([
                     'youtube_id' => $featuredId,
-                    'title' => 'Featured ROI Empowerment Special',
+                    'title' => 'Featured DEMO Empowerment Special',
                     'category' => 'Mentorship Sessions',
                     'summary' => 'Overridden featured video broadcast directly from console.',
                     'thumbnail_url' => "https://img.youtube.com/vi/{$featuredId}/maxresdefault.jpg",

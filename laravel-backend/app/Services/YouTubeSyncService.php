@@ -94,7 +94,7 @@ class YouTubeSyncService
                 $category = 'Community Outreach';
                 if (str_contains($haystack, 'mentor') || str_contains($haystack, 'career')) {
                     $category = 'Mentorship Sessions';
-                } elseif (str_contains($haystack, 'event') || str_contains($haystack, 'conference') || str_contains($haystack, 'vijana') || str_contains($haystack, 'maadili')) {
+                } elseif (str_contains($haystack, 'event') || str_contains($haystack, 'conference') || str_contains($haystack, 'summit') || str_contains($haystack, 'youth')) {
                     $category = 'Events & Conferences';
                 } elseif (str_contains($haystack, 'iftar') || str_contains($haystack, 'distribution') || str_contains($haystack, 'ramadhan') || str_contains($haystack, 'feeding')) {
                     $category = 'Community Outreach';
@@ -108,7 +108,7 @@ class YouTubeSyncService
                     'youtube_id' => $youtubeId,
                     'title' => $title,
                     'category' => $category,
-                    'summary' => $description !== '' ? $description : 'Reaching Out Initiative broadcast special.',
+                    'summary' => $description !== '' ? $description : 'Demo NGO broadcast special.',
                     'thumbnail_url' => data_get($snippet, 'thumbnails.high.url'),
                     'duration' => $durationsMap[$youtubeId] ?? '5:30',
                     'is_featured' => $idx === 0, // Make newest video featured

@@ -16,7 +16,7 @@ class HealthController extends Controller
             'status' => 'online',
             'project' => config('roi.project_name'),
             'version' => (string) config('roi.project_version', '2.0.0'),
-            'location' => 'Mombasa, Kenya',
+            'location' => 'Harbor City, Kenya',
             'security_controls' => 'Rate Limiting (120/min) + Immutable Audit Logs + W3C CORS Verified',
         ];
 

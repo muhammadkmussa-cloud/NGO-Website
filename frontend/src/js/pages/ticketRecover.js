@@ -20,7 +20,7 @@ export function renderTicketRecover(root) {
         <form id="roi-recover-lookup" class="bg-slate-950 border border-slate-800 rounded-3xl p-6 space-y-3">
           <h2 class="text-white font-bold text-sm">I have my reference</h2>
           <input required type="email" name="email" placeholder="Email" class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm">
-          <input required name="reference" placeholder="ROI-TCK-…" class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-mono">
+          <input required name="reference" placeholder="DEMO-TCK-…" class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-mono">
           <button class="w-full py-3 rounded-xl bg-sky-600 text-white font-black text-xs uppercase">Open order</button>
         </form>
         <p id="roi-recover-msg" class="text-xs text-slate-400"></p>

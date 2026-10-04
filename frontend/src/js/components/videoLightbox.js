@@ -16,7 +16,7 @@ export function openVideoLightbox(video) {
       <div class="flex items-center justify-between px-6 py-4 bg-slate-950 border-b border-slate-800 text-white">
         <div class="flex items-center gap-2">
           ${icon('tv', 'w-4 h-4 text-red-500 animate-pulse')}
-          <span class="text-xs font-bold tracking-wider uppercase text-slate-300">Reaching Out Media (ROI TV)</span>
+          <span class="text-xs font-bold tracking-wider uppercase text-slate-300">Demo Media (DEMO TV)</span>
         </div>
         <button type="button" id="roi-lightbox-close" class="p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors">
           ${icon('x', 'w-5 h-5')}

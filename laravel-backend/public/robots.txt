@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /checking
 
-Sitemap: https://reachingoutinitiative.org/sitemap.xml
+Sitemap: https://example.org/sitemap.xml

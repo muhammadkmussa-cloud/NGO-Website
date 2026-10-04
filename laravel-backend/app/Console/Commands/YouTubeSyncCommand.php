@@ -9,7 +9,7 @@ class YouTubeSyncCommand extends Command
 {
     protected $signature = 'roi:youtube-sync {--force : Wipe cached media before syncing}';
 
-    protected $description = 'Synchronize the ROI TV media cache with the YouTube Data API v3 channel feed';
+    protected $description = 'Synchronize the DEMO TV media cache with the YouTube Data API v3 channel feed';
 
     public function handle(YouTubeSyncService $youtube): int
     {

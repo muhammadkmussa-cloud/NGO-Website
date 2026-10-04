@@ -9,7 +9,7 @@ class TicketCheckInService
     public static function normalizeCode(?string $raw): string
     {
         $value = strtoupper(trim((string) $raw));
-        if (preg_match('/ROI-[A-Z0-9]{4}-[A-Z0-9]{4}/', $value, $m)) {
+        if (preg_match('/DEMO-[A-Z0-9]{4}-[A-Z0-9]{4}/', $value, $m)) {
             return $m[0];
         }
 

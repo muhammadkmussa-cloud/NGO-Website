@@ -90,7 +90,7 @@ class EmailExistenceTest extends TestCase
     {
         $this->fakeEmails([], [], []);
 
-        $this->checkout('buyer@nomailever.example-x.ke')
+        $this->checkout('buyer@nomailever.example-x.example')
             ->assertStatus(400)
             ->assertJsonPath('detail', 'That email address does not exist. Please check it and try again.');
     }
@@ -99,73 +99,73 @@ class EmailExistenceTest extends TestCase
     {
         $this->fakeEmails(null, [], []);
 
-        $this->checkout('resolver-down@customer.ke')->assertStatus(201);
+        $this->checkout('resolver-down@customer.example')->assertStatus(201);
     }
 
     public function test_mailbox_confirmed_by_probe_allows_checkout(): void
     {
-        $this->fakeEmails(['mx1.example-x.ke'], ['203.0.113.10'], [true]);
+        $this->fakeEmails(['mx1.example-x.example'], ['203.0.113.10'], [true]);
 
-        $this->checkout('real@customer.ke')->assertStatus(201);
+        $this->checkout('real@customer.example')->assertStatus(201);
     }
 
     public function test_definitively_unknown_mailbox_is_rejected(): void
     {
-        $this->fakeEmails(['mx1.example-x.ke'], ['203.0.113.10'], [false]);
+        $this->fakeEmails(['mx1.example-x.example'], ['203.0.113.10'], [false]);
 
-        $this->checkout('ghost@customer.ke')
+        $this->checkout('ghost@customer.example')
             ->assertStatus(400)
             ->assertJsonPath('detail', 'That email address does not exist. Please check it and try again.');
     }
 
     public function test_uncertain_probe_reply_fails_open(): void
     {
-        $this->fakeEmails(['mx1.example-x.ke'], ['203.0.113.10'], [null]);
+        $this->fakeEmails(['mx1.example-x.example'], ['203.0.113.10'], [null]);
 
-        $this->checkout('unsure@customer.ke')->assertStatus(201);
+        $this->checkout('unsure@customer.example')->assertStatus(201);
     }
 
     public function test_unresolvable_mail_host_fails_open(): void
     {
-        $this->fakeEmails(['mx1.example-x.ke'], [null], []);
+        $this->fakeEmails(['mx1.example-x.example'], [null], []);
 
-        $this->checkout('nodns@customer.ke')->assertStatus(201);
+        $this->checkout('nodns@customer.example')->assertStatus(201);
     }
 
     public function test_private_mail_host_skips_the_probe_and_allows(): void
     {
-        $this->fakeEmails(['mx1.example-x.ke'], ['10.0.0.5'], [false]);
+        $this->fakeEmails(['mx1.example-x.example'], ['10.0.0.5'], [false]);
 
-        $this->checkout('internal@customer.ke')->assertStatus(201);
+        $this->checkout('internal@customer.example')->assertStatus(201);
     }
 
     public function test_cgnat_mail_host_skips_the_probe_and_allows(): void
     {
-        $this->fakeEmails(['mx1.example-x.ke'], ['100.64.0.5'], [false]);
+        $this->fakeEmails(['mx1.example-x.example'], ['100.64.0.5'], [false]);
 
-        $this->checkout('cgnat@customer.ke')->assertStatus(201);
+        $this->checkout('cgnat@customer.example')->assertStatus(201);
     }
 
     public function test_earlier_definitive_no_loses_to_later_uncertainty(): void
     {
         $this->fakeEmails(
-            ['mx1.example-x.ke', 'mx2.example-x.ke'],
+            ['mx1.example-x.example', 'mx2.example-x.example'],
             ['203.0.113.10', '203.0.113.11'],
             [false, null]
         );
 
-        $this->checkout('nosnow@customer.ke')->assertStatus(201);
+        $this->checkout('nosnow@customer.example')->assertStatus(201);
     }
 
     public function test_earlier_definitive_no_loses_to_later_private_host(): void
     {
         $this->fakeEmails(
-            ['mx1.example-x.ke', 'mx2.example-x.ke'],
+            ['mx1.example-x.example', 'mx2.example-x.example'],
             ['203.0.113.10', '10.0.0.5'],
             [false]
         );
 
-        $this->checkout('nosnowpriv@customer.ke')->assertStatus(201);
+        $this->checkout('nosnowpriv@customer.example')->assertStatus(201);
     }
 
     public function test_idn_domains_are_punycoded_before_lookup(): void
@@ -190,36 +190,36 @@ class EmailExistenceTest extends TestCase
     public function test_second_host_confirms_when_first_host_says_no(): void
     {
         $this->fakeEmails(
-            ['mx1.example-x.ke', 'mx2.example-x.ke'],
+            ['mx1.example-x.example', 'mx2.example-x.example'],
             ['203.0.113.10', '203.0.113.11'],
             [false, true]
         );
 
-        $this->checkout('multi@customer.ke')->assertStatus(201);
+        $this->checkout('multi@customer.example')->assertStatus(201);
     }
 
     public function test_rejection_requires_every_probed_host_to_be_definitive(): void
     {
         $this->fakeEmails(
-            ['mx1.example-x.ke', 'mx2.example-x.ke'],
+            ['mx1.example-x.example', 'mx2.example-x.example'],
             ['203.0.113.10', '203.0.113.11'],
             [false, false]
         );
 
-        $this->checkout('bothno@customer.ke')
+        $this->checkout('bothno@customer.example')
             ->assertStatus(400)
             ->assertJsonPath('detail', 'That email address does not exist. Please check it and try again.');
     }
 
     public function test_decisions_are_cached_per_email(): void
     {
-        $this->fakeEmails(['mx1.example-x.ke'], ['203.0.113.10'], [false]);
+        $this->fakeEmails(['mx1.example-x.example'], ['203.0.113.10'], [false]);
 
-        $this->checkout('cached@customer.ke')->assertStatus(400);
+        $this->checkout('cached@customer.example')->assertStatus(400);
 
-        $this->fakeEmails(['mx1.example-x.ke'], ['203.0.113.10'], [true]);
+        $this->fakeEmails(['mx1.example-x.example'], ['203.0.113.10'], [true]);
 
-        $this->checkout('Cached@Customer.KE')
+        $this->checkout('Cached@Customer.example')
             ->assertStatus(400)
             ->assertJsonPath('detail', 'That email address does not exist. Please check it and try again.');
     }

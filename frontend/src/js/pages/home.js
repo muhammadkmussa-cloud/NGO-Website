@@ -18,14 +18,14 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
             <div class="lg:col-span-7 space-y-6 text-center lg:text-left anim-hero-left">
               <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                Reaching Out Initiative • Mombasa, Kenya
+                Demo NGO • Harbor City, Kenya
               </div>
               <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1]">
-                Empowering Coastal Youth Through Mentorship & Technology
+                Empowering Youth Through Mentorship & Technology
               </h1>
 
               <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                <strong class="text-white">Reaching Out Initiative (ROI)</strong> is a community-driven organization in Mombasa dedicated to empowering young people, supporting vulnerable communities, and creating meaningful opportunities for positive change through youth empowerment, mentorship, Islamic and values-based programmes, community service, and our flagship annual <em class="text-amber-400 not-italic font-semibold">Vijana Na Maadili</em> conference.
+                <strong class="text-white">Demo NGO (DEMO)</strong> is a community-driven organization in Harbor City dedicated to empowering young people, supporting vulnerable communities, and creating meaningful opportunities for positive change through youth empowerment, mentorship, Islamic and values-based programmes, community service, and our flagship annual <em class="text-amber-400 not-italic font-semibold">Youth Leadership Summit</em> conference.
               </p>
 
               <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
@@ -47,13 +47,13 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
                 <div id="roi-hero-media" class="rounded-3xl overflow-hidden border border-slate-700 bg-slate-800 shadow-2xl shadow-black/80 group aspect-[4/3] relative">
                   ${imageWithFallback(
                     'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80',
-                    'Vijana Na Maadili Conference',
+                    'Youth Leadership Summit Conference',
                     'w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-85',
                     'Flagship Conference 2026'
                   )}
                   <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex flex-col justify-end p-6 sm:p-8 pointer-events-none">
                     <span id="roi-hero-eyebrow" class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-1">Flagship Conference 2026</span>
-                    <h3 id="roi-hero-title" class="text-2xl font-black text-white">Vijana Na Maadili</h3>
+                    <h3 id="roi-hero-title" class="text-2xl font-black text-white">Youth Leadership Summit</h3>
                     <p id="roi-hero-desc" class="text-sm text-slate-300 mt-2 line-clamp-2">Uniting 500+ coastal youth for mentorship, ethical leadership grounding, and digital career advancement.</p>
                     <a href="#/events" class="mt-4 inline-flex items-center gap-2 text-xs font-bold text-sky-400 hover:text-sky-300 pointer-events-auto">
                       <span>View Conference Itinerary</span>
@@ -72,7 +72,7 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-2xl mx-auto mb-12">
             <h2 class="text-xs font-bold uppercase tracking-widest text-sky-400 mb-2">Verifiable Milestones</h2>
-            <p class="text-2xl sm:text-3xl font-black text-white">Measurable Impact Across Coastal Kenya</p>
+            <p class="text-2xl sm:text-3xl font-black text-white">Measurable Impact Across the coast</p>
           </div>
           <div id="roi-metrics-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
         </div>
@@ -85,9 +85,9 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
             <div>
               <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-red-500 mb-2">
                 ${icon('tv', 'w-4 h-4 animate-pulse')}
-                <span>ROI TV Broadcast</span>
+                <span>DEMO TV Broadcast</span>
               </div>
-              <h2 class="text-2xl sm:text-4xl font-black text-white">Latest from Reaching Out Media</h2>
+              <h2 class="text-2xl sm:text-4xl font-black text-white">Latest from Demo Media</h2>
             </div>
             <a href="#/media" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-sky-400 transition-colors transform hover:scale-105">
               <span>Explore Full Media Hub</span>
@@ -107,8 +107,8 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
           <div class="space-y-4 max-w-2xl text-center lg:text-left">
             <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-black text-[11px] uppercase tracking-wider">Annual Flagship Conference</span>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">Vijana Na Maadili 2026</h2>
-            <p class="text-sm sm:text-base text-slate-300 leading-relaxed">Convening hundreds of youth, changemakers, and industry titans in Mombasa to ground ethical leadership and ignite economic independence across Coastal Kenya.</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">Youth Leadership Summit 2026</h2>
+            <p class="text-sm sm:text-base text-slate-300 leading-relaxed">Convening hundreds of youth, changemakers, and industry titans in Harbor City to ground ethical leadership and ignite economic independence across the coast.</p>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
@@ -130,7 +130,7 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
             ${icon('users', 'w-8 h-8 animate-pulse')}
           </div>
           <h2 class="text-3xl sm:text-4xl font-black text-white">Ready to Make a Tangible Difference?</h2>
-          <p class="text-sm sm:text-base text-slate-400 leading-relaxed">Whether you are a mentor, developer, event planner, graphic designer, or teacher—your unique skills can empower vulnerable youth in Kisauni, Tudor, Likoni, and across Mombasa.</p>
+          <p class="text-sm sm:text-base text-slate-400 leading-relaxed">Whether you are a mentor, developer, event planner, graphic designer, or teacher—your unique skills can empower vulnerable youth in Northside, Riverside, Southside, and across Harbor City.</p>
           <div class="pt-2">
             <a href="#/volunteer" class="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black text-sm shadow-xl shadow-sky-500/25 transition-colors transform hover:scale-105">
               <span>Submit Volunteer Application</span>
@@ -152,9 +152,9 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
   function paintMetrics() {
     const stats = [
       { label: 'Youth Mentored', value: `${metrics.youth_mentored}+`, iconName: 'users', color: 'from-sky-500 to-blue-600', description: 'Equipped with career & ethical skills' },
-      { label: 'Events Hosted', value: `${metrics.events_hosted}+`, iconName: 'calendar', color: 'from-amber-500 to-orange-600', description: 'Including Vijana Na Maadili conference' },
+      { label: 'Events Hosted', value: `${metrics.events_hosted}+`, iconName: 'calendar', color: 'from-amber-500 to-orange-600', description: 'Including Youth Leadership Summit conference' },
       { label: 'Individuals Supported', value: `${metrics.individuals_supported}+`, iconName: 'heart-handshake', color: 'from-emerald-500 to-teal-600', description: 'Vulnerable families & students aided' },
-      { label: 'Volunteer Network', value: `${metrics.active_volunteers}+`, iconName: 'award', color: 'from-purple-500 to-indigo-600', description: 'Active changemakers in Mombasa' }
+      { label: 'Volunteer Network', value: `${metrics.active_volunteers}+`, iconName: 'award', color: 'from-purple-500 to-indigo-600', description: 'Active changemakers in Harbor City' }
     ];
     document.getElementById('roi-metrics-grid').innerHTML = stats.map(
       (stat) => `
@@ -199,7 +199,7 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
             vid.thumbnail_url || `https://img.youtube.com/vi/${vid.youtube_id}/maxresdefault.jpg`,
             vid.title,
             'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
-            vid.category || 'ROI TV Special'
+            vid.category || 'DEMO TV Special'
           )}
           <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
             <div class="w-14 h-14 rounded-full bg-red-600 group-hover:bg-red-500 text-white flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
@@ -213,10 +213,10 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
         <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
           <div>
             <h3 class="font-bold text-base text-white group-hover:text-sky-400 transition-colors line-clamp-2 leading-snug">${escapeHtml(vid.title)}</h3>
-            <p class="text-sm text-slate-400 mt-2 line-clamp-2 leading-relaxed">${escapeHtml(vid.summary || 'Inspiring video storytelling documenting youth transformation in Mombasa.')}</p>
+            <p class="text-sm text-slate-400 mt-2 line-clamp-2 leading-relaxed">${escapeHtml(vid.summary || 'Inspiring video storytelling documenting youth transformation in Harbor City.')}</p>
           </div>
           <div class="pt-3 border-t border-slate-700/60 flex items-center justify-between text-[11px] text-slate-500 font-medium">
-            <span>Channel: ROI TV</span>
+            <span>Channel: DEMO TV</span>
             <span>${new Date(vid.published_at || Date.now()).toLocaleDateString()}</span>
           </div>
         </div>

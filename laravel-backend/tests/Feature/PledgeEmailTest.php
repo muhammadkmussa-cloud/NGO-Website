@@ -54,7 +54,7 @@ class PledgeEmailTest extends TestCase
     {
         $this->postJson('/api/pledges', [
             'name' => 'Monthly Supporter',
-            'email' => 'supporter@test.ke',
+            'email' => 'supporter@test.example',
             'phone' => '0712345678',
             'amount' => 1000,
         ])->assertStatus(201);
@@ -98,7 +98,7 @@ class PledgeEmailTest extends TestCase
         Mail::assertSent(PledgeReminderMail::class, 1);
 
         $mailable = Mail::sent(PledgeReminderMail::class)->first();
-        $this->assertTrue($mailable->hasTo('supporter@test.ke'));
+        $this->assertTrue($mailable->hasTo('supporter@test.example'));
 
         // HTML part renders and embeds the pay link...
         $html = $mailable->render();
@@ -162,7 +162,7 @@ class PledgeEmailTest extends TestCase
         Mail::assertNotSent(PledgeReminderMail::class);
 
         $mailable = Mail::sent(PledgeConfirmationMail::class)->first();
-        $this->assertTrue($mailable->hasTo('supporter@test.ke'));
+        $this->assertTrue($mailable->hasTo('supporter@test.example'));
         $this->assertStringContainsString('Payment received', (string) $mailable->envelope()->subject);
 
         // HTML + text parts both render.

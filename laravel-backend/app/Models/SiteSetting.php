@@ -11,7 +11,7 @@ class SiteSetting extends Model
     /** Default site content — used until an admin saves overrides. */
     public const DEFAULTS = [
         'hero_eyebrow' => 'Flagship Conference 2026',
-        'hero_title' => 'Vijana Na Maadili',
+        'hero_title' => 'Youth Leadership Summit',
         'hero_description' => 'Uniting 500+ coastal youth for mentorship, ethical leadership grounding, and digital career advancement.',
         'hero_image_url' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80',
         'metric_youth_mentored' => '120',

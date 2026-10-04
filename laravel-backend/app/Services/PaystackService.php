@@ -196,7 +196,7 @@ class PaystackService
                 ->timeout(10)
                 ->acceptJson()
                 ->post('https://api.paystack.co/plan', [
-                    'name' => "ROI Monthly {$currency} ".number_format($amount, 2),
+                    'name' => "DEMO Monthly {$currency} ".number_format($amount, 2),
                     'interval' => 'monthly',
                     'amount' => $minor,
                     'currency' => $currency,
@@ -356,7 +356,7 @@ class PaystackService
     public static function makeReference(string $gateway): string
     {
         // H-3: references gate public order/pass endpoints, so entropy matters.
-        // 128-bit hex (was 32-bit) keeps the same ROI-{GW}-HEX shape.
-        return sprintf('ROI-%s-%s', strtoupper(substr($gateway, 0, 3)), strtoupper(bin2hex(random_bytes(16))));
+        // 128-bit hex (was 32-bit) keeps the same DEMO-{GW}-HEX shape.
+        return sprintf('DEMO-%s-%s', strtoupper(substr($gateway, 0, 3)), strtoupper(bin2hex(random_bytes(16))));
     }
 }

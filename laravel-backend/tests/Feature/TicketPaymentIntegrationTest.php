@@ -27,7 +27,7 @@ class TicketPaymentIntegrationTest extends TestCase
         $response = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Ledger Buyer',
-            'buyer_email' => 'ledger@test.ke',
+            'buyer_email' => 'ledger@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -37,7 +37,7 @@ class TicketPaymentIntegrationTest extends TestCase
             'reference' => $reference,
             'frequency' => 'ticket',
             'amount' => 500,
-            'email' => 'ledger@test.ke',
+            'email' => 'ledger@test.example',
         ]);
     }
 
@@ -47,7 +47,7 @@ class TicketPaymentIntegrationTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Verify Path',
-            'buyer_email' => 'verify@test.ke',
+            'buyer_email' => 'verify@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -70,7 +70,7 @@ class TicketPaymentIntegrationTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Retry Buyer',
-            'buyer_email' => 'retry@test.ke',
+            'buyer_email' => 'retry@test.example',
             'buyer_phone' => '0712345678',
             'gateway' => 'M-Pesa',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
@@ -80,7 +80,7 @@ class TicketPaymentIntegrationTest extends TestCase
         $reference = $checkout->json('reference');
 
         $retry = $this->postJson("/api/tickets/orders/{$reference}/stk-retry", [
-            'email' => 'retry@test.ke',
+            'email' => 'retry@test.example',
             'buyer_phone' => '0722333444',
         ])->assertOk();
 
@@ -98,12 +98,12 @@ class TicketPaymentIntegrationTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Free',
-            'buyer_email' => 'free@test.ke',
+            'buyer_email' => 'free@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
 
-        $this->postJson('/api/tickets/orders/' . $checkout->json('reference') . '/stk-retry', ['email' => 'free@test.ke'])
+        $this->postJson('/api/tickets/orders/' . $checkout->json('reference') . '/stk-retry', ['email' => 'free@test.example'])
             ->assertStatus(409);
     }
 
@@ -113,7 +113,7 @@ class TicketPaymentIntegrationTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Hook Buyer',
-            'buyer_email' => 'hook@test.ke',
+            'buyer_email' => 'hook@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);

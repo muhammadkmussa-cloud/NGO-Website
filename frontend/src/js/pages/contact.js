@@ -13,10 +13,10 @@ export function renderContact(root) {
           <span>Coastal Communication Desk</span>
         </div>
         <h1 class="text-4xl sm:text-6xl font-black text-white">
-          Get in Touch with ROI Mombasa
+          Get in Touch with DEMO Harbor City
         </h1>
         <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
-          Have questions about our Vijana Na Maadili summit, youth mentorship cohorts, or partnering with Reaching Out Initiative? Our team in Mombasa is ready to assist.
+          Have questions about our Youth Leadership Summit summit, youth mentorship cohorts, or partnering with Demo NGO? Our team in Harbor City is ready to assist.
         </p>
       </div>
 
@@ -26,7 +26,7 @@ export function renderContact(root) {
           <div class="lg:col-span-5 space-y-8 bg-slate-800/80 border border-slate-700 p-8 rounded-3xl">
             <div>
               <h3 class="text-xl font-black text-white">Verified Contact Channels</h3>
-              <p class="text-xs text-slate-400 mt-1">Bound to official ROI production endpoints.</p>
+              <p class="text-xs text-slate-400 mt-1">Bound to official DEMO production endpoints.</p>
             </div>
 
             <div class="space-y-6 text-sm">
@@ -34,7 +34,7 @@ export function renderContact(root) {
                 <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">${icon('map-pin', 'w-5 h-5')}</div>
                 <div>
                   <span class="font-bold text-white block">Physical Operations</span>
-                  <span class="text-xs text-slate-300">Mombasa, Kenya (Tudor &amp; Swahilipot Hub Centers)</span>
+                  <span class="text-xs text-slate-300">Harbor City, Kenya (Riverside &amp; the community hub Centers)</span>
                 </div>
               </div>
 
@@ -42,18 +42,7 @@ export function renderContact(root) {
                 <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">${icon('mail', 'w-5 h-5')}</div>
                 <div>
                   <span class="font-bold text-white block">Primary Email</span>
-                  <a href="mailto:reachingoutinitiative2021@gmail.com" class="text-xs text-sky-400 hover:underline break-all">reachingoutinitiative2021@gmail.com</a>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">${icon('phone', 'w-5 h-5')}</div>
-                <div>
-                  <span class="font-bold text-white block">Click-to-Dial Lines</span>
-                  <div class="flex flex-col text-xs text-slate-300 space-y-1 mt-0.5">
-                    <a href="tel:+254745273556" class="hover:text-emerald-400 font-mono">+254 745 273 556 (Primary)</a>
-                    <a href="tel:+254734292124" class="hover:text-emerald-400 font-mono">+254 734 292 124 (Secondary)</a>
-                  </div>
+                  <a href="mailto:hello@example.org" class="text-xs text-sky-400 hover:underline break-all">hello@example.org</a>
                 </div>
               </div>
 
@@ -69,7 +58,7 @@ export function renderContact(root) {
           </div>
 
           <div class="lg:col-span-7 bg-slate-800/80 border border-slate-700 p-8 sm:p-10 rounded-3xl">
-            <h3 class="text-2xl font-black text-white mb-6">Send an Inquiry to ROI Desk</h3>
+            <h3 class="text-2xl font-black text-white mb-6">Send an Inquiry to DEMO Desk</h3>
 
             <form id="roi-contact-form" class="space-y-6">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -89,7 +78,7 @@ export function renderContact(root) {
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">Inquiry Subject</label>
                 <select id="roi-contact-subject" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-base focus:outline-none focus:border-sky-500">
                   <option value="General Inquiry">General Inquiry</option>
-                  <option value="Vijana Na Maadili Conference Sponsorship">Vijana Na Maadili Conference Sponsorship</option>
+                  <option value="Youth Leadership Summit Conference Sponsorship">Youth Leadership Summit Conference Sponsorship</option>
                   <option value="Youth Mentorship Partnership">Youth Mentorship Partnership</option>
                   <option value="Tech Bootcamp Collaboration">Tech Bootcamp Collaboration</option>
                   <option value="Media & Documentary Requests">Media &amp; Documentary Requests</option>
@@ -119,15 +108,13 @@ export function renderContact(root) {
               ${icon('map-pin', 'w-4 h-4')}
               <span>Interactive Operations Center Map</span>
             </span>
-            <span class="text-xs text-slate-400">Mombasa, Coastal Kenya</span>
+            <span class="text-xs text-slate-400">Harbor City</span>
           </div>
 
-          <div class="w-full h-80 sm:h-96 rounded-2xl overflow-hidden bg-slate-950 relative border border-slate-700">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127161.43288673551!2d39.60098524419912!3d-4.035133606764516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x184012e78ec02c7d%3A0xcb618bbc35d0db5a!2sMombasa%2C%20Kenya!5e0!3m2!1sen!2sus!4v1718000000000!5m2!1sen!2sus"
-              width="100%" height="100%" style="border:0" allowfullscreen="" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Reaching Out Initiative Mombasa Operations Map"></iframe>
+          <div class="w-full h-80 sm:h-96 rounded-2xl overflow-hidden bg-slate-950 relative border border-slate-700 flex flex-col items-center justify-center gap-3 text-center px-6">
+            ${icon('map-pin', 'w-8 h-8 text-amber-400')}
+            <p class="text-sm font-bold text-white">Service area map</p>
+            <p class="text-xs text-slate-400 max-w-sm">This showcase runs without a live map embed. Program locations are managed from the admin console.</p>
           </div>
         </div>
       </div>
@@ -152,7 +139,7 @@ export function renderContact(root) {
       await submitContact({ name, email, subject, message });
       submitBtn.disabled = false;
       label.textContent = 'Submit Inquiry';
-      showToast(`Thank you, ${name}! Your inquiry has been securely routed to reachingoutinitiative2021@gmail.com.`);
+      showToast(`Thank you, ${name}! Your inquiry has been securely routed to hello@example.org.`);
       root.querySelector('#roi-contact-name').value = '';
       root.querySelector('#roi-contact-email').value = '';
       root.querySelector('#roi-contact-message').value = '';
@@ -160,7 +147,7 @@ export function renderContact(root) {
       submitBtn.disabled = false;
       label.textContent = 'Submit Inquiry';
       showToast('Submission failed: we could not reach the server. Please try again shortly.');
-      console.error('[ROI] contact submission failed:', err);
+      console.error('[DEMO] contact submission failed:', err);
     }
   });
 }

@@ -104,7 +104,7 @@ export function openDonationModal(onSuccessNotification) {
     // returns kcb_mpesa: null until then) — never render "Paybill —".
     const kcb = pb.kcb_mpesa || null;
     const equity = pb.equity_bank || { paybill: '—', account: '—' };
-    const biz = pb.business_name || 'REACHING OUT INITIATIVE';
+    const biz = pb.business_name || 'DEMO NGO';
     const badge = (p) => `<span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 text-[10px] font-mono font-bold">Paybill ${escapeHtml(p)}</span>`;
     return `
       <div class="space-y-6 animate-fadeIn">
@@ -228,8 +228,8 @@ export function openDonationModal(onSuccessNotification) {
               ${icon('heart', 'w-5 h-5 sm:w-6 sm:h-6 fill-slate-950')}
             </div>
             <div class="min-w-0">
-              <h3 id="roi-donate-title" class="text-lg sm:text-2xl font-black leading-tight">Support Reaching Out Initiative</h3>
-              <p class="text-xs text-sky-200 mt-1">Uplifting youth across Mombasa, Kenya. Every contribution fuels real social change.</p>
+              <h3 id="roi-donate-title" class="text-lg sm:text-2xl font-black leading-tight">Support Demo NGO</h3>
+              <p class="text-xs text-sky-200 mt-1">Uplifting youth across Harbor City, Kenya. Every contribution fuels real social change.</p>
             </div>
           </div>
 
@@ -254,12 +254,9 @@ export function openDonationModal(onSuccessNotification) {
                 <h4 class="text-xl sm:text-2xl font-black text-white">Donations are temporarily unavailable.</h4>
                 <p class="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">${escapeHtml(paybills?.message || 'Our contribution channels are being prepared for a secure launch. Please check back soon.')}</p>
               </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
-                <a href="mailto:reachingoutinitiative2021@gmail.com" class="min-h-11 px-4 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-colors">
+              <div class="max-w-lg mx-auto">
+                <a href="mailto:hello@example.org" class="min-h-11 px-4 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-colors">
                   ${icon('mail', 'w-4 h-4')} Contact our team
-                </a>
-                <a href="tel:+254745273556" class="min-h-11 px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition-colors">
-                  ${icon('phone', 'w-4 h-4')} +254 745 273 556
                 </a>
               </div>
               <p class="text-[11px] text-slate-500">No payment request or transaction has been created.</p>
@@ -526,7 +523,7 @@ export function openDonationModal(onSuccessNotification) {
       if (isSafePaystackUrl(res.authorization_url)) {
         window.open(res.authorization_url, '_blank', 'noopener');
       } else if (res.authorization_url) {
-        console.error('[ROI] rejected unexpected authorization_url host:', res.authorization_url);
+        console.error('[DEMO] rejected unexpected authorization_url host:', res.authorization_url);
       }
       showToast(`Donation pledge initialized! Transaction reference: ${res.reference}. ${res.customer_message || ''}`);
       onSuccessNotification && onSuccessNotification(res);

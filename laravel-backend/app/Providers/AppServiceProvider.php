@@ -195,7 +195,7 @@ class AppServiceProvider extends ServiceProvider
 
         try {
             logger()->warning(
-                'ROI security: live gateway credentials are configured while ENVIRONMENT is not "production". '
+                'DEMO security: live gateway credentials are configured while ENVIRONMENT is not "production". '
                 .'Verify this host is not customer-facing, or rotate the environment.'
             );
         } catch (Throwable $e) {
@@ -229,7 +229,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         try {
-            logger()->warning('ROI security: JWT_SECRET_KEY is weak or a template value — rotate before production deploy.');
+            logger()->warning('DEMO security: JWT_SECRET_KEY is weak or a template value — rotate before production deploy.');
         } catch (Throwable $e) {
             // Never block local boot on logging failures.
         }

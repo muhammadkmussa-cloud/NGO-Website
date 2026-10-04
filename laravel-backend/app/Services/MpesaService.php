@@ -62,8 +62,8 @@ class MpesaService
         float $amount,
         string $formattedPhone,
         ?string $origin,
-        string $accountReference = 'ROI Empowerment',
-        string $transactionDesc = 'Donation to Reaching Out Initiative Mombasa',
+        string $accountReference = 'DEMO Empowerment',
+        string $transactionDesc = 'Donation to Demo NGO Harbor City',
     ): array
     {
         if ($this->isSandboxMode()) {
@@ -114,8 +114,8 @@ class MpesaService
                     'PartyB' => $shortcode,
                     'PhoneNumber' => $formattedPhone,
                     'CallBackURL' => $this->resolveCallbackUrl($origin),
-                    'AccountReference' => 'ROI Empowerment',
-                    'TransactionDesc' => 'Donation to Reaching Out Initiative Mombasa',
+                    'AccountReference' => 'DEMO Empowerment',
+                    'TransactionDesc' => 'Donation to Demo NGO Harbor City',
                 ]);
 
             if ($stkResponse->status() !== 200) {

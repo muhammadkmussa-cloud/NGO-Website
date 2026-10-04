@@ -25,11 +25,11 @@ const PILLARS = [
 ];
 
 const TIMELINE = [
-  { year: '2021', title: 'Origins in Mombasa, Kenya', desc: 'Founded by passionate local changemakers who recognized the urgent need for structured youth support amidst rising coastal unemployment.' },
+  { year: '2021', title: 'Origins in Harbor City, Kenya', desc: 'Founded by passionate local changemakers who recognized the urgent need for structured youth support amidst rising coastal unemployment.' },
   { year: '2023', title: 'Official CBO Registration', desc: 'Officially registered as a Community-Based Organization (CBO), establishing the foundation for our youth empowerment initiatives.' },
-  { year: '2024', title: 'Vijana Na Maadili Vol 1', desc: 'Launched the first Vijana Na Maadili, bringing together over 400 youth for spiritual enrichment and ethical leadership.' },
-  { year: '2025', title: 'Vijana Na Maadili Vol 2', desc: 'Held the second Vijana Na Maadili, bringing together over 600 youth under the theme “Safari ya Ramadhani.”' },
-  { year: '2026', title: 'Vijana Na Maadili Vol 3', desc: 'The third Vijana Na Maadili will be held under the theme “MIND VS NAFS”, alongside the launch of ROI Digital Solutions.' }
+  { year: '2024', title: 'Youth Leadership Summit Vol 1', desc: 'Launched the first Youth Leadership Summit, bringing together over 400 youth for spiritual enrichment and ethical leadership.' },
+  { year: '2025', title: 'Youth Leadership Summit Vol 2', desc: 'Held the second Youth Leadership Summit, bringing together over 600 youth under the theme “Safari ya Ramadhani.”' },
+  { year: '2026', title: 'Youth Leadership Summit Vol 3', desc: 'The third Youth Leadership Summit will be held under the theme “MIND VS NAFS”, alongside the launch of DEMO Digital Solutions.' }
 ];
 
 export function renderAbout(root) {
@@ -39,13 +39,13 @@ export function renderAbout(root) {
       <div class="max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-3xl mx-auto space-y-6">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-amber-400 text-xs font-bold">
           ${icon('map-pin', 'w-3.5 h-3.5')}
-          <span>Coastal Headquarters: Mombasa, Kenya</span>
+          <span>Coastal Headquarters: Harbor City, Kenya</span>
         </div>
         <h1 class="text-4xl sm:text-6xl font-black text-white">
-          Our Story & Mission: Uplifting Mombasa's Youth
+          Our Story & Mission: Uplifting Harbor City's Youth
         </h1>
         <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
-          The <strong class="text-white">Reaching Out Initiative (ROI)</strong> is a dedicated community-based organization registered and operating in Mombasa, Kenya. We exist to uplift vulnerable young individuals through holistic empowerment.
+          The <strong class="text-white">Demo NGO (DEMO)</strong> is a dedicated community-based organization registered and operating in Harbor City, Kenya. We exist to uplift vulnerable young individuals through holistic empowerment.
         </p>
       </div>
 
@@ -72,7 +72,7 @@ export function renderAbout(root) {
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Chronological Milestones</h2>
-          <p class="text-3xl font-black text-white">The Journey of Reaching Out Initiative</p>
+          <p class="text-3xl font-black text-white">The Journey of Demo NGO</p>
         </div>
 
         <div class="relative border-l-2 border-sky-500/30 ml-4 sm:ml-32 space-y-12">
@@ -93,7 +93,7 @@ export function renderAbout(root) {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-2">Community Leadership</h2>
-          <p class="text-3xl font-black text-white">Meet the Dedicated Stewards of ROI</p>
+          <p class="text-3xl font-black text-white">Meet the Dedicated Stewards of DEMO</p>
         </div>
 
         <div id="roi-leaders-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>

@@ -376,7 +376,7 @@ class PledgeService
     }
 
     /**
-     * Idempotent webhook settlement for pledge references (ROI-PLE-*).
+     * Idempotent webhook settlement for pledge references (DEMO-PLE-*).
      * charge.success verifies amount + currency before marking anything PAID
      * under a row lock; charge.failed is a conditional write that can never
      * downgrade PAID (§9). Replays are no-ops.

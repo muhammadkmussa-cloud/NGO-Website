@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('summary');
             $table->text('content');
             $table->string('category')->default('Social Impact')->index();
-            $table->string('author')->default('ROI Communications');
+            $table->string('author')->default('DEMO Communications');
             $table->string('image_url')->nullable();
             $table->boolean('is_published')->default(true);
             $table->timestamps();
@@ -45,7 +45,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('date'); // Free-text date string, e.g. "August 14-16, 2026"
             $table->string('time')->default('09:00 AM EAT');
-            $table->string('location')->default('Mombasa, Kenya');
+            $table->string('location')->default('Harbor City, Kenya');
             $table->text('description');
             $table->string('category')->default('Conference');
             $table->string('image_url')->nullable();

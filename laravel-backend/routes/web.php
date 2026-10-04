@@ -10,9 +10,9 @@ $serveShell = function () {
 
     if (! file_exists($shell)) {
         return response(
-            "<!doctype html><html><head><meta charset='utf-8'><title>ROI Platform</title></head>".
+            "<!doctype html><html><head><meta charset='utf-8'><title>DEMO Platform</title></head>".
             "<body style='font-family:sans-serif;background:#0f172a;color:#e2e8f0;padding:3rem'>".
-            '<h1>Reaching Out Initiative API</h1><p>The frontend build was not found at <code>public/index.html</code>.</p>'.
+            '<h1>Demo NGO API</h1><p>The frontend build was not found at <code>public/index.html</code>.</p>'.
             '<p>Build it with <code>cd frontend &amp;&amp; npm run build</code>, or use the API directly under <code>/api</code>.</p>'.
             '</body></html>',
             200

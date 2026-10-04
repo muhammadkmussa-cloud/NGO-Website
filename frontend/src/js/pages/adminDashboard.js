@@ -65,10 +65,10 @@ export function renderAdminDashboard(root) {
     ticketModal: false,
     blogModal: false,
     editingBlog: null,
-    blogForm: { title: '', summary: '', content: '', category: 'Social Impact', author: 'ROI Desk', image_url: '', is_published: true },
+    blogForm: { title: '', summary: '', content: '', category: 'Social Impact', author: 'DEMO Desk', image_url: '', is_published: true },
     eventModal: false,
     editingEvent: null,
-    eventForm: { title: '', date: '', time: '09:00 AM EAT', location: 'Mombasa, Kenya', description: '', category: 'Conference', image_url: '', is_active: true },
+    eventForm: { title: '', date: '', time: '09:00 AM EAT', location: 'Harbor City, Kenya', description: '', category: 'Conference', image_url: '', is_active: true },
     leaderModal: false,
     editingLeader: null,
     leaderForm: { name: '', role: '', bio: '' },
@@ -80,7 +80,7 @@ export function renderAdminDashboard(root) {
     siteLoading: false,
     siteForm: {
       hero_eyebrow: 'Flagship Conference 2026',
-      hero_title: 'Vijana Na Maadili',
+      hero_title: 'Youth Leadership Summit',
       hero_description: '',
       hero_image_url: '',
       metric_youth_mentored: '120',
@@ -96,7 +96,7 @@ export function renderAdminDashboard(root) {
       <aside class="w-full md:w-64 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 p-4 md:p-6 flex flex-col justify-between shrink-0 min-w-0">
         <div class="space-y-4 md:space-y-8 min-w-0">
           <div class="flex items-center space-x-3 pb-2">
-            <img src="${ROI_LOGO_DATA_URI}" alt="ROI Official Logo" class="h-8 w-auto object-contain">
+            <img src="${ROI_LOGO_DATA_URI}" alt="DEMO Official Logo" class="h-8 w-auto object-contain">
             <div><span class="text-[10px] text-emerald-400 font-mono block">1/1 Slot Active</span></div>
           </div>
           <nav id="roi-tabs-nav" class="flex md:block gap-2 md:space-y-1.5 overflow-x-auto mobile-scroll pb-2 md:pb-0" aria-label="Admin sections"></nav>
@@ -223,12 +223,12 @@ export function renderAdminDashboard(root) {
           <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
             <span class="text-xs text-slate-400 uppercase font-bold">Active Event Itineraries</span>
             <span class="text-3xl font-black text-purple-400 block mt-2">${escapeHtml(String(state.stats.total_events))}</span>
-            <span class="text-[10px] text-slate-500 mt-1 block">Including Vijana Na Maadili</span>
+            <span class="text-[10px] text-slate-500 mt-1 block">Including Youth Leadership Summit</span>
           </div>
           <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
             <span class="text-xs text-slate-400 uppercase font-bold">Recent Form Inquiries</span>
             <span class="text-3xl font-black text-emerald-400 block mt-2">${escapeHtml(String(state.stats.recent_inquiries_count))}</span>
-            <span class="text-[10px] text-sky-400 mt-1 block">Routed to ROI Desk</span>
+            <span class="text-[10px] text-sky-400 mt-1 block">Routed to DEMO Desk</span>
           </div>
         </div>
 
@@ -344,7 +344,7 @@ export function renderAdminDashboard(root) {
 
         <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-xs text-slate-400 space-y-2">
           <strong class="text-white block uppercase">Quota Management Rule</strong>
-          <p>To strictly adhere to Google Cloud API quota bounds, public page views do not hit live API endpoints directly. Metadata is cached directly inside PostgreSQL \`media_items\`. Use this controller panel whenever ROI broadcasts a new Vijana Na Maadili documentary or empowerment talk.</p>
+          <p>To strictly adhere to Google Cloud API quota bounds, public page views do not hit live API endpoints directly. Metadata is cached directly inside PostgreSQL \`media_items\`. Use this controller panel whenever DEMO broadcasts a new Youth Leadership Summit documentary or empowerment talk.</p>
         </div>
       </div>`;
   }
@@ -509,7 +509,7 @@ export function renderAdminDashboard(root) {
         </div>
 
         <form id="roi-checkin-form" class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row gap-3">
-          <input id="roi-checkin-code" value="${escapeHtml(state.checkInCode)}" placeholder="Scan or type ticket code (ROI-XXXX-XXXX)" class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-xs">
+          <input id="roi-checkin-code" value="${escapeHtml(state.checkInCode)}" placeholder="Scan or type ticket code (DEMO-XXXX-XXXX)" class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-xs">
           <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-600 text-white font-black text-xs">Check in</button>
         </form>
         <div id="roi-checkin-result"></div>
@@ -569,7 +569,7 @@ export function renderAdminDashboard(root) {
       <div class="space-y-6 animate-fadeIn">
         <div class="flex items-center justify-between gap-3">
           <div>
-            <h2 class="text-2xl font-black text-white">ROI Digital Solutions</h2>
+            <h2 class="text-2xl font-black text-white">DEMO Digital Solutions</h2>
             <p class="text-xs text-slate-400">Publish offerings, reorder the catalog, and close briefing requests.</p>
           </div>
           <button type="button" data-action="new-solution" class="px-4 py-2 rounded-xl bg-amber-400 text-slate-950 font-black text-xs">${icon('plus', 'w-4 h-4 inline')} Add solution</button>
@@ -939,7 +939,7 @@ export function renderAdminDashboard(root) {
         showToast(
           state.featuredOverrideId
             ? `Featured Theater video ID updated to ${state.featuredOverrideId}. Cache purged.`
-            : 'Local YouTube metadata cache synchronized with ROI TV channel API.'
+            : 'Local YouTube metadata cache synchronized with DEMO TV channel API.'
         );
         state.featuredOverrideId = '';
         paint();
@@ -1060,7 +1060,7 @@ export function renderAdminDashboard(root) {
 
       if (action === 'new-blog') {
         state.editingBlog = null;
-        state.blogForm = { title: '', summary: '', content: '', category: 'Social Impact', author: 'ROI Desk', image_url: '', is_published: true };
+        state.blogForm = { title: '', summary: '', content: '', category: 'Social Impact', author: 'DEMO Desk', image_url: '', is_published: true };
         openBlogModal();
       }
       if (action === 'edit-blog') {
@@ -1074,7 +1074,7 @@ export function renderAdminDashboard(root) {
       if (action === 'delete-blog') handleDeleteBlog(id);
       if (action === 'new-event') {
         state.editingEvent = null;
-        state.eventForm = { title: '', date: '', time: '09:00 AM EAT', location: 'Mombasa, Kenya', description: '', category: 'Workshop', image_url: '', is_active: true, ticket_sales_enabled: true, capacity: '' };
+        state.eventForm = { title: '', date: '', time: '09:00 AM EAT', location: 'Harbor City, Kenya', description: '', category: 'Workshop', image_url: '', is_active: true, ticket_sales_enabled: true, capacity: '' };
         openEventModal();
       }
       if (action === 'edit-event') {
@@ -1648,7 +1648,7 @@ export function renderAdminDashboard(root) {
           const newB = { ...state.blogForm, id: Date.now(), slug: String(state.blogForm.title).toLowerCase().replace(/\s+/g, '-'), created_at: new Date().toISOString() };
           await request('POST', '/admin/blog', state.blogForm).catch(() => {});
           state.blogs = [newB, ...state.blogs];
-          showToast('New story published to ROI platform.');
+          showToast('New story published to DEMO platform.');
         }
         closeModal();
         paint();
@@ -1664,7 +1664,7 @@ export function renderAdminDashboard(root) {
           <h3 class="text-xl font-black text-white">${state.editingEvent ? 'Change Event Details' : 'Append Upcoming Activity'}</h3>
 
           <form id="roi-event-form" class="space-y-4 text-xs">
-            <input type="text" required placeholder="Event Title (e.g. Vijana Na Maadili 2026)" value="${escapeHtml(state.eventForm.title)}" data-ef="title"
+            <input type="text" required placeholder="Event Title (e.g. Youth Leadership Summit 2026)" value="${escapeHtml(state.eventForm.title)}" data-ef="title"
               class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none">
             <div class="grid grid-cols-2 gap-3">
               <input type="text" required placeholder="Date String (e.g. Aug 14-16)" value="${escapeHtml(state.eventForm.date)}" data-ef="date"
@@ -1675,7 +1675,7 @@ export function renderAdminDashboard(root) {
                 ).join('')}
               </select>
             </div>
-            <input type="text" placeholder="Location (e.g. Swahilipot Hub, Mombasa)" value="${escapeHtml(state.eventForm.location)}" data-ef="location"
+            <input type="text" placeholder="Location (e.g. the community hub, Harbor City)" value="${escapeHtml(state.eventForm.location)}" data-ef="location"
               class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none">
             <textarea rows="4" required placeholder="Event Description..." data-ef="description"
               class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none resize-none">${escapeHtml(state.eventForm.description || '')}</textarea>

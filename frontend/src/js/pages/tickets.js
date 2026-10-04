@@ -157,7 +157,7 @@ export function renderTickets(root, params = {}) {
               class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider disabled:opacity-60">
               ${state.submitting ? 'Initiating payment…' : `Pay ${currency} ${total.toLocaleString()}`}
             </button>
-            <p class="text-[11px] text-slate-500 text-center flex items-center justify-center gap-1">${icon('shield-check', 'w-3.5 h-3.5 text-emerald-500')} Same Paystack &amp; Daraja rails as ROI donations.</p>
+            <p class="text-[11px] text-slate-500 text-center flex items-center justify-center gap-1">${icon('shield-check', 'w-3.5 h-3.5 text-emerald-500')} Same Paystack &amp; Daraja rails as DEMO donations.</p>
           </form>` : `
           <div class="space-y-3 text-xs text-slate-300">
             <p>Reserve digitally first, then pay via Lipa na M-Pesa using the order reference as the account number. Or use the organisation paybills:</p>

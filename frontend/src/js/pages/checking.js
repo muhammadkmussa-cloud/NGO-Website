@@ -22,14 +22,14 @@ export function renderChecking(root) {
       <div class="max-w-3xl mx-auto space-y-6">
         <div class="flex items-center justify-between gap-3">
           <div>
-            <p class="text-[10px] uppercase tracking-wider text-amber-400 font-bold">Reaching Out Initiative · Gate</p>
+            <p class="text-[10px] uppercase tracking-wider text-amber-400 font-bold">Demo NGO · Gate</p>
             <h1 class="text-3xl font-black text-white">QR check-in</h1>
           </div>
           <a href="/" class="text-xs font-bold text-sky-400">Exit</a>
         </div>
 
         <form id="roi-gate-form" class="bg-slate-900 border border-slate-800 rounded-3xl p-5 flex flex-col sm:flex-row gap-3">
-          <input id="roi-gate-code" autofocus placeholder="Scan QR or type ROI-XXXX-XXXX" class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-sm">
+          <input id="roi-gate-code" autofocus placeholder="Scan QR or type DEMO-XXXX-XXXX" class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-sm">
           <button type="submit" class="px-5 py-3 rounded-xl bg-amber-400 text-slate-950 font-black text-xs">Admit</button>
           <button type="button" id="roi-gate-scan" class="px-5 py-3 rounded-xl bg-sky-600 text-white font-black text-xs">Camera</button>
         </form>

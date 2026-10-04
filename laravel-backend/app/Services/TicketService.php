@@ -174,7 +174,7 @@ class TicketService
                         $formattedPhone,
                         $origin,
                         $reference,
-                        'ROI ticket order',
+                        'DEMO ticket order',
                     );
                     $checkoutId = $result['checkout_request_id'];
                     $merchantId = $result['merchant_request_id'];
@@ -272,7 +272,7 @@ class TicketService
             $formattedPhone,
             $origin,
             $order->reference,
-            'ROI ticket order',
+            'DEMO ticket order',
         );
 
         $order->gateway = 'M-Pesa';
@@ -445,7 +445,7 @@ class TicketService
     protected function uniqueCode(): string
     {
         do {
-            $code = 'ROI-' . strtoupper(Str::random(4)) . '-' . strtoupper(Str::random(4));
+            $code = 'DEMO-' . strtoupper(Str::random(4)) . '-' . strtoupper(Str::random(4));
         } while (Ticket::where('code', $code)->exists());
 
         return $code;

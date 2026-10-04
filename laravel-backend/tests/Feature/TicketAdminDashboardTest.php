@@ -43,7 +43,7 @@ class TicketAdminDashboardTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Desk Buyer',
-            'buyer_email' => 'desk@test.ke',
+            'buyer_email' => 'desk@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 2]],
         ])->assertStatus(201);
@@ -64,7 +64,7 @@ class TicketAdminDashboardTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Searchable Amina',
-            'buyer_email' => 'amina.search@test.ke',
+            'buyer_email' => 'amina.search@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -72,7 +72,7 @@ class TicketAdminDashboardTest extends TestCase
         $this->withAdmin()->getJson('/api/admin/ticket-orders?search=amina.search')
             ->assertOk()
             ->assertJsonCount(1)
-            ->assertJsonPath('0.buyer_email', 'amina.search@test.ke');
+            ->assertJsonPath('0.buyer_email', 'amina.search@test.example');
 
         $csv = $this->withAdmin()->get('/api/admin/ticket-orders/export');
         $csv->assertOk();

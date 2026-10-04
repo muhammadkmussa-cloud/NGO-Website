@@ -23,7 +23,7 @@ export async function renderStatus(root) {
   root.innerHTML = `
     <section class="max-w-3xl mx-auto px-4 py-16">
       <p class="text-xs uppercase tracking-[0.3em] text-roi-gold">Platform status</p>
-      <h1 class="font-display text-4xl mt-2 mb-6">ROI digital services</h1>
+      <h1 class="font-display text-4xl mt-2 mb-6">DEMO digital services</h1>
       <div class="rounded-2xl border border-white/10 bg-roi-navy/40 p-6">
         <div class="flex items-center gap-3 mb-4">
           <span class="inline-block w-3 h-3 rounded-full ${color}"></span>

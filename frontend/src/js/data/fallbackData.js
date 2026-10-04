@@ -1,10 +1,10 @@
 export const FALLBACK_BLOGS = [
   {
     id: 1,
-    title: "Empowering Mombasa Youth: The Journey of Vijana Na Maadili",
-    slug: "empowering-mombasa-youth-vijana-na-maadili",
-    summary: "Discover how our annual flagship conference has transformed the lives of over 1,000 young individuals in coastal Kenya through mentorship and ethical grounding.",
-    content: "The coastal region of Mombasa represents immense potential, yet young people frequently encounter systemic hurdles ranging from unemployment to social vulnerability. The Reaching Out Initiative (ROI) established the Vijana Na Maadili conference to bridge this gap.\n\nThrough rigorous mentorship cohorts, skills development sessions, and direct access to industry pioneers, participants gain confidence and marketable competencies. In our 2025 impact assessment, 84% of attendees reported launching community micro-initiatives or securing gainful employment within six months.\n\nAs we gear up for the 2026 edition at Swahilipot Hub, our vision remains resolute: building a morally upright, economically self-reliant generation that leads Kenya into a brighter future.",
+    title: "Empowering Harbor City Youth: The Journey of Youth Leadership Summit",
+    slug: "empowering-harbor-city-youth-leadership-summit",
+    summary: "Discover how our annual flagship conference has transformed the lives of over 1,000 young individuals in the coast through mentorship and ethical grounding.",
+    content: "The coastal region of Harbor City represents immense potential, yet young people frequently encounter systemic hurdles ranging from unemployment to social vulnerability. The Demo NGO (DEMO) established the Youth Leadership Summit conference to bridge this gap.\n\nThrough rigorous mentorship cohorts, skills development sessions, and direct access to industry pioneers, participants gain confidence and marketable competencies. In our 2025 impact assessment, 84% of attendees reported launching community micro-initiatives or securing gainful employment within six months.\n\nAs we gear up for the 2026 edition at the community hub, our vision remains resolute: building a morally upright, economically self-reliant generation that leads Kenya into a brighter future.",
     category: "Mentorship",
     author: "Fatuma Bakari - Lead Coordinator",
     image_url: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80",
@@ -12,10 +12,10 @@ export const FALLBACK_BLOGS = [
   },
   {
     id: 2,
-    title: "Bridging the Digital Divide: Tech Literacy in Tudor & Kisauni",
+    title: "Bridging the Digital Divide: Tech Literacy in Riverside & Northside",
     slug: "bridging-the-digital-divide-tech-literacy",
-    summary: "How ROI's mobile computer labs are bringing coding, graphic design, and online freelancing skills to underserved informal settlements.",
-    content: "Access to a laptop and reliable broadband is no longer a luxury—it is the baseline for economic survival in the 21st century. In partnership with local well-wishers and international donors, ROI launched the Mobile Digital Empowerment Hub.\n\nEvery weekend, our volunteer trainers deploy to community halls across Kisauni and Likoni. Young students learn Python fundamentals, web design, and digital marketing. The results speak for themselves: several alumni are now earning foreign currency through international remote platforms, injecting capital directly into their households.",
+    summary: "How DEMO's mobile computer labs are bringing coding, graphic design, and online freelancing skills to underserved informal settlements.",
+    content: "Access to a laptop and reliable broadband is no longer a luxury—it is the baseline for economic survival in the 21st century. In partnership with local well-wishers and international donors, DEMO launched the Mobile Digital Empowerment Hub.\n\nEvery weekend, our volunteer trainers deploy to community halls across Northside and Southside. Young students learn Python fundamentals, web design, and digital marketing. The results speak for themselves: several alumni are now earning foreign currency through international remote platforms, injecting capital directly into their households.",
     category: "Education",
     author: "Hamisi Hassan - Tech Lead",
     image_url: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80",
@@ -25,10 +25,10 @@ export const FALLBACK_BLOGS = [
     id: 3,
     title: "Community Voices: Meet Ali, Transformed by Mentorship",
     slug: "community-voices-meet-ali-transformed",
-    summary: "A heartwarming case study of resilience, determination, and the ripple effect of supportive community networks in Mombasa.",
-    content: "When Ali first joined the Reaching Out Initiative mentorship circle in 2023, he was facing severe hardship after finishing high school without financial support for university.\n\nMatched with an ROI mentor in logistics and trade, Ali underwent our 12-week character and career readiness program. Today, Ali oversees supply chain coordination at a thriving Mombasa port enterprise and actively funds tuition for two younger girls in his neighborhood. His story illustrates the profound ROI ripple effect.",
+    summary: "A heartwarming case study of resilience, determination, and the ripple effect of supportive community networks in Harbor City.",
+    content: "When Ali first joined the Demo NGO mentorship circle in 2023, he was facing severe hardship after finishing high school without financial support for university.\n\nMatched with an DEMO mentor in logistics and trade, Ali underwent our 12-week character and career readiness program. Today, Ali oversees supply chain coordination at a thriving Harbor City port enterprise and actively funds tuition for two younger girls in his neighborhood. His story illustrates the profound DEMO ripple effect.",
     category: "Success Stories",
-    author: "ROI Media Team",
+    author: "DEMO Media Team",
     image_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
     created_at: "2026-06-05T09:15:00Z"
   }
@@ -37,11 +37,11 @@ export const FALLBACK_BLOGS = [
 export const FALLBACK_EVENTS = [
   {
     id: 101,
-    title: "Vijana Na Maadili Annual Conference 2026",
+    title: "Youth Leadership Summit Annual Conference 2026",
     date: "August 14-16, 2026",
     time: "08:30 AM - 05:00 PM EAT",
-    location: "Swahilipot Hub Amphitheater, Mombasa, Kenya",
-    description: "Our flagship youth empowerment conference convening over 500 young leaders across coastal Kenya. Focusing on ethical leadership, digital entrepreneurship, mental resilience, and community transformation.",
+    location: "the community hub Amphitheater, Harbor City, Kenya",
+    description: "Our flagship youth empowerment conference convening over 500 young leaders across the coast. Focusing on ethical leadership, digital entrepreneurship, mental resilience, and community transformation.",
     category: "Flagship Conference",
     image_url: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80",
     is_active: true
@@ -51,7 +51,7 @@ export const FALLBACK_EVENTS = [
     title: "Coastal Youth Tech & Mentorship Bootcamp",
     date: "July 10, 2026",
     time: "09:00 AM - 03:00 PM EAT",
-    location: "ROI Youth Center, Tudor, Mombasa",
+    location: "DEMO Youth Center, Riverside, Harbor City",
     description: "An intensive hands-on digital skills workshop preparing vulnerable youth for remote jobs and coding careers. Mentors include seasoned software engineers and local entrepreneurs.",
     category: "Workshop",
     image_url: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
@@ -59,11 +59,11 @@ export const FALLBACK_EVENTS = [
   },
   {
     id: 103,
-    title: "Clean Mombasa Community Environment Drive",
+    title: "Clean Harbor City Community Environment Drive",
     date: "June 30, 2026",
     time: "07:00 AM - 11:30 AM EAT",
-    location: "Nyali Beach & Likoni Crossing, Mombasa",
-    description: "Mobilizing over 150 ROI volunteers to restore coastal marine habitats, collect plastic waste, and educate local market vendors on sustainable waste disposal.",
+    location: "Bayview Beach & Southside Crossing, Harbor City",
+    description: "Mobilizing over 150 DEMO volunteers to restore coastal marine habitats, collect plastic waste, and educate local market vendors on sustainable waste disposal.",
     category: "Outreach",
     image_url: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80",
     is_active: true
@@ -74,7 +74,7 @@ export const FALLBACK_MEDIA = [
   {
     id: 201,
     youtube_id: "dQw4w9WgXcQ",
-    title: "Vijana Na Maadili Documentary: Transforming Mombasa Youth",
+    title: "Youth Leadership Summit Documentary: Transforming Harbor City Youth",
     category: "Events & Conferences",
     summary: "Watch the official highlight reel from our flagship youth conference featuring keynote speakers, breakout panels, and cultural showcases.",
     thumbnail_url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
@@ -84,7 +84,7 @@ export const FALLBACK_MEDIA = [
   },
   {
     id: 202,
-    youtube_id: "L_LUpnjgPso",
+    youtube_id: "featuredVid01",
     title: "Mentorship Masterclass: Navigating Career Pathways in Kenya",
     category: "Mentorship Sessions",
     summary: "Seasoned HR directors and entrepreneurs share actionable tips on resume building, interview etiquette, and building personal brand integrity.",
@@ -96,9 +96,9 @@ export const FALLBACK_MEDIA = [
   {
     id: 203,
     youtube_id: "kJQP7kiw5Fk",
-    title: "Clean Coastal Water Drive: Likoni Outreach Highlight",
+    title: "Clean Coastal Water Drive: Southside Outreach Highlight",
     category: "Community Outreach",
-    summary: "ROI volunteers distribution of water purification filters and hygiene kits to over 200 households in informal settlements.",
+    summary: "DEMO volunteers distribution of water purification filters and hygiene kits to over 200 households in informal settlements.",
     thumbnail_url: "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=800&q=80",
     duration: "08:15",
     is_featured: false,
@@ -118,7 +118,7 @@ export const FALLBACK_MEDIA = [
   {
     id: 205,
     youtube_id: "3JZ_D3ELwOQ",
-    title: "Alumni Spotlight: From ROI Volunteer to Tech Founder",
+    title: "Alumni Spotlight: From DEMO Volunteer to Tech Founder",
     category: "Success Stories",
     summary: "An exclusive interview with Mary Wanjiku as she details building a coastal health-tech app that won regional recognition.",
     thumbnail_url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
@@ -132,12 +132,12 @@ export const FALLBACK_TICKET_CATALOG = (eventId) => {
   const event = FALLBACK_EVENTS.find((e) => String(e.id) === String(eventId)) || FALLBACK_EVENTS[0];
   const catalog = {
     101: [
-      { id: 1, event_id: 101, name: 'Youth Delegate', description: 'Full access to Vijana Na Maadili sessions, lunch, and a digital badge.', price: 500, currency: 'KES', quantity: 400, sold_count: 12, remaining: 388, unlimited: false, is_active: true, on_sale: true, sale_state: 'on_sale', max_per_order: 10 },
+      { id: 1, event_id: 101, name: 'Youth Delegate', description: 'Full access to Youth Leadership Summit sessions, lunch, and a digital badge.', price: 500, currency: 'KES', quantity: 400, sold_count: 12, remaining: 388, unlimited: false, is_active: true, on_sale: true, sale_state: 'on_sale', max_per_order: 10 },
       { id: 2, event_id: 101, name: 'Standard Seat', description: 'General admission for community members and guests.', price: 1500, currency: 'KES', quantity: 80, sold_count: 4, remaining: 76, unlimited: false, is_active: true, on_sale: true, sale_state: 'on_sale', max_per_order: 6 },
       { id: 3, event_id: 101, name: 'VIP Patron', description: 'Front-row seating, networking lounge, and printed programme.', price: 5000, currency: 'KES', quantity: 20, sold_count: 1, remaining: 19, unlimited: false, is_active: true, on_sale: true, sale_state: 'on_sale', max_per_order: 2 }
     ],
     102: [
-      { id: 4, event_id: 102, name: 'Free Workshop Pass', description: 'Complimentary seat for the Tudor tech & mentorship bootcamp.', price: 0, currency: 'KES', quantity: 60, sold_count: 8, remaining: 52, unlimited: false, is_active: true, on_sale: true, sale_state: 'on_sale', max_per_order: 2 }
+      { id: 4, event_id: 102, name: 'Free Workshop Pass', description: 'Complimentary seat for the Riverside tech & mentorship bootcamp.', price: 0, currency: 'KES', quantity: 60, sold_count: 8, remaining: 52, unlimited: false, is_active: true, on_sale: true, sale_state: 'on_sale', max_per_order: 2 }
     ]
   };
   return {
@@ -149,10 +149,10 @@ export const FALLBACK_TICKET_CATALOG = (eventId) => {
 export const FALLBACK_PORTFOLIO = [
   {
     id: 1,
-    title: 'Vijana Na Maadili 2025 door system',
-    slug: 'vijana-na-maadili-2025-door-system',
-    client: 'Reaching Out Initiative',
-    location: 'Swahilipot Hub, Mombasa',
+    title: 'Youth Leadership Summit 2025 door system',
+    slug: 'youth-leadership-summit-2025-door-system',
+    client: 'Demo NGO',
+    location: 'the community hub, Harbor City',
     year: '2025',
     summary: 'Issued digital passes and ran QR check-in for the flagship youth conference.',
     outcome: '500+ delegates admitted without paper lists.',
@@ -162,10 +162,10 @@ export const FALLBACK_PORTFOLIO = [
   },
   {
     id: 2,
-    title: 'Tudor weekend digital lab',
-    slug: 'tudor-weekend-digital-lab',
-    client: 'ROI Youth Center',
-    location: 'Tudor, Mombasa',
+    title: 'Riverside weekend digital lab',
+    slug: 'riverside-weekend-digital-lab',
+    client: 'DEMO Youth Center',
+    location: 'Riverside, Harbor City',
     year: '2026',
     summary: 'Mobile lab cohort teaching web basics and freelancing to coastal youth.',
     outcome: 'Three alumni landed remote design retainers within a term.',
@@ -177,8 +177,8 @@ export const FALLBACK_PORTFOLIO = [
 
 export const FALLBACK_SOLUTIONS = [
   { id: 1, title: 'Community Event Ticketing', slug: 'community-event-ticketing', category: 'Platform', summary: 'Paystack + M-Pesa ticketing, QR check-in, and attendee recovery for coastal events.', price_label: 'Partner briefing' },
-  { id: 2, title: 'Youth Digital Lab', slug: 'youth-digital-lab', category: 'Education', summary: 'Mobile coding and freelancing labs for Tudor, Kisauni, and Likoni.', price_label: 'Sponsored seats' },
-  { id: 3, title: 'Reaching Out Media Studio', slug: 'reaching-out-media-studio', category: 'Media', summary: 'Storytelling, livestream, and YouTube syndication for youth programmes.', price_label: 'Project quote' }
+  { id: 2, title: 'Youth Digital Lab', slug: 'youth-digital-lab', category: 'Education', summary: 'Mobile coding and freelancing labs for Riverside, Northside, and Southside.', price_label: 'Sponsored seats' },
+  { id: 3, title: 'Demo Media Studio', slug: 'demo-media-studio', category: 'Media', summary: 'Storytelling, livestream, and YouTube syndication for youth programmes.', price_label: 'Project quote' }
 ];
 
 export const FALLBACK_METRICS = {
@@ -191,15 +191,15 @@ export const FALLBACK_METRICS = {
 export const FALLBACK_FAQS = [
   {
     id: 1,
-    question: 'What makes ROI Digital Solutions different from a typical web design agency?',
-    answer: 'We are a division of Reaching Out Initiative, a registered CBO in Mombasa. Our work directly funds youth mentorship, digital labs, and the annual Vijana Na Maadili conference. We build production-grade software — not just brochure sites — with a focus on Kenyan context (M-Pesa, Daraja, offline-first, CBC curriculum).',
+    question: 'What makes DEMO Digital Solutions different from a typical web design agency?',
+    answer: 'We are a division of Demo NGO, a registered CBO in Harbor City. Our work directly funds youth mentorship, digital labs, and the annual Youth Leadership Summit conference. We build production-grade software — not just brochure sites — with a focus on Kenyan context (M-Pesa, Daraja, offline-first, CBC curriculum).',
     group: 'General',
     sort_order: 1,
     is_published: true
   },
   {
     id: 2,
-    question: 'Do you only work with organizations in Mombasa?',
+    question: 'Do you only work with organizations in Harbor City?',
     answer: 'No. Our team works remotely with clients across Kenya and East Africa. We have delivered projects for partners in Nairobi, Kisumu, Kilifi, and Tanzania. On-site discovery workshops are available where needed.',
     group: 'General',
     sort_order: 2,

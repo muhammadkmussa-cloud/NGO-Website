@@ -389,9 +389,9 @@ class PaymentController extends Controller
         $event = $request->json('event');
         $reference = $request->json('data.reference');
 
-        // Monthly pledge references (ROI-PLE-*) settle here — idempotent,
+        // Monthly pledge references (DEMO-PLE-*) settle here — idempotent,
         // amount+currency verified against the obligation row (spec §9).
-        if (is_string($reference) && str_starts_with($reference, 'ROI-PLE-')) {
+        if (is_string($reference) && str_starts_with($reference, 'DEMO-PLE-')) {
             $pledgeData = $request->json('data');
             $this->pledges->settleFromWebhook(
                 $reference,
@@ -456,20 +456,20 @@ class PaymentController extends Controller
 
         return response()->json([
             'enabled' => true,
-            'business_name' => 'REACHING OUT INITIATIVE',
+            'business_name' => 'DEMO NGO',
             // Without a paybill number the KCB card would render "Paybill —" in
             // the offline instructions — omit it until it is configured.
             'kcb_mpesa' => $shortcode === '' ? null : [
                 'channel' => 'M-Pesa Paybill via KCB Bank',
                 'paybill' => $shortcode,
                 'account' => '000004',
-                'business_name' => 'REACHING OUT INITIATIVE',
+                'business_name' => 'DEMO NGO',
             ],
             'equity_bank' => [
                 'channel' => 'M-Pesa / Airtel Money / Equitel via Equity Bank',
                 'paybill' => '000002',
                 'account' => '000003',
-                'business_name' => 'REACHING OUT INITIATIVE',
+                'business_name' => 'DEMO NGO',
             ],
         ]);
     }
@@ -708,7 +708,7 @@ class PaymentController extends Controller
 
         // Deterministic per-charge key: webhook retries hit the unique
         // reference constraint instead of creating a second credit.
-        $renewalReference = 'ROI-REN-'.strtoupper(substr(hash('sha256', $reference), 0, 32));
+        $renewalReference = 'DEMO-REN-'.strtoupper(substr(hash('sha256', $reference), 0, 32));
         $amountMinor = $data['amount'] ?? null;
 
         try {

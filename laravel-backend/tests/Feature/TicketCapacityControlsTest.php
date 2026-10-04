@@ -44,7 +44,7 @@ class TicketCapacityControlsTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Closed',
-            'buyer_email' => 'closed@test.ke',
+            'buyer_email' => 'closed@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(400)->assertJsonPath('detail', 'Ticket sales are closed for this event.');
@@ -60,7 +60,7 @@ class TicketCapacityControlsTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Too Many',
-            'buyer_email' => 'too@test.ke',
+            'buyer_email' => 'too@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 3]],
         ])->assertStatus(400);
@@ -68,7 +68,7 @@ class TicketCapacityControlsTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Ok Qty',
-            'buyer_email' => 'ok@test.ke',
+            'buyer_email' => 'ok@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 2]],
         ])->assertStatus(201);
@@ -76,7 +76,7 @@ class TicketCapacityControlsTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Over cap',
-            'buyer_email' => 'cap@test.ke',
+            'buyer_email' => 'cap@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 2]],
         ])->assertStatus(409);
@@ -98,7 +98,7 @@ class TicketCapacityControlsTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Early',
-            'buyer_email' => 'early@test.ke',
+            'buyer_email' => 'early@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(400);

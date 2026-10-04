@@ -35,7 +35,7 @@ class TicketGateStationTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Gate Buyer',
-            'buyer_email' => 'gate@test.ke',
+            'buyer_email' => 'gate@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -136,7 +136,7 @@ class TicketGateStationTest extends TestCase
 
     public function test_gate_rejects_unknown_codes_without_leaking(): void
     {
-        $this->getJson('/api/gate/tickets/ROI-NOPE-0000')->assertNotFound();
-        $this->postJson('/api/gate/tickets/ROI-NOPE-0000/check-in')->assertNotFound();
+        $this->getJson('/api/gate/tickets/DEMO-NOPE-0000')->assertNotFound();
+        $this->postJson('/api/gate/tickets/DEMO-NOPE-0000/check-in')->assertNotFound();
     }
 }

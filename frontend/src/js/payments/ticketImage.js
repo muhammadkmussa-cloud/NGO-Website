@@ -1,6 +1,6 @@
 // Client-side ticket artwork: generates a QR code (no external service) and
 // builds a downloadable PNG ticket. Premium white-first look: deep-blue primary,
-// orange accent, ROI logo, QR as focal point, two-column details, branded footer.
+// orange accent, DEMO logo, QR as focal point, two-column details, branded footer.
 import qrcode from '../vendor/qrcode.mjs';
 import { ROI_LOGO_DATA_URI } from '../assets/logoDataUri.js';
 
@@ -146,7 +146,7 @@ export async function downloadTicketPng(ticket, order) {
   ctx.textAlign = 'left';
   ctx.fillStyle = DEEP_BLUE;
   ctx.font = '800 16px Inter, Arial, sans-serif';
-  ctx.fillText('REACHING OUT INITIATIVE', hx, 60);
+  ctx.fillText('DEMO NGO', hx, 60);
   ctx.fillStyle = ORANGE;
   ctx.font = '700 10px Inter, Arial, sans-serif';
   ctx.fillText('GATE TICKET', hx, 76);
@@ -198,7 +198,7 @@ export async function downloadTicketPng(ticket, order) {
   const startY = 528;
   const rowH = 72;
   const fields = [
-    { icon: 'info', label: 'Event', value: ev.title || 'ROI Event', col: 0 },
+    { icon: 'info', label: 'Event', value: ev.title || 'DEMO Event', col: 0 },
     { icon: 'calendar', label: 'Date & Venue', value: `${ev.date || ''} · ${ev.location || ''}`.trim() || '—', col: 1 },
     { icon: 'user', label: 'Attendee', value: ticket.attendee_name || order?.buyer_name || '—', col: 0 },
     { icon: 'ticket', label: 'Ticket Type', value: ticket.ticket_type_name || '—', col: 1 },
@@ -246,7 +246,7 @@ export async function downloadTicketPng(ticket, order) {
   ctx.fillText('Present this QR at the gate.', W / 2, footY + 44);
   ctx.fillStyle = '#CBD5E1';
   ctx.font = '400 10px Inter, Arial, sans-serif';
-  ctx.fillText('© 2026 Reaching Out Initiative', W / 2, footY + 62);
+  ctx.fillText('© 2026 Demo NGO', W / 2, footY + 62);
   ctx.textAlign = 'left';
 
   const blob = await new Promise((res) => canvas.toBlob(res, 'image/png'));
@@ -254,7 +254,7 @@ export async function downloadTicketPng(ticket, order) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `ROI-${ticket.code}.png`;
+  a.download = `DEMO-${ticket.code}.png`;
   document.body.appendChild(a);
   a.click();
   a.remove();

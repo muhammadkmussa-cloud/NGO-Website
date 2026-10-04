@@ -9,12 +9,12 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteCond %{HTTP_HOST} ^www\.reachingoutinitiative\.org$ [NC]
-    RewriteRule ^ https://reachingoutinitiative.org%{REQUEST_URI} [R=301,L]
+    RewriteCond %{HTTP_HOST} ^www\.example\.org$ [NC]
+    RewriteRule ^ https://example.org%{REQUEST_URI} [R=301,L]
 
     RewriteCond %{HTTPS} !=on
     RewriteCond %{HTTP:X-Forwarded-Proto} !^https$ [NC]
-    RewriteRule ^ https://reachingoutinitiative.org%{REQUEST_URI} [R=301,L]
+    RewriteRule ^ https://example.org%{REQUEST_URI} [R=301,L]
 </IfModule>
 
 # --- Security headers on every response (including static HTML) --------------

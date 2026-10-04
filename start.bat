@@ -1,12 +1,12 @@
 @echo off
 REM ====================================================================
-REM Reaching Out Initiative (ROI) - One-Click Launcher (Windows VS Code)
+REM Demo NGO (DEMO) - One-Click Launcher (Windows VS Code)
 REM Stack: Laravel 13 API + Vanilla HTML/CSS/JS SPA (Tailwind CLI)
 REM ====================================================================
 
-echo Starting Reaching Out Initiative Ecosystem (Mombasa HQ)...
+echo Starting Demo NGO Ecosystem (Harbor City HQ)...
 
-start "ROI Laravel API (Port 8000)" cmd /k "cd laravel-backend && (if not exist vendor composer install --no-interaction) && (if not exist .env copy .env.example .env) && (if not exist database\database.sqlite type nul> database\database.sqlite) && php artisan key:generate --force && php artisan migrate --force && php artisan db:seed --class=RoiSeeder --force && php artisan serve --host=127.0.0.1 --port=8000"
+start "DEMO Laravel API (Port 8000)" cmd /k "cd laravel-backend && (if not exist vendor composer install --no-interaction) && (if not exist .env copy .env.example .env) && (if not exist database\database.sqlite type nul> database\database.sqlite) && php artisan key:generate --force && php artisan migrate --force && php artisan db:seed --class=RoiSeeder --force && php artisan serve --host=127.0.0.1 --port=8000"
 
 echo Building Tailwind + assembling SPA...
 cd frontend

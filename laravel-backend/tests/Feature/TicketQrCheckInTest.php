@@ -35,8 +35,8 @@ class TicketQrCheckInTest extends TestCase
     public function test_normalize_extracts_code_from_qr_payload(): void
     {
         $this->assertSame(
-            'ROI-ABCD-EFGH',
-            TicketCheckInService::normalizeCode('https://roi.ke/#/tickets/lookup/ROI-ABCD-EFGH')
+            'DEMO-ABCD-EFGH',
+            TicketCheckInService::normalizeCode('https://example.org/#/tickets/lookup/DEMO-ABCD-EFGH')
         );
     }
 
@@ -46,7 +46,7 @@ class TicketQrCheckInTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Gate Guest',
-            'buyer_email' => 'gate@test.ke',
+            'buyer_email' => 'gate@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -82,7 +82,7 @@ class TicketQrCheckInTest extends TestCase
 
     public function test_inspect_unknown_ticket(): void
     {
-        $this->withAdmin()->getJson('/api/admin/tickets/ROI-ZZZZ-YYYY')
+        $this->withAdmin()->getJson('/api/admin/tickets/DEMO-ZZZZ-YYYY')
             ->assertStatus(404)
             ->assertJsonPath('result', 'not_found');
     }

@@ -1,6 +1,6 @@
 -- ====================================================================
--- Reaching Out Initiative (ROI) Platform - Supabase PostgreSQL Schema
--- Location: Mombasa, Kenya
+-- Demo NGO (DEMO) Platform - Supabase PostgreSQL Schema
+-- Location: Harbor City, Kenya
 -- Version: 2.0.0 (2026 Edition)
 -- ====================================================================
 
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
     summary TEXT NOT NULL,
     content TEXT NOT NULL,
     category VARCHAR(100) DEFAULT 'Social Impact',
-    author VARCHAR(150) DEFAULT 'ROI Communications',
+    author VARCHAR(150) DEFAULT 'DEMO Communications',
     image_url TEXT,
     is_published BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -34,7 +34,7 @@ CREATE INDEX idx_blog_posts_slug ON blog_posts(slug);
 CREATE INDEX idx_blog_posts_category ON blog_posts(category);
 CREATE INDEX idx_blog_posts_published ON blog_posts(is_published);
 
--- 3. Media Items (ROI TV / Reaching Out Media)
+-- 3. Media Items (DEMO TV / Demo Media)
 CREATE TABLE IF NOT EXISTS media_items (
     id SERIAL PRIMARY KEY,
     youtube_id VARCHAR(50) UNIQUE NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS events (
     title VARCHAR(255) NOT NULL,
     date VARCHAR(100) NOT NULL,
     time VARCHAR(100) DEFAULT '09:00 AM EAT',
-    location VARCHAR(255) DEFAULT 'Mombasa, Kenya',
+    location VARCHAR(255) DEFAULT 'Harbor City, Kenya',
     description TEXT NOT NULL,
     category VARCHAR(100) DEFAULT 'Conference',
     image_url TEXT,

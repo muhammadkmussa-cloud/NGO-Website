@@ -39,7 +39,7 @@ class TicketingFoundationTest extends TestCase
 
     public function test_public_event_tickets_lists_seeded_types(): void
     {
-        $event = Event::where('title', 'like', 'Vijana Na Maadili%')->first();
+        $event = Event::where('title', 'like', 'Youth Leadership Summit%')->first();
         $this->assertNotNull($event);
 
         $this->getJson("/api/public/events/{$event->id}/tickets")
@@ -99,7 +99,7 @@ class TicketingFoundationTest extends TestCase
         $response = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Amina Ali',
-            'buyer_email' => 'amina@test.ke',
+            'buyer_email' => 'amina@test.example',
             'buyer_phone' => '0712345678',
             'gateway' => 'Paystack',
             'items' => [
@@ -108,16 +108,16 @@ class TicketingFoundationTest extends TestCase
         ])->assertStatus(201);
 
         $reference = $response->json('reference');
-        $this->assertMatchesRegularExpression('/^ROI-TCK-[0-9A-F]{32}$/', $reference);
+        $this->assertMatchesRegularExpression('/^DEMO-TCK-[0-9A-F]{32}$/', $reference);
         $this->assertEqualsWithDelta(1000.0, $response->json('amount'), 0.001);
         $this->assertSame(0, count($response->json('tickets')));
 
         $this->assertDatabaseHas('ticket_types', ['id' => $type->id, 'sold_count' => 2]);
 
-        $verified = $this->getJson("/api/tickets/orders/{$reference}/verify?email=amina@test.ke")->assertOk();
+        $verified = $this->getJson("/api/tickets/orders/{$reference}/verify?email=amina@test.example")->assertOk();
         $this->assertSame('Completed', $verified->json('status'));
         $this->assertCount(2, $verified->json('tickets'));
-        $this->assertStringStartsWith('ROI-', $verified->json('tickets.0.code'));
+        $this->assertStringStartsWith('DEMO-', $verified->json('tickets.0.code'));
 
         $this->getJson("/api/tickets/lookup/" . $verified->json('tickets.0.code'))
             ->assertOk()
@@ -132,7 +132,7 @@ class TicketingFoundationTest extends TestCase
         $response = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Juma Guest',
-            'buyer_email' => 'juma@test.ke',
+            'buyer_email' => 'juma@test.example',
             'gateway' => 'Paystack',
             'items' => [
                 ['ticket_type_id' => $type->id, 'quantity' => 1],
@@ -154,7 +154,7 @@ class TicketingFoundationTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Buyer',
-            'buyer_email' => 'buyer@test.ke',
+            'buyer_email' => 'buyer@test.example',
             'gateway' => 'Paystack',
             'items' => [
                 ['ticket_type_id' => $type->id, 'quantity' => 2],
@@ -164,13 +164,13 @@ class TicketingFoundationTest extends TestCase
 
     public function test_checkout_rejects_wrong_event_ticket_type(): void
     {
-        $flagship = Event::where('title', 'like', 'Vijana Na Maadili%')->first();
+        $flagship = Event::where('title', 'like', 'Youth Leadership Summit%')->first();
         $bootcampType = TicketType::where('name', 'Free Workshop Pass')->first();
 
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $flagship->id,
             'buyer_name' => 'Buyer',
-            'buyer_email' => 'buyer@test.ke',
+            'buyer_email' => 'buyer@test.example',
             'gateway' => 'Paystack',
             'items' => [
                 ['ticket_type_id' => $bootcampType->id, 'quantity' => 1],
@@ -184,7 +184,7 @@ class TicketingFoundationTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Buyer',
-            'buyer_email' => 'buyer@test.ke',
+            'buyer_email' => 'buyer@test.example',
             'gateway' => 'Bitcoin',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(400);
@@ -197,7 +197,7 @@ class TicketingFoundationTest extends TestCase
         $response = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'STK Buyer',
-            'buyer_email' => 'stk@test.ke',
+            'buyer_email' => 'stk@test.example',
             'buyer_phone' => '0712345678',
             'gateway' => 'M-Pesa',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
@@ -229,7 +229,7 @@ class TicketingFoundationTest extends TestCase
         $response = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Fail Buyer',
-            'buyer_email' => 'fail@test.ke',
+            'buyer_email' => 'fail@test.example',
             'buyer_phone' => '0712345678',
             'gateway' => 'M-Pesa',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 3]],
@@ -258,7 +258,7 @@ class TicketingFoundationTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Paystack Buyer',
-            'buyer_email' => 'ps@test.ke',
+            'buyer_email' => 'ps@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -288,7 +288,7 @@ class TicketingFoundationTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Check In',
-            'buyer_email' => 'ci@test.ke',
+            'buyer_email' => 'ci@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
@@ -299,7 +299,7 @@ class TicketingFoundationTest extends TestCase
 
         $this->withAdmin()->getJson('/api/admin/ticket-orders')
             ->assertOk()
-            ->assertJsonPath('0.buyer_email', 'ci@test.ke');
+            ->assertJsonPath('0.buyer_email', 'ci@test.example');
 
         $this->withAdmin()->postJson("/api/admin/tickets/{$code}/check-in")
             ->assertOk()

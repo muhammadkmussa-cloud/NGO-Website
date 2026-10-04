@@ -27,7 +27,7 @@
       "problemMatcher": []
     },
     {
-      "label": "🚀 Start ROI Full-Stack Ecosystem (VS Code Concurrently)",
+      "label": "🚀 Start Demo Full-Stack Ecosystem (VS Code Concurrently)",
       "dependsOn": [
         "1. Start Backend Server (FastAPI)",
         "2. Start Frontend Server (React Vite)"

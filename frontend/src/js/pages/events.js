@@ -42,7 +42,7 @@ function eventCard(evt) {
           </div>
           <div class="flex items-center gap-2">
             ${icon('map-pin', 'w-3.5 h-3.5 text-slate-500 shrink-0')}
-            <span class="truncate">${escapeHtml(evt.location || 'Mombasa, Kenya')}</span>
+            <span class="truncate">${escapeHtml(evt.location || 'Harbor City, Kenya')}</span>
           </div>
 
           <button data-tickets="${evt.id}"
@@ -70,10 +70,10 @@ export function renderEvents(root) {
 
       <div class="max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-3xl mx-auto space-y-4">
         <h1 class="text-4xl sm:text-6xl font-black text-white">
-          Community Events & Youth Conferences in Mombasa
+          Community Events & Youth Conferences in Harbor City
         </h1>
         <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
-          Join our youth workshops, tech bootcamps, community cleanups, and our annual flagship <strong class="text-white">Vijana Na Maadili</strong> youth empowerment summit.
+          Join our youth workshops, tech bootcamps, community cleanups, and our annual flagship <strong class="text-white">Youth Leadership Summit</strong> youth empowerment summit.
           <a href="#/tickets/recover" class="block text-sky-400 font-bold text-sm pt-2">Already booked? Find my tickets</a>
         </p>
 
@@ -96,7 +96,7 @@ export function renderEvents(root) {
 
   function filteredEvents() {
     return events.filter(
-      (e) => category === 'All' || e.category === category || (category === 'Flagship Conference' && String(e.title).includes('Vijana Na Maadili'))
+      (e) => category === 'All' || e.category === category || (category === 'Flagship Conference' && String(e.title).includes('Youth Leadership Summit'))
     );
   }
 

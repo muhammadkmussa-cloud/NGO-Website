@@ -1,6 +1,6 @@
 # cPanel deployment runbook
 
-Target: `https://reachingoutinitiative.org`  
+Target: `https://example.org`  
 Launch mode: empty MySQL database, payments disabled, recoverable WordPress replacement.
 
 ## Safety rules
@@ -13,7 +13,7 @@ Launch mode: empty MySQL database, payments disabled, recoverable WordPress repl
 
 ## 1. Preflight and backup
 
-1. In **cPanel → Domains**, record the exact document root for `reachingoutinitiative.org`.
+1. In **cPanel → Domains**, record the exact document root for `example.org`.
 2. Upload this directory outside that document root and run `bash preflight.sh` in cPanel Terminal.
 3. If WP-CLI is installed, run:
 
@@ -56,7 +56,7 @@ This runs Composer, empty-schema migrations, the single-admin synchronization, s
 
 Preferred layout:
 
-1. In **cPanel → Domains**, point `reachingoutinitiative.org` to the staged release’s `public/` directory.
+1. In **cPanel → Domains**, point `example.org` to the staged release’s `public/` directory.
 2. Preserve the existing AutoSSL certificate and the `www` redirect.
 3. In **Cron Jobs**, add the server’s PHP 8.3 binary and exact Artisan path:
 
@@ -71,7 +71,7 @@ If cPanel will not change the primary-domain document root, keep the Laravel app
 - `GET /api/health` returns HTTP 200 and `status: online`.
 - `GET /api/ready` returns HTTP 200 and `status: ready`.
 - `/`, `/checking`, and the admin login load over HTTPS without mixed content.
-- `www.reachingoutinitiative.org` redirects to the apex domain.
+- `www.example.org` redirects to the apex domain.
 - Public content endpoints return empty collections, not seeded demo data.
 - The configured administrator can log in and access `/api/admin/stats`; the former identity cannot.
 - Donate opens the coming-soon contact modal on phone and desktop.
@@ -108,7 +108,7 @@ Permanently remove the old WordPress files and database only after 30 stable day
 | Monthly billing | Paystack renewal webhook | `roi:pledges-bill` due-day request |
 | Reminders | none (silent renewal) | `roi:pledges-remind` emails at d+1/3/7 |
 | Manage / cancel | Paystack hosted manage link | Cancel button on the secure pay page |
-| Webhook references | donation / subscription refs | `ROI-PLE-*` |
+| Webhook references | donation / subscription refs | `DEMO-PLE-*` |
 
 Pledge STK prompts go exclusively through Paystack. The Daraja `MpesaService` is only used to normalize phone numbers for pledges; its legacy STK/webhook paths (tickets) are untouched. Stored phones stay canonical `2547XXXXXXXX` (Daraja form); `PaystackService` adds the leading `+` at the gateway boundary because Paystack's M-Pesa charge rejects the bare `254…` form with `Invalid phone number format`.
 
@@ -154,10 +154,10 @@ php artisan roi:pledges-remind   # safe to run manually
 Paystack dashboard → Settings → Webhooks:
 
 ```
-https://reachingoutinitiative.org/api/payments/webhook/paystack
+https://example.org/api/payments/webhook/paystack
 ```
 
-The endpoint enforces the HMAC-SHA512 `x-paystack-signature` against `PAYSTACK_SECRET_KEY` on every delivery. `charge.success` / `charge.failed` for `ROI-PLE-*` references settle pledge months (amount + currency verified server-side first); replays and duplicates are acknowledged without side effects. No separate webhook-secret variable is required, so none was added.
+The endpoint enforces the HMAC-SHA512 `x-paystack-signature` against `PAYSTACK_SECRET_KEY` on every delivery. `charge.success` / `charge.failed` for `DEMO-PLE-*` references settle pledge months (amount + currency verified server-side first); replays and duplicates are acknowledged without side effects. No separate webhook-secret variable is required, so none was added.
 
 ### Required environment variables
 
@@ -180,7 +180,7 @@ MAIL_FROM_ADDRESS=...
 MAIL_FROM_NAME=...
 ```
 
-- `MAIL_HOST` must match the server's TLS certificate CN (on a DirectAdmin box that is typically the server hostname, e.g. `web1.example.co.ke`). Pointing STARTTLS at `localhost` fails with a certificate CN mismatch even though the port is open.
+- `MAIL_HOST` must match the server's TLS certificate CN (on a DirectAdmin box that is typically the server hostname, e.g. `web1.example.com`). Pointing STARTTLS at `localhost` fails with a certificate CN mismatch even though the port is open.
 - `APP_URL` must be the canonical `https://` origin — pay links are absolute.
 - `JWT_SECRET_KEY` (or `APP_KEY`) keys the pay-link HMAC; link minting fails loudly without it.
 - Reminder mail reuses the existing cPanel `MAIL_*` block (plan decision A3) — no new provider, no `PAYSTACK_WEBHOOK_SECRET`, no SMS variables. `MPESA_WEBHOOK_TOKEN` belongs to the legacy Daraja webhook, not pledges.

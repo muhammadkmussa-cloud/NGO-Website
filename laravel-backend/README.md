@@ -1,58 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel backend — DEMO platform API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+REST API for the showcase platform in this repository: health/readiness, password-only admin auth, public content, ticketing, donations and monthly pledges (Paystack + M-Pesa/Daraja), YouTube media sync, and the single-admin console.
 
-## About Laravel
+See the [repository README](../README.md) for the full architecture, endpoint surface, quickstart and deployment notes, and [`SECURITY.md`](../SECURITY.md) for the security posture.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 8.2+ (8.3 recommended)
+- Composer 2
+- SQLite (default) or PostgreSQL/MySQL
+- Extensions: `bcmath`, `curl`, `fileinfo`, `mbstring`, `openssl`, `pdo_sqlite` (or `pdo_pgsql`/`pdo_mysql`), `tokenizer`, `xml`, `zip`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+`deployment/cpanel/preflight.sh` checks all of these.
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Setup
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
+php artisan serve --port=8000
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+The API listens on `/api/*`. In single-origin mode the built SPA is copied into `public/`, so the same server also serves `/`.
 
-## Contributing
+## Configuration
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Settings live in [`config/roi.php`](config/roi.php) and are read from the environment. The defaults are safe for local development; the values that matter in production:
 
-## Code of Conduct
+| Variable | Notes |
+|---|---|
+| `ENVIRONMENT` | `development` / `test` enable sandbox behaviour. Production fails closed on every payment bypass. |
+| `ALLOW_DEV_PAYMENT_BYPASSES` | Must be unset or false in production — the app refuses to boot otherwise. |
+| `PAYMENTS_ENABLED` | Operational kill switch for all paid transactions. |
+| `JWT_SECRET_KEY` | Must be ≥32 characters and not a known template value, or production refuses to boot. |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD_HASH` | The single administrator. Only a bcrypt/Argon hash belongs in the environment. |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Common commands
 
-## Security Vulnerabilities
+```bash
+php artisan migrate --seed      # schema + idempotent demo content
+php artisan test                # feature suite
+vendor/bin/pint --test          # style
+composer audit                  # dependency advisories
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+php artisan roi:hash-admin-password   # hidden prompt → modern password hash
+php artisan roi:sync-admin            # reconcile to exactly one configured admin
+php artisan roi:youtube-sync          # media cache refresh
+php artisan schedule:run              # scheduler entry point (cron every minute)
+```
 
-## License
+## Testing
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan migrate
+php artisan test
+```
+
+Current suite status and known gaps are documented in [`../README.md`](../README.md#8-testing) and [`../docs/testing/`](../docs/testing/).
+
+## Layout
+
+```text
+app/
+├── Console/Commands/       # roi:* scheduler and admin tooling
+├── Http/
+│   ├── Controllers/        # Auth, Public, Admin, Payment, Media, Ticket, Pledge
+│   ├── Middleware/         # AdminAuth (JWT bearer), SecurityHeaders, RequestId, TrustProxies
+│   └── Requests/           # FormRequest validation
+├── Models/                 # Eloquent models + ApiSerializable concern
+├── Services/               # Jwt, Password, Audit, Paystack, Mpesa, YouTubeSync, Ticket, Pledge
+└── Providers/              # boot guards, rate limiters
+config/roi.php              # all platform settings
+database/{migrations,seeders,factories}
+routes/{api.php,web.php}
+resources/views/            # ticket pass + pledge pay page (server-rendered)
+```

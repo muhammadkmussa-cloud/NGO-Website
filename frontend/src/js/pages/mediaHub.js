@@ -18,10 +18,10 @@ export function renderMediaHub(root) {
       <div class="max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-3xl mx-auto space-y-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-500 text-xs font-bold uppercase tracking-widest">
           ${icon('tv', 'w-4 h-4 animate-pulse')}
-          <span>ROI TV Broadcast Network</span>
+          <span>DEMO TV Broadcast Network</span>
         </div>
         <h1 class="text-4xl sm:text-6xl font-black text-white">
-          ROI TV: Community Storytelling & Broadcast Network
+          DEMO TV: Community Storytelling & Broadcast Network
         </h1>
         <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
           Our centralized digital storytelling portal. Powered by automated YouTube syndication and local database caching to preserve community retention.
@@ -125,10 +125,10 @@ export function renderMediaHub(root) {
         <div class="p-6 flex-1 flex flex-col justify-between space-y-3">
           <div>
             <h4 class="font-bold text-base text-white group-hover:text-red-400 transition-colors line-clamp-2 leading-snug">${escapeHtml(vid.title)}</h4>
-            <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">${escapeHtml(vid.summary || 'Empowering broadcast documenting youth potential in coastal Kenya.')}</p>
+            <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">${escapeHtml(vid.summary || 'Empowering broadcast documenting youth potential in the coast.')}</p>
           </div>
           <div class="pt-3 border-t border-slate-700/60 flex items-center justify-between text-[11px] text-slate-500 font-medium">
-            <span>ROI TV Stream</span>
+            <span>DEMO TV Stream</span>
             <span>${fmtDate(vid.published_at || Date.now())}</span>
           </div>
         </div>

@@ -66,7 +66,7 @@ class PledgeCancellationAuditTest extends TestCase
     {
         return array_merge([
             'name' => 'Monthly Supporter',
-            'email' => 'supporter@test.ke',
+            'email' => 'supporter@test.example',
             'phone' => '0712345678',
             'amount' => 1000,
         ], $overrides);

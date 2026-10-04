@@ -85,7 +85,7 @@ class PledgeCommandsTest extends TestCase
 
         return Pledge::create(array_merge([
             'name' => 'Monthly Supporter',
-            'email' => 'supporter@test.ke',
+            'email' => 'supporter@test.example',
             'phone' => '254712345678',
             'amount' => 1000,
             'currency' => 'KES',
@@ -288,7 +288,7 @@ class PledgeCommandsTest extends TestCase
         $attempt = PledgePaymentAttempt::create([
             'pledge_payment_id' => $payment->id,
             'pledge_id' => $payment->pledge_id,
-            'reference' => 'ROI-PLE-'.str_repeat('a', 32),
+            'reference' => 'DEMO-PLE-'.str_repeat('a', 32),
             'amount' => 1000,
             'currency' => 'KES',
             'method' => Pledge::METHOD_MPESA,
@@ -387,7 +387,7 @@ class PledgeCommandsTest extends TestCase
         $succeeded = PledgePaymentAttempt::create([
             'pledge_payment_id' => $paid->id,
             'pledge_id' => $paid->pledge_id,
-            'reference' => 'ROI-PLE-'.str_repeat('b', 32),
+            'reference' => 'DEMO-PLE-'.str_repeat('b', 32),
             'amount' => 1000,
             'currency' => 'KES',
             'method' => Pledge::METHOD_MPESA,
@@ -405,7 +405,7 @@ class PledgeCommandsTest extends TestCase
         $initiated = PledgePaymentAttempt::create([
             'pledge_payment_id' => $stale->id,
             'pledge_id' => $stale->pledge_id,
-            'reference' => 'ROI-PLE-'.str_repeat('c', 32),
+            'reference' => 'DEMO-PLE-'.str_repeat('c', 32),
             'amount' => 1000,
             'currency' => 'KES',
             'method' => Pledge::METHOD_MPESA,

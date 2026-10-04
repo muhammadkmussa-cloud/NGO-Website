@@ -34,13 +34,13 @@ class DigitalPortfolioTest extends TestCase
             ->assertOk()
             ->assertJsonCount(2)
             ->assertJsonPath('0.is_featured', true)
-            ->assertJsonPath('0.slug', 'vijana-na-maadili-2025-door-system');
+            ->assertJsonPath('0.slug', 'youth-leadership-summit-2025-door-system');
 
         $this->getJson('/api/public/portfolio?featured=1')->assertOk()->assertJsonCount(1);
 
-        $this->getJson('/api/public/portfolio/tudor-weekend-digital-lab')
+        $this->getJson('/api/public/portfolio/riverside-weekend-digital-lab')
             ->assertOk()
-            ->assertJsonPath('client', 'ROI Youth Center');
+            ->assertJsonPath('client', 'DEMO Youth Center');
 
         $this->getJson('/api/public/portfolio/missing')->assertStatus(404);
     }
@@ -51,17 +51,17 @@ class DigitalPortfolioTest extends TestCase
         $solutionId = DigitalSolution::first()->id;
 
         $created = $this->withAdmin()->postJson('/api/admin/portfolio', [
-            'title' => 'Likoni Livestream',
+            'title' => 'Southside Livestream',
             'summary' => 'Conference stream',
             'digital_solution_id' => $solutionId,
             'year' => '2026',
             'is_featured' => true,
-        ])->assertStatus(201)->assertJsonPath('slug', 'likoni-livestream');
+        ])->assertStatus(201)->assertJsonPath('slug', 'southside-livestream');
 
         $id = $created->json('id');
-        $this->withAdmin()->putJson("/api/admin/portfolio/{$id}", ['title' => 'Likoni Youth Livestream'])
+        $this->withAdmin()->putJson("/api/admin/portfolio/{$id}", ['title' => 'Southside Youth Livestream'])
             ->assertOk()
-            ->assertJsonPath('slug', 'likoni-youth-livestream');
+            ->assertJsonPath('slug', 'southside-youth-livestream');
 
         $this->assertDatabaseHas('digital_portfolio_items', ['id' => $id]);
         $this->withAdmin()->deleteJson("/api/admin/portfolio/{$id}")->assertStatus(204);

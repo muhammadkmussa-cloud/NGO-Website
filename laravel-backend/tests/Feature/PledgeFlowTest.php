@@ -78,7 +78,7 @@ class PledgeFlowTest extends TestCase
     {
         return array_merge([
             'name' => 'Monthly Supporter',
-            'email' => 'supporter@test.ke',
+            'email' => 'supporter@test.example',
             'phone' => '0712345678',
             'amount' => 1000,
         ], $overrides);
@@ -128,7 +128,7 @@ class PledgeFlowTest extends TestCase
             return $request->url() === self::CHARGE_URL
                 && $request['mobile_money']['phone'] === '+254712345678'
                 && $request['mobile_money']['provider'] === 'mpesa'
-                && str_starts_with((string) $request['reference'], 'ROI-PLE-')
+                && str_starts_with((string) $request['reference'], 'DEMO-PLE-')
                 && $request['currency'] === 'KES'
                 && $request['amount'] === 100000;
         });
@@ -280,7 +280,7 @@ class PledgeFlowTest extends TestCase
         $this->postWebhook([
             'event' => 'charge.success',
             'data' => [
-                'reference' => 'ROI-PLE-'.strtoupper(str_repeat('ab', 16)),
+                'reference' => 'DEMO-PLE-'.strtoupper(str_repeat('ab', 16)),
                 'amount' => 100000,
                 'currency' => 'KES',
             ],
@@ -291,10 +291,10 @@ class PledgeFlowTest extends TestCase
 
     public function test_non_pledge_references_keep_following_existing_donation_path(): void
     {
-        // A non-ROI-PLE reference must not enter pledge settlement.
+        // A non-DEMO-PLE reference must not enter pledge settlement.
         $this->postWebhook([
             'event' => 'charge.success',
-            'data' => ['reference' => 'ROI-DON-'.strtoupper(str_repeat('cd', 16)), 'amount' => 100000],
+            'data' => ['reference' => 'DEMO-DON-'.strtoupper(str_repeat('cd', 16)), 'amount' => 100000],
         ])->assertOk();
 
         $this->assertSame(0, PledgePayment::count());
@@ -509,7 +509,7 @@ class PledgeFlowTest extends TestCase
         // webhook still goes down the existing path without pledge rows.
         $this->postWebhook([
             'event' => 'charge.success',
-            'data' => ['reference' => 'ROI-DON-'.strtoupper(str_repeat('ef', 16))],
+            'data' => ['reference' => 'DEMO-DON-'.strtoupper(str_repeat('ef', 16))],
         ])->assertOk();
 
         $this->assertSame(0, Pledge::count());

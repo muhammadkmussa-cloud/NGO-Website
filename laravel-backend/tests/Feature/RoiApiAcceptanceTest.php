@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 /**
  * Acceptance suite ported from test_all_backend_functions.py.
- * Exercises every endpoint of the ROI API and asserts FastAPI-compatible
+ * Exercises every endpoint of the DEMO API and asserts FastAPI-compatible
  * status codes, response shapes, and business rules.
  */
 class RoiApiAcceptanceTest extends TestCase
@@ -50,7 +50,7 @@ class RoiApiAcceptanceTest extends TestCase
         $this->getJson('/api/health')
             ->assertOk()
             ->assertJsonPath('status', 'online')
-            ->assertJsonPath('location', 'Mombasa, Kenya');
+            ->assertJsonPath('location', 'Harbor City, Kenya');
     }
 
     // ----------------------------------------------------------------- Auth
@@ -185,7 +185,7 @@ class RoiApiAcceptanceTest extends TestCase
     {
         $this->getJson('/api/public/blog?category=Mentorship')
             ->assertOk()->assertJsonCount(1)
-            ->assertJsonPath('0.slug', 'empowering-mombasa-youth-vijana-na-maadili');
+            ->assertJsonPath('0.slug', 'empowering-harbor-city-youth-leadership-summit');
 
         $this->getJson('/api/public/blog?search=Digital Divide')
             ->assertOk()->assertJsonCount(1)
@@ -197,7 +197,7 @@ class RoiApiAcceptanceTest extends TestCase
     public function test_public_blog_by_slug_and_404(): void
     {
         $this->getJson('/api/public/blog/community-voices-meet-ali-transformed')
-            ->assertOk()->assertJsonPath('author', 'ROI Media Team');
+            ->assertOk()->assertJsonPath('author', 'DEMO Media Team');
 
         $this->getJson('/api/public/blog/does-not-exist')
             ->assertStatus(404)->assertJsonPath('detail', 'Article not found');
@@ -208,7 +208,7 @@ class RoiApiAcceptanceTest extends TestCase
         $this->getJson('/api/public/events')
             ->assertOk()
             ->assertJsonCount(3)
-            ->assertJsonPath('0.title', 'Vijana Na Maadili Annual Conference 2026')
+            ->assertJsonPath('0.title', 'Youth Leadership Summit Annual Conference 2026')
             ->assertJsonPath('0.date', 'August 14-16, 2026'); // free-text string preserved
     }
 
@@ -217,7 +217,7 @@ class RoiApiAcceptanceTest extends TestCase
         $this->getJson('/api/public/media')
             ->assertOk()
             ->assertJsonPath('0.is_featured', true)
-            ->assertJsonPath('0.youtube_id', 'LNaLhZAJDSs');
+            ->assertJsonPath('0.youtube_id', 'demoVideo001');
     }
 
     public function test_public_media_latest_returns_three(): void
@@ -239,7 +239,7 @@ class RoiApiAcceptanceTest extends TestCase
     public function test_volunteer_submission_persists_with_default_status(): void
     {
         $this->postJson('/api/public/volunteer', [
-            'full_name' => 'New Person', 'email' => 'new@test.ke', 'phone' => '+254700111222',
+            'full_name' => 'New Person', 'email' => 'new@test.example', 'phone' => '+254700111222',
             'primary_skill' => 'Mentorship', 'availability' => 'Weekends',
         ])->assertStatus(201)
             ->assertJsonPath('status', 'Pending Review');
@@ -257,7 +257,7 @@ class RoiApiAcceptanceTest extends TestCase
     public function test_contact_submission_defaults_subject(): void
     {
         $this->postJson('/api/public/contact', [
-            'name' => 'Sender', 'email' => 'sender@test.ke', 'message' => 'Jambo',
+            'name' => 'Sender', 'email' => 'sender@test.example', 'message' => 'Jambo',
         ])->assertStatus(201)->assertJsonPath('subject', 'General Inquiry')->assertJsonPath('status', 'New');
     }
 
@@ -316,7 +316,7 @@ class RoiApiAcceptanceTest extends TestCase
 
     public function test_admin_blog_create_generates_unique_slugs(): void
     {
-        $payload = ['title' => 'Empowering Mombasa Youth: The Journey of Vijana Na Maadili', 'summary' => 'S', 'content' => 'C'];
+        $payload = ['title' => 'Empowering Harbor City Youth: The Journey of Youth Leadership Summit', 'summary' => 'S', 'content' => 'C'];
 
         $first = $this->withAdmin()->postJson('/api/admin/blog', $payload)->assertOk();
         $second = $this->withAdmin()->postJson('/api/admin/blog', $payload)->assertOk();
@@ -346,7 +346,7 @@ class RoiApiAcceptanceTest extends TestCase
     {
         $created = $this->withAdmin()->postJson('/api/admin/events', [
             'title' => 'Beach Mentorship Day', 'date' => 'Dec 1, 2026', 'description' => 'Desc',
-        ])->assertOk()->assertJsonPath('time', '09:00 AM EAT')->assertJsonPath('location', 'Mombasa, Kenya');
+        ])->assertOk()->assertJsonPath('time', '09:00 AM EAT')->assertJsonPath('location', 'Harbor City, Kenya');
 
         $id = $created->json('id');
 
@@ -393,16 +393,16 @@ class RoiApiAcceptanceTest extends TestCase
     public function test_admin_media_sync_flags_or_stubs_featured_video(): void
     {
         // Existing video override
-        $this->withAdmin()->postJson('/api/admin/media/sync?featured_youtube_id=L_LUpnjgPso')->assertOk()
+        $this->withAdmin()->postJson('/api/admin/media/sync?featured_youtube_id=featuredVid01')->assertOk()
             ->assertJsonPath('message', 'Local YouTube metadata cache successfully synchronized.');
-        $this->assertDatabaseHas('media_items', ['youtube_id' => 'L_LUpnjgPso', 'is_featured' => true]);
-        $this->assertDatabaseHas('media_items', ['youtube_id' => 'LNaLhZAJDSs', 'is_featured' => false]);
+        $this->assertDatabaseHas('media_items', ['youtube_id' => 'featuredVid01', 'is_featured' => true]);
+        $this->assertDatabaseHas('media_items', ['youtube_id' => 'demoVideo001', 'is_featured' => false]);
 
         // Unknown ID creates a stub
         $this->withAdmin()->postJson('/api/admin/media/sync?featured_youtube_id=newID99')->assertOk();
         $this->assertDatabaseHas('media_items', [
             'youtube_id' => 'newID99',
-            'title' => 'Featured ROI Empowerment Special',
+            'title' => 'Featured DEMO Empowerment Special',
             'thumbnail_url' => 'https://img.youtube.com/vi/newID99/maxresdefault.jpg',
         ]);
     }
@@ -440,7 +440,7 @@ class RoiApiAcceptanceTest extends TestCase
         ])->assertOk();
 
         $reference = $response->json('reference');
-        $this->assertMatchesRegularExpression('/^ROI-M-P-[0-9A-F]{32}$/', $reference);
+        $this->assertMatchesRegularExpression('/^DEMO-M-P-[0-9A-F]{32}$/', $reference);
         $this->assertSame('STK Prompt Dispatched', $response->json('status'));
         $this->assertStringStartsWith('ws_CO_SIM_', (string) $response->json('checkout_request_id'));
 
@@ -483,7 +483,7 @@ class RoiApiAcceptanceTest extends TestCase
         ])->assertOk();
 
         $reference = $response->json('reference');
-        $this->assertMatchesRegularExpression('/^ROI-PAY-[0-9A-F]{32}$/', $reference);
+        $this->assertMatchesRegularExpression('/^DEMO-PAY-[0-9A-F]{32}$/', $reference);
         $this->assertSame('https://checkout.paystack.com/verified-sandbox-' . $reference, $response->json('authorization_url'));
 
         // Sandbox verify completes instantly.
@@ -507,7 +507,7 @@ class RoiApiAcceptanceTest extends TestCase
     public function test_mpesa_webhook_matches_by_checkout_request_id(): void
     {
         $donation = Donation::create([
-            'amount' => 500, 'currency' => 'KES', 'gateway' => 'M-Pesa KCB', 'reference' => 'ROI-MPE-TEST0001',
+            'amount' => 500, 'currency' => 'KES', 'gateway' => 'M-Pesa KCB', 'reference' => 'DEMO-MPE-TEST0001',
             'checkout_request_id' => 'ws_CO_ABC123', 'status' => 'STK Prompt Dispatched',
         ]);
 
@@ -526,7 +526,7 @@ class RoiApiAcceptanceTest extends TestCase
     public function test_mpesa_webhook_records_failure_result_codes(): void
     {
         $donation = Donation::create([
-            'amount' => 500, 'currency' => 'KES', 'gateway' => 'M-Pesa KCB', 'reference' => 'ROI-MPE-TEST0002',
+            'amount' => 500, 'currency' => 'KES', 'gateway' => 'M-Pesa KCB', 'reference' => 'DEMO-MPE-TEST0002',
             'merchant_request_id' => 'MRC_XYZ', 'status' => 'STK Prompt Dispatched',
         ]);
 
@@ -554,7 +554,7 @@ class RoiApiAcceptanceTest extends TestCase
     public function test_paystack_webhook_enforces_hmac_signature_when_secret_configured(): void
     {
         config(['roi.paystack_secret_key' => 'sk_test_acceptance']);
-        $raw = json_encode(['event' => 'charge.success', 'data' => ['reference' => 'ROI-PAY-77B33C22']]);
+        $raw = json_encode(['event' => 'charge.success', 'data' => ['reference' => 'DEMO-PAY-77B33C22']]);
 
         // Invalid signature rejected even in dev once a secret is configured.
         $this->postJson('/api/payments/webhook/paystack', json_decode($raw, true))
@@ -572,7 +572,7 @@ class RoiApiAcceptanceTest extends TestCase
             $raw
         )->assertOk()->assertExactJson(['status' => 'success']);
 
-        $this->assertDatabaseHas('donations', ['reference' => 'ROI-PAY-77B33C22', 'status' => 'Completed']);
+        $this->assertDatabaseHas('donations', ['reference' => 'DEMO-PAY-77B33C22', 'status' => 'Completed']);
     }
 
     public function test_paybills_endpoint_exposes_offline_channels(): void
@@ -581,18 +581,18 @@ class RoiApiAcceptanceTest extends TestCase
 
         $this->getJson('/api/payments/paybills')->assertOk()->assertSimilarJson([
             'enabled' => true,
-            'business_name' => 'REACHING OUT INITIATIVE',
+            'business_name' => 'DEMO NGO',
             'kcb_mpesa' => [
                 'channel' => 'M-Pesa Paybill via KCB Bank',
                 'paybill' => $shortcode,
                 'account' => '000004',
-                'business_name' => 'REACHING OUT INITIATIVE',
+                'business_name' => 'DEMO NGO',
             ],
             'equity_bank' => [
                 'channel' => 'M-Pesa / Airtel Money / Equitel via Equity Bank',
                 'paybill' => '000002',
                 'account' => '000003',
-                'business_name' => 'REACHING OUT INITIATIVE',
+                'business_name' => 'DEMO NGO',
             ],
         ]);
     }
@@ -649,13 +649,13 @@ class RoiApiAcceptanceTest extends TestCase
         ]);
 
         $this->postJson('/api/payments/checkout', [
-            'email' => 'friendly.error@test.ke', 'amount' => 25, 'currency' => 'USD', 'gateway' => 'Paystack',
+            'email' => 'friendly.error@test.example', 'amount' => 25, 'currency' => 'USD', 'gateway' => 'Paystack',
         ])
             ->assertStatus(403)
             ->assertJsonPath('detail', 'This currency is not available for donations yet. Please choose KES or USD.');
 
         // No ledger record is written when the gateway rejects the initialize.
-        $this->assertDatabaseMissing('donations', ['email' => 'friendly.error@test.ke']);
+        $this->assertDatabaseMissing('donations', ['email' => 'friendly.error@test.example']);
     }
 
     // ------------------------------------------------------------- YouTube

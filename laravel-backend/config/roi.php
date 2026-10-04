@@ -3,7 +3,7 @@
 use App\Support\PledgeConfig;
 
 return [
-    'project_name' => env('PROJECT_NAME', 'Reaching Out Initiative (ROI) API'),
+    'project_name' => env('PROJECT_NAME', 'Demo NGO (DEMO) API'),
     'project_version' => env('PROJECT_VERSION', '2.0.0'),
 
     // Lifecycle switch: development / test enables seeding, sandbox payments, webhook-sig bypass
@@ -41,7 +41,7 @@ return [
 
     // External Live API Keys
     'youtube_api_key' => env('YOUTUBE_API_KEY', ''),
-    'youtube_channel_id' => env('YOUTUBE_CHANNEL_ID', 'UC_reachingoutmedia'),
+    'youtube_channel_id' => env('YOUTUBE_CHANNEL_ID', 'UC_demomedia'),
     'paystack_secret_key' => env('PAYSTACK_SECRET_KEY', ''),
     'mpesa_consumer_key' => env('MPESA_CONSUMER_KEY', ''),
     'mpesa_consumer_secret' => env('MPESA_CONSUMER_SECRET', ''),

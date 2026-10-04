@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('client')->nullable();
-            $table->string('location')->default('Mombasa, Kenya');
+            $table->string('location')->default('Harbor City, Kenya');
             $table->string('year')->nullable();
             $table->text('summary');
             $table->text('outcome')->nullable();

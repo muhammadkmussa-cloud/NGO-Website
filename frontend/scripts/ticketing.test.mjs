@@ -69,7 +69,7 @@ test('mpesa forces KES and requires a phone', () => {
 test('only genuine paystack hosts may redirect (L-3 allowlist)', () => {
   // Host-based allowlist: sandbox URLs are legitimate Paystack hosts and are
   // allowed through; non-paystack hosts are always rejected.
-  assert.equal(shouldRedirectPaystack('https://checkout.paystack.com/verified-sandbox-ROI-TCK-1'), true);
+  assert.equal(shouldRedirectPaystack('https://checkout.paystack.com/verified-sandbox-DEMO-TCK-1'), true);
   assert.equal(shouldRedirectPaystack('https://checkout.paystack.com/live-xyz'), true);
   assert.equal(shouldRedirectPaystack('https://pay.stack.co/x'), true);
   assert.equal(shouldRedirectPaystack('https://evil.tld/pay'), false);
@@ -86,17 +86,17 @@ test('pending STK and paystack statuses poll until terminal', () => {
 });
 
 test('qr code generation is self-contained (no external service)', () => {
-  const url = qrDataUrl('ROI-ABCD-EFGH');
+  const url = qrDataUrl('DEMO-ABCD-EFGH');
   assert.ok(typeof url === 'string' && url.length > 0);
   assert.match(url, /^data:image\/gif;base64,/);
   // A different payload yields a different image.
-  assert.notEqual(qrDataUrl('ROI-ZZZZ-0000'), url);
+  assert.notEqual(qrDataUrl('DEMO-ZZZZ-0000'), url);
 });
 
 test('admin order filter and check-in rate', () => {
   const rows = [
-    { reference: 'ROI-TCK-1', buyer_name: 'Amina', buyer_email: 'a@test.ke', status: 'Completed' },
-    { reference: 'ROI-TCK-2', buyer_name: 'Juma', buyer_email: 'j@test.ke', status: 'STK Prompt Dispatched' }
+    { reference: 'DEMO-TCK-1', buyer_name: 'Amina', buyer_email: 'a@test.example', status: 'Completed' },
+    { reference: 'DEMO-TCK-2', buyer_name: 'Juma', buyer_email: 'j@test.example', status: 'STK Prompt Dispatched' }
   ];
   assert.equal(filterTicketOrders(rows, { search: 'amina' }).length, 1);
   assert.equal(filterTicketOrders(rows, { status: 'Completed' }).length, 1);
@@ -104,8 +104,8 @@ test('admin order filter and check-in rate', () => {
 });
 
 test('qr payloads normalize to ticket codes', () => {
-  assert.equal(normalizeTicketCode('https://example.com/pass?c=ROI-AB12-CD34'), 'ROI-AB12-CD34');
-  assert.equal(normalizeTicketCode('roi-ab12-cd34'), 'ROI-AB12-CD34');
+  assert.equal(normalizeTicketCode('https://example.com/pass?c=DEMO-AB12-CD34'), 'DEMO-AB12-CD34');
+  assert.equal(normalizeTicketCode('demo-ab12-cd34'), 'DEMO-AB12-CD34');
   assert.equal(resultTone('admitted'), 'ok');
   assert.equal(resultTone('already'), 'warn');
   assert.equal(resultTone('void'), 'bad');
@@ -185,7 +185,7 @@ test('digital solutions fallback catalog', () => {
 test('portfolio fallback includes a featured conference case', () => {
   assert.equal(FALLBACK_PORTFOLIO.length, 2);
   assert.equal(FALLBACK_PORTFOLIO[0].is_featured, true);
-  assert.match(FALLBACK_PORTFOLIO[0].slug, /vijana/);
+  assert.match(FALLBACK_PORTFOLIO[0].slug, /youth-leadership-summit/);
 });
 
 test('inquiry workflow allows review then quote then win', () => {

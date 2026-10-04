@@ -26,7 +26,7 @@
   ],
   "compounds": [
     {
-      "name": "Full-Stack ROI Ecosystem (Backend + Frontend Debug)",
+      "name": "Full-Stack Demo Ecosystem (Backend + Frontend Debug)",
       "configurations": [
         "FastAPI Backend: Uvicorn Debugger",
         "Frontend React: Launch Chrome against Localhost"

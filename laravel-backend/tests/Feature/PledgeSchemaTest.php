@@ -21,7 +21,7 @@ class PledgeSchemaTest extends TestCase
     private function makePledge(array $overrides = []): Pledge
     {
         return Pledge::create(array_merge([
-            'email' => 'pledger@test.ke',
+            'email' => 'pledger@test.example',
             'name' => 'Pledger',
             'phone' => '254712345678',
             'amount' => 1000,
@@ -75,7 +75,7 @@ class PledgeSchemaTest extends TestCase
         $attrs = [
             'pledge_payment_id' => $payment->id,
             'pledge_id' => $pledge->id,
-            'reference' => 'ROI-PLE-DUPREF',
+            'reference' => 'DEMO-PLE-DUPREF',
             'amount' => 1000,
         ];
         $payment->paymentAttempts()->create($attrs);
@@ -110,12 +110,12 @@ class PledgeSchemaTest extends TestCase
 
     public function test_collectable_scope_only_returns_due_active_mpesa_pledges(): void
     {
-        $due = $this->makePledge(['email' => 'due@test.ke', 'next_payment_date' => '2026-11-05']);
-        $this->makePledge(['email' => 'future@test.ke', 'next_payment_date' => '2026-12-05']);
-        $this->makePledge(['email' => 'paused@test.ke', 'status' => Pledge::STATUS_PAUSED]);
-        $this->makePledge(['email' => 'cancelled@test.ke', 'status' => Pledge::STATUS_CANCELLED]);
-        $this->makePledge(['email' => 'card@test.ke', 'method' => Pledge::METHOD_CARD]);
-        $this->makePledge(['email' => 'nodate@test.ke', 'next_payment_date' => null]);
+        $due = $this->makePledge(['email' => 'due@test.example', 'next_payment_date' => '2026-11-05']);
+        $this->makePledge(['email' => 'future@test.example', 'next_payment_date' => '2026-12-05']);
+        $this->makePledge(['email' => 'paused@test.example', 'status' => Pledge::STATUS_PAUSED]);
+        $this->makePledge(['email' => 'cancelled@test.example', 'status' => Pledge::STATUS_CANCELLED]);
+        $this->makePledge(['email' => 'card@test.example', 'method' => Pledge::METHOD_CARD]);
+        $this->makePledge(['email' => 'nodate@test.example', 'next_payment_date' => null]);
 
         $ids = Pledge::collectable('2026-11-05')->pluck('id');
 

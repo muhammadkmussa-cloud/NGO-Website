@@ -109,7 +109,7 @@ export const getMetrics = () => safeGet('/public/metrics', FALLBACK_METRICS);
 const SITE_FALLBACK = {
   hero: {
     eyebrow: 'Flagship Conference 2026',
-    title: 'Vijana Na Maadili',
+    title: 'Youth Leadership Summit',
     description: 'Uniting 500+ coastal youth for mentorship, ethical leadership grounding, and digital career advancement.',
     image_url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80'
   },

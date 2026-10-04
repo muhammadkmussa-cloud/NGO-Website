@@ -1,9 +1,9 @@
 {
-  "name": "roi-frontend",
+  "name": "demo-frontend",
   "private": true,
   "version": "2.0.0",
   "type": "module",
-  "description": "Reaching Out Initiative — vanilla HTML/CSS/JS SPA (Tailwind CSS compiled via CLI)",
+  "description": "Demo NGO — vanilla HTML/CSS/JS SPA (Tailwind CSS compiled via CLI)",
   "scripts": {
     "dev": "npm run build && npx serve -l 3000 dist",
     "build": "tailwindcss -i ./src/css/app.css -o ./dist/assets/tailwind.css --minify && node scripts/build.mjs",

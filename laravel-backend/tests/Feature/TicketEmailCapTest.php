@@ -47,7 +47,7 @@ class TicketEmailCapTest extends TestCase
             'buyer_name' => 'Cap Tester',
             'buyer_email' => $email,
             'gateway' => 'Paystack',
-            'reference' => 'ROI-TCK-' . strtoupper(bin2hex(random_bytes(16))),
+            'reference' => 'DEMO-TCK-' . strtoupper(bin2hex(random_bytes(16))),
             'amount' => 0,
             'currency' => 'KES',
             'status' => $status,
@@ -67,53 +67,53 @@ class TicketEmailCapTest extends TestCase
 
     public function test_cap_applies_across_orders_and_ignores_email_case(): void
     {
-        $this->buy('Cap@Test.ke', 1)->assertStatus(201);
-        $this->buy('cap@test.ke', 1)->assertStatus(201);
+        $this->buy('Cap@Test.example', 1)->assertStatus(201);
+        $this->buy('cap@test.example', 1)->assertStatus(201);
 
-        $this->buy('CAP@test.ke', 1)
+        $this->buy('CAP@test.example', 1)
             ->assertStatus(400)
             ->assertJsonPath('detail', 'This email has already reached the limit of 2 "Free Workshop Pass" ticket(s) for this event.');
     }
 
     public function test_other_emails_are_not_blocked(): void
     {
-        $this->buy('first@test.ke', 2)->assertStatus(201);
-        $this->buy('second@test.ke', 2)->assertStatus(201);
+        $this->buy('first@test.example', 2)->assertStatus(201);
+        $this->buy('second@test.example', 2)->assertStatus(201);
     }
 
     public function test_failed_orders_are_excluded_from_the_cap(): void
     {
-        $this->makeOrder('buyer@test.ke', $this->freePass(), 1, 'Failed - Card Declined');
+        $this->makeOrder('buyer@test.example', $this->freePass(), 1, 'Failed - Card Declined');
 
-        $this->buy('buyer@test.ke', 2)->assertStatus(201);
+        $this->buy('buyer@test.example', 2)->assertStatus(201);
     }
 
     public function test_recent_pending_orders_count_toward_the_cap(): void
     {
-        $this->makeOrder('pending@test.ke', $this->freePass(), 1, 'Pending Payment');
+        $this->makeOrder('pending@test.example', $this->freePass(), 1, 'Pending Payment');
 
-        $this->buy('pending@test.ke', 2)->assertStatus(400);
+        $this->buy('pending@test.example', 2)->assertStatus(400);
     }
 
     public function test_abandoned_pending_orders_release_the_cap_after_the_window(): void
     {
-        $this->makeOrder('abandoned@test.ke', $this->freePass(), 2, 'Pending Payment', 120);
+        $this->makeOrder('abandoned@test.example', $this->freePass(), 2, 'Pending Payment', 120);
 
-        $this->buy('abandoned@test.ke', 2)->assertStatus(201);
+        $this->buy('abandoned@test.example', 2)->assertStatus(201);
     }
 
     public function test_completed_orders_count_regardless_of_age(): void
     {
-        $this->makeOrder('oldbuyer@test.ke', $this->freePass(), 2, 'Completed', 60 * 24 * 30);
+        $this->makeOrder('oldbuyer@test.example', $this->freePass(), 2, 'Completed', 60 * 24 * 30);
 
-        $this->buy('oldbuyer@test.ke', 1)->assertStatus(400);
+        $this->buy('oldbuyer@test.example', 1)->assertStatus(400);
     }
 
     public function test_legacy_mixed_case_orders_still_count_toward_the_cap(): void
     {
-        $this->makeOrder('Legacy@Test.KE', $this->freePass(), 2, 'Completed');
+        $this->makeOrder('Legacy@Test.example', $this->freePass(), 2, 'Completed');
 
-        $this->buy('legacy@test.ke', 1)
+        $this->buy('legacy@test.example', 1)
             ->assertStatus(400)
             ->assertJsonPath('detail', 'This email has already reached the limit of 2 "Free Workshop Pass" ticket(s) for this event.');
     }
@@ -125,9 +125,9 @@ class TicketEmailCapTest extends TestCase
         $order = TicketOrder::create([
             'event_id' => $vip->event_id,
             'buyer_name' => 'Cap Tester',
-            'buyer_email' => 'multi@test.ke',
+            'buyer_email' => 'multi@test.example',
             'gateway' => 'Paystack',
-            'reference' => 'ROI-TCK-' . strtoupper(bin2hex(random_bytes(16))),
+            'reference' => 'DEMO-TCK-' . strtoupper(bin2hex(random_bytes(16))),
             'amount' => 0,
             'currency' => 'KES',
             'status' => 'Completed',
@@ -145,22 +145,22 @@ class TicketEmailCapTest extends TestCase
             'unit_price' => 0,
         ]);
 
-        $this->buy('multi@test.ke', 1, $vip)
+        $this->buy('multi@test.example', 1, $vip)
             ->assertStatus(400)
             ->assertJsonPath('detail', 'This email has already reached the limit of 2 "VIP Patron" ticket(s) for this event.');
 
-        $this->buy('multi@test.ke', 1, $youth)->assertStatus(201);
+        $this->buy('multi@test.example', 1, $youth)->assertStatus(201);
     }
 
     public function test_duplicate_lines_merge_before_the_cap_check(): void
     {
-        $this->buy('merged@test.ke', 1)->assertStatus(201);
+        $this->buy('merged@test.example', 1)->assertStatus(201);
 
         $type = $this->freePass();
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Cap Tester',
-            'buyer_email' => 'merged@test.ke',
+            'buyer_email' => 'merged@test.example',
             'gateway' => 'Paystack',
             'items' => [
                 ['ticket_type_id' => $type->id, 'quantity' => 1],
@@ -176,10 +176,10 @@ class TicketEmailCapTest extends TestCase
         $vip = TicketType::where('name', 'VIP Patron')->firstOrFail();
         $youth = TicketType::where('name', 'Youth Delegate')->firstOrFail();
 
-        $this->buy('scoped@test.ke', 2, $vip)->assertStatus(201);
-        $this->buy('scoped@test.ke', 1, $youth)->assertStatus(201);
+        $this->buy('scoped@test.example', 2, $vip)->assertStatus(201);
+        $this->buy('scoped@test.example', 1, $youth)->assertStatus(201);
 
-        $this->buy('scoped@test.ke', 1, $vip)
+        $this->buy('scoped@test.example', 1, $vip)
             ->assertStatus(400)
             ->assertJsonPath('detail', 'This email has already reached the limit of 2 "VIP Patron" ticket(s) for this event.');
     }

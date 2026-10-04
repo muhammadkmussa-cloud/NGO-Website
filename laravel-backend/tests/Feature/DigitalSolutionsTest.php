@@ -51,15 +51,15 @@ class DigitalSolutionsTest extends TestCase
         $this->postJson('/api/public/solutions/inquire', [
             'digital_solution_id' => $id,
             'name' => 'CBO Partner',
-            'email' => 'cbo@test.ke',
-            'message' => 'We need ticketing for a Tudor festival.',
+            'email' => 'cbo@test.example',
+            'message' => 'We need ticketing for a Riverside festival.',
         ])->assertStatus(201)->assertJsonPath('status', 'New');
 
         $this->getJson('/api/admin/solution-inquiries')->assertStatus(401);
 
         $this->withAdmin()->getJson('/api/admin/solution-inquiries')
             ->assertOk()
-            ->assertJsonPath('0.email', 'cbo@test.ke');
+            ->assertJsonPath('0.email', 'cbo@test.example');
     }
 
     public function test_admin_solution_crud(): void
@@ -89,7 +89,7 @@ class DigitalSolutionsTest extends TestCase
 
         $inquiry = $this->postJson('/api/public/solutions/inquire', [
             'name' => 'School',
-            'email' => 'school@test.ke',
+            'email' => 'school@test.example',
             'message' => 'Need a digital lab quote.',
         ])->assertStatus(201)->json();
 
@@ -107,7 +107,7 @@ class DigitalSolutionsTest extends TestCase
     {
         $created = $this->postJson('/api/public/solutions/inquire', [
             'name' => 'Pipeline',
-            'email' => 'pipe@test.ke',
+            'email' => 'pipe@test.example',
             'message' => 'Need a quote for ticketing.',
         ])->assertStatus(201)->assertJsonPath('status', 'New')->assertJsonPath('is_open', true);
 
@@ -132,7 +132,7 @@ class DigitalSolutionsTest extends TestCase
 
         $this->withAdmin()->getJson('/api/admin/solution-inquiries?status=Won')
             ->assertOk()
-            ->assertJsonPath('0.email', 'pipe@test.ke');
+            ->assertJsonPath('0.email', 'pipe@test.example');
 
         $this->withAdmin()->getJson('/api/admin/solution-inquiries/stats')
             ->assertOk()

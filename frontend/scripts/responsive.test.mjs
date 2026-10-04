@@ -45,7 +45,7 @@ const apiFixtures = new Map([
   ['/api/public/site', {
     hero: {
       eyebrow: 'Flagship Conference 2026',
-      title: 'Vijana Na Maadili',
+      title: 'Youth Leadership Summit',
       description: 'Responsive fixture hero copy.',
       image_url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80'
     },
@@ -71,7 +71,7 @@ const apiFixtures = new Map([
   ['/api/admin/site', {
     hero: {
       eyebrow: 'Flagship Conference 2026',
-      title: 'Vijana Na Maadili',
+      title: 'Youth Leadership Summit',
       description: 'Responsive fixture hero copy.',
       image_url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80'
     },
@@ -235,7 +235,7 @@ async function assertDonationModal(page, label) {
 async function assertEnabledDonationModalSafety(page) {
   apiFixtures.set('/api/payments/paybills', {
     enabled: true,
-    business_name: 'REACHING OUT INITIATIVE',
+    business_name: 'DEMO NGO',
     kcb_mpesa: { paybill: '000001', account: 'SADAQA' },
     equity_bank: { paybill: '000005', account: '<img src=x onerror="window.__roiPaybillXss = true">' }
   });

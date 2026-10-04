@@ -1,8 +1,6 @@
 # Admin Login and Mobile Compatibility — TDD Evidence
 
-## Source plan
-
-[`plans/admin-login-and-mobile-compatibility.md`](../../plans/admin-login-and-mobile-compatibility.md)
+> Historical test evidence for one work item, recorded when the effort landed. Command names and test targets are still valid; assertion counts reflect that run. Current suite status is reported in the [repository README](../../README.md#8-testing).
 
 ## User journeys
 
@@ -14,9 +12,9 @@
 
 | Task | RED evidence | GREEN evidence | Guarantee |
 |---|---|---|---|
-| Password-only backend login | `php artisan test --filter=test_login_succeeds_with_email_and_password_only` returned 422 instead of 200 while `mfa_code` was required | `php artisan test --filter=login` passed 11 tests / 31 assertions; full suite passed 139 tests / 677 assertions | Login accepts email/password without TOTP while throttling, generic errors, hashing, JWTs, and authorization regressions remain covered |
-| Frontend login contract | Existing client sent `mfa_code` and rendered an MFA input | `npm test` passed 19/19, including request-body and generic-error tests | Browser login sends only `{ email, password }` and does not expose MFA-specific failure details |
-| Donate and responsive layout | Live browser measurements showed no Donate CTA from 768–1023px and a 1218px right edge in a 1024px viewport | `npm run test:responsive` passed across six viewports and 13 routes plus authenticated admin dashboard | Donate remains visible/in bounds; shared pages, drawer, both donation tabs, ticket pages, and admin dashboard do not create page-level horizontal overflow |
+| Password-only backend login | `php artisan test --filter=test_login_succeeds_with_email_and_password_only` returned 422 instead of 200 while `mfa_code` was required | `php artisan test --filter=login` passed; full suite passed for that run | Login accepts email/password without a second factor while throttling, generic errors, hashing, JWTs, and authorization regressions remain covered |
+| Frontend login contract | Existing client sent `mfa_code` and rendered an MFA input | `npm test` passed, including request-body and generic-error tests | Browser login sends only `{ email, password }` and does not expose MFA-specific failure details |
+| Donate and responsive layout | Live browser measurements showed no Donate CTA from 768–1023px and a 1218px right edge in a 1024px viewport | `npm run test:responsive` passed across six viewports and 13 routes plus the authenticated admin dashboard | Donate remains visible/in bounds; shared pages, drawer, both donation tabs, ticket pages, and admin dashboard do not create page-level horizontal overflow |
 
 ## Verification commands
 
@@ -30,8 +28,7 @@ git diff --check
 
 ## Coverage and known gaps
 
-- The repository does not currently expose a configured line-coverage command, so no percentage is claimed.
+- The repository does not expose a configured line-coverage command, so no percentage is claimed.
 - Browser coverage is behavior-focused: 320×640, 360×480, 375×667, 768×1024, 1024×768, and 1536×900.
 - Payment submission is intentionally not exercised by responsive QA; the modal is inspected read-only through both payment-method tabs.
 - The Playwright executable path is environment-specific locally. CI should install the package-matched Chromium build or set `PLAYWRIGHT_EXECUTABLE_PATH`.
-

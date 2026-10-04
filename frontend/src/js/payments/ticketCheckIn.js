@@ -1,6 +1,6 @@
 export function normalizeTicketCode(raw) {
   const value = String(raw || '').toUpperCase().trim();
-  const match = value.match(/ROI-[A-Z0-9]{4}-[A-Z0-9]{4}/);
+  const match = value.match(/DEMO-[A-Z0-9]{4}-[A-Z0-9]{4}/);
   if (match) return match[0];
   return value.replace(/\s+/g, '');
 }

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Monthly Pledge — Reaching Out Initiative</title>
+    <title>Monthly Pledge — Demo NGO</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {

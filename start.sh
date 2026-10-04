@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # ====================================================================
-# Reaching Out Initiative (ROI) - One-Click Fullstack Launcher (Mac/Linux)
+# Demo NGO (DEMO) - One-Click Fullstack Launcher (Mac/Linux)
 # Stack: Laravel 13 API + Vanilla HTML/CSS/JS SPA (Tailwind CLI)
 # ====================================================================
 
 set -e
 
-echo "🌍 Starting Reaching Out Initiative Ecosystem (Mombasa HQ)..."
+echo "🌍 Starting Demo NGO Ecosystem (Harbor City HQ)..."
 
 # 1. Backend (Laravel) on port 8000
 echo "🔧 Initializing Laravel API on port 8000..."

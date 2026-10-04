@@ -11,10 +11,10 @@ export function renderFooter(container) {
 
           <div class="space-y-4">
             <div class="flex items-center space-x-3">
-              <img src="${ROI_LOGO_DATA_URI}" alt="ROI Official Logo" class="h-10 sm:h-12 w-auto object-contain drop-shadow">
+              <img src="${ROI_LOGO_DATA_URI}" alt="DEMO Official Logo" class="h-10 sm:h-12 w-auto object-contain drop-shadow">
             </div>
             <p class="text-xs leading-relaxed text-slate-400 pt-1">
-              Dedicated to uplifting vulnerable youth across coastal Kenya through ethical mentorship, digital education, and impactful social transformation programs anchored in community solidarity.
+              Dedicated to uplifting vulnerable youth across the coast through ethical mentorship, digital education, and impactful social transformation programs anchored in community solidarity.
             </p>
           </div>
 
@@ -27,7 +27,7 @@ export function renderFooter(container) {
               <li><a href="#/solutions" class="hover:text-sky-400 transition-colors block">Digital Solutions</a></li>
               <li><a href="#/solutions/portfolio" class="hover:text-sky-400 transition-colors block">Solutions Portfolio</a></li>
               <li><a href="#/blog" class="hover:text-sky-400 transition-colors block">Blog &amp; Field Stories</a></li>
-              <li><a href="#/media" class="hover:text-sky-400 transition-colors block">Reaching Out Media Hub</a></li>
+              <li><a href="#/media" class="hover:text-sky-400 transition-colors block">Demo Media Hub</a></li>
               <li><a href="#/contact" class="hover:text-sky-400 transition-colors block">Contacts &amp; Inquiries</a></li>
               <li><a href="#/status" class="hover:text-sky-400 transition-colors block">Platform status</a></li>
               <li><a href="#/tickets/recover" class="hover:text-sky-400 transition-colors block">Find my tickets</a></li>
@@ -41,23 +41,15 @@ export function renderFooter(container) {
                 ${icon('map-pin', 'w-4 h-4 text-amber-500 shrink-0 mt-0.5')}
                 <div>
                   <span class="text-white font-medium block">Region</span>
-                  <span>Mombasa, Kenya (Coastal HQ)</span>
+                  <span>Harbor City, Kenya (Coastal HQ)</span>
                 </div>
               </div>
 
               <div class="flex items-center gap-2.5">
                 ${icon('mail', 'w-4 h-4 text-sky-400 shrink-0')}
-                <a href="mailto:reachingoutinitiative2021@gmail.com" class="hover:text-white transition-colors truncate">
-                  reachingoutinitiative2021@gmail.com
+                <a href="mailto:hello@example.org" class="hover:text-white transition-colors truncate">
+                  hello@example.org
                 </a>
-              </div>
-
-              <div class="flex items-center gap-2.5">
-                ${icon('phone', 'w-4 h-4 text-emerald-400 shrink-0')}
-                <div class="flex flex-col">
-                  <a href="tel:+254745273556" class="hover:text-white transition-colors">+254 745 273 556</a>
-                  <a href="tel:+254734292124" class="hover:text-white transition-colors">+254 734 292 124</a>
-                </div>
               </div>
             </div>
           </div>
@@ -65,29 +57,29 @@ export function renderFooter(container) {
           <div class="space-y-3">
             <h3 class="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-emerald-500 pl-2">Verified Social Channels</h3>
             <p class="text-xs text-slate-400">
-              Connect with ROI Media across our verified digital endpoints:
+              Connect with DEMO Media across our verified digital endpoints:
             </p>
 
             <div class="flex flex-wrap gap-3 pt-2">
-              <a href="https://www.facebook.com/share/1D2APpFpRf/?mibextid=wwXIfr" target="_blank" rel="noreferrer"
+              <a href="#"
                  title="Official Facebook Page"
                  class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-blue-600 hover:border-blue-500 transition-colors transform hover:scale-110 shadow-lg">
                 ${facebookIcon()}
               </a>
 
-              <a href="https://www.instagram.com/reachingoutinitiative.ke?igsh=MWdlejI2ZTBqbGdjbg==" target="_blank" rel="noreferrer"
+              <a href="#"
                  title="Official Instagram Profile"
-                 class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-gradient-to-tr hover:from-amber-500 hover:via-rose-600 hover:to-purple-600 transition-colors transform hover:scale-110 shadow-lg">
+                 class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-gradient-to-tr hover:from-amber-500 hover:via-rose-500 hover:to-purple-600 transition-colors transform hover:scale-110 shadow-lg">
                 ${instagramIcon()}
               </a>
 
-              <a href="https://youtube.com/@reachingoutinitiativemedia?si=-eGVYbZPPU8ONGkT" target="_blank" rel="noreferrer"
-                 title="Reaching Out Initiative Media YouTube"
+              <a href="#"
+                 title="Demo NGO Media YouTube"
                  class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-red-600 hover:border-red-500 transition-colors transform hover:scale-110 shadow-lg">
                 ${youtubeIcon()}
               </a>
 
-              <a href="https://www.tiktok.com/@reachingoutinitiative.ke?_r=1&_t=ZS-97VFl5MuWkZ" target="_blank" rel="noreferrer"
+              <a href="#"
                  title="Official TikTok Profile"
                  class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-black hover:border-cyan-400 transition-colors transform hover:scale-110 shadow-lg">
                 ${tiktokIcon()}
@@ -100,12 +92,10 @@ export function renderFooter(container) {
           <div class="flex items-center space-x-6">
             <span class="hover:text-slate-400 cursor-pointer">Privacy Policy</span>
             <span class="hover:text-slate-400 cursor-pointer">Terms of Service</span>
-            <span class="text-slate-600">|</span>
-            <span>Registration: CBO/MSA/2021/8841</span>
           </div>
 
           <div class="font-medium text-slate-400">
-            © 2026 Reaching Out Initiative. All Rights Reserved.
+            © 2026 Demo NGO. All Rights Reserved.
           </div>
         </div>
 

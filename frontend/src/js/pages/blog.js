@@ -31,7 +31,7 @@ function blogCard(post) {
             <span>•</span>
             <span class="flex items-center gap-1 truncate max-w-[140px]">
               ${icon('user', 'w-3 h-3 text-amber-400')}
-              ${escapeHtml(post.author || 'ROI Team')}
+              ${escapeHtml(post.author || 'DEMO Team')}
             </span>
           </div>
 
@@ -64,7 +64,7 @@ export function renderBlog(root) {
         <h1 class="text-4xl sm:text-6xl font-black text-white">
           Field Stories & Youth Impact Reports
         </h1>
-        <p class="text-base sm:text-lg text-slate-300 leading-relaxed">Dynamic case studies documenting youth mentorship cohorts, digital literacy impacts, and community transformation in Mombasa.</p>
+        <p class="text-base sm:text-lg text-slate-300 leading-relaxed">Dynamic case studies documenting youth mentorship cohorts, digital literacy impacts, and community transformation in Harbor City.</p>
 
         <div class="pt-6 space-y-4 max-w-xl mx-auto">
           <div class="relative">
@@ -156,7 +156,7 @@ export function renderBlog(root) {
             <div class="flex items-center gap-4 text-xs text-slate-400 border-b border-slate-800 pb-4">
               <span class="flex items-center gap-1.5 font-semibold text-sky-400">
                 ${icon('user', 'w-4 h-4')}
-                ${escapeHtml(post.author || 'ROI Communications')}
+                ${escapeHtml(post.author || 'DEMO Communications')}
               </span>
               <span>•</span>
               <span class="flex items-center gap-1.5">
@@ -170,7 +170,7 @@ export function renderBlog(root) {
             <div class="text-sm sm:text-base leading-relaxed space-y-4 whitespace-pre-line font-normal text-slate-300">${escapeHtml(post.content)}</div>
 
             <div class="pt-8 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-              <span>Published in Mombasa, Kenya</span>
+              <span>Published in Harbor City, Kenya</span>
               <button type="button" id="roi-share-story"
                 class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center gap-1.5">
                 ${icon('share-2', 'w-3.5 h-3.5')}

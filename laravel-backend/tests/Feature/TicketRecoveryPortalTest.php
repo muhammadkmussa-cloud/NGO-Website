@@ -23,7 +23,7 @@ class TicketRecoveryPortalTest extends TestCase
 
     public function test_recover_is_enumeration_safe_and_opens_portal_without_email(): void
     {
-        $this->postJson('/api/tickets/recover', ['email' => 'nobody@test.ke'])
+        $this->postJson('/api/tickets/recover', ['email' => 'nobody@test.example'])
             ->assertOk()
             ->assertJsonPath('status', 'accepted')
             ->assertJsonPath('portal_token', fn ($t) => is_string($t) && $t !== '');
@@ -33,12 +33,12 @@ class TicketRecoveryPortalTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Portal Buyer',
-            'buyer_email' => 'portal@test.ke',
+            'buyer_email' => 'portal@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
 
-        $this->postJson('/api/tickets/recover', ['email' => 'portal@test.ke'])
+        $this->postJson('/api/tickets/recover', ['email' => 'portal@test.example'])
             ->assertOk()
             ->assertJsonPath('portal_token', fn ($t) => is_string($t) && $t !== '');
         Mail::assertNothingSent();
@@ -50,15 +50,15 @@ class TicketRecoveryPortalTest extends TestCase
         $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Token Buyer',
-            'buyer_email' => 'token@test.ke',
+            'buyer_email' => 'token@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
 
-        $token = app(TicketPortalService::class)->mintToken('token@test.ke');
+        $token = app(TicketPortalService::class)->mintToken('token@test.example');
         $this->getJson('/api/tickets/portal/' . $token)
             ->assertOk()
-            ->assertJsonPath('email', 'token@test.ke')
+            ->assertJsonPath('email', 'token@test.example')
             ->assertJsonCount(1, 'orders');
 
         $this->getJson('/api/tickets/portal/not-a-token')->assertStatus(401);
@@ -70,19 +70,19 @@ class TicketRecoveryPortalTest extends TestCase
         $checkout = $this->postJson('/api/tickets/checkout', [
             'event_id' => $type->event_id,
             'buyer_name' => 'Lookup',
-            'buyer_email' => 'lookup@test.ke',
+            'buyer_email' => 'lookup@test.example',
             'gateway' => 'Paystack',
             'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
         ])->assertStatus(201);
 
         $ref = $checkout->json('reference');
         $this->postJson('/api/tickets/lookup-order', [
-            'email' => 'wrong@test.ke',
+            'email' => 'wrong@test.example',
             'reference' => $ref,
         ])->assertStatus(404);
 
         $this->postJson('/api/tickets/lookup-order', [
-            'email' => 'lookup@test.ke',
+            'email' => 'lookup@test.example',
             'reference' => $ref,
         ])->assertOk()->assertJsonPath('order.reference', $ref);
     }

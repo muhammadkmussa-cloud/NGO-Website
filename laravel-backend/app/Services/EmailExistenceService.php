@@ -255,13 +255,13 @@ class EmailExistenceService
                 return null;
             }
 
-            $this->writeCommand($fp, 'EHLO reachingoutinitiative.org');
+            $this->writeCommand($fp, 'EHLO example.org');
             $ehlo = $this->readReply($fp);
             if ($ehlo === '') {
                 return null;
             }
             if (str_starts_with($ehlo, '5')) {
-                $this->writeCommand($fp, 'HELO reachingoutinitiative.org');
+                $this->writeCommand($fp, 'HELO example.org');
                 if (!str_starts_with($this->readReply($fp), '250')) {
                     return null;
                 }
@@ -270,7 +270,7 @@ class EmailExistenceService
             if ($this->budgetRemaining() <= 0) {
                 return null;
             }
-            $this->writeCommand($fp, 'MAIL FROM:<postmaster@reachingoutinitiative.org>');
+            $this->writeCommand($fp, 'MAIL FROM:<postmaster@example.org>');
             if (!str_starts_with($this->readReply($fp), '250')) {
                 return null;
             }

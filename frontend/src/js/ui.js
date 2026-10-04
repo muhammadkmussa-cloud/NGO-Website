@@ -86,7 +86,7 @@ export function listenForFallbackEvents() {
 
 const FALLBACK_THEMES = [
   { match: ['conference', 'events'], gradient: 'from-amber-600 via-orange-600 to-red-700', badge: 'Flagship Conference', iconName: 'calendar' },
-  { match: ['media', 'tv', 'sessions', 'outreach'], gradient: 'from-rose-600 via-pink-600 to-purple-800', badge: 'ROI TV Broadcast', iconName: 'tv' },
+  { match: ['media', 'tv', 'sessions', 'outreach'], gradient: 'from-rose-600 via-pink-600 to-purple-800', badge: 'DEMO TV Broadcast', iconName: 'tv' },
   { match: ['education', 'tech', 'mentorship'], gradient: 'from-sky-600 via-cyan-600 to-blue-800', badge: 'Digital Education', iconName: 'book-open' },
   { match: ['impact', 'support'], gradient: 'from-emerald-600 via-green-600 to-teal-800', badge: 'Social Impact', iconName: 'heart' }
 ];
@@ -107,7 +107,7 @@ export function imageWithFallback(src, alt, className, category, headingOverride
     FALLBACK_THEMES.find((t) => t.match.some((m) => (category || '').toLowerCase().includes(m))) ||
     { gradient: 'from-sky-700 via-blue-800 to-slate-900', badge: 'Community Asset', iconName: 'sparkles' };
 
-  const heading = escapeHtml(headingOverride || alt || 'ROI Mombasa Community Asset');
+  const heading = escapeHtml(headingOverride || alt || 'DEMO Harbor City Community Asset');
 
   const placeholder = `
     <div data-img-fallback class="${className} hidden bg-gradient-to-br ${theme.gradient} items-center justify-center p-6 text-center">
@@ -115,7 +115,7 @@ export function imageWithFallback(src, alt, className, category, headingOverride
         <span class="px-2.5 py-0.5 rounded-full bg-slate-950/60 text-[9px] font-black tracking-widest uppercase text-white/90 border border-white/20">${theme.badge}</span>
         <span class="text-white/90 mt-1">${icon(theme.iconName, 'w-8 h-8')}</span>
         <h4 class="text-white text-sm font-bold leading-tight mt-1 line-clamp-2">${heading}</h4>
-        <p class="text-white/70 text-[10px] font-mono mt-auto pt-2">Mombasa, Kenya • Verified Coastal HQ</p>
+        <p class="text-white/70 text-[10px] font-mono mt-auto pt-2">Harbor City, Kenya • Verified Coastal HQ</p>
       </div>
     </div>`;
 

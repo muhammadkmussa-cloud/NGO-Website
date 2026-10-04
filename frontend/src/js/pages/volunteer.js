@@ -16,7 +16,7 @@ const SKILLS = [
 const AVAIL_OPTIONS = [
   'Weekends (Outreach & Bootcamps)',
   'Weekdays (Remote & Planning)',
-  'Vijana Na Maadili Annual Conference Special'
+  'Youth Leadership Summit Annual Conference Special'
 ];
 
 export function renderVolunteer(root) {
@@ -37,10 +37,10 @@ export function renderVolunteer(root) {
           <span>Volunteer Registry Pipeline</span>
         </div>
         <h1 class="text-4xl sm:text-6xl font-black text-white">
-          Join the Mombasa Changemaker Network
+          Join the Harbor City Changemaker Network
         </h1>
         <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
-          Lend your unique skills to mentor Mombasa youth, coordinate our flagship <strong class="text-white">Vijana Na Maadili</strong> conference, and drive grassroots transformation.
+          Lend your unique skills to mentor Harbor City youth, coordinate our flagship <strong class="text-white">Youth Leadership Summit</strong> conference, and drive grassroots transformation.
         </p>
       </div>
 
@@ -84,7 +84,7 @@ export function renderVolunteer(root) {
 
             <div class="space-y-4">
               <h3 class="text-sm font-extrabold uppercase tracking-widest text-purple-400 border-l-2 border-purple-400 pl-3">4. Brief Motivation Statement</h3>
-              <textarea rows="4" id="roi-vol-motivation" placeholder="Why do you want to volunteer with Reaching Out Initiative in Mombasa?"
+              <textarea rows="4" id="roi-vol-motivation" placeholder="Why do you want to volunteer with Demo NGO in Harbor City?"
                 class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-base focus:outline-none focus:border-purple-400 resize-none"></textarea>
             </div>
 
@@ -176,7 +176,7 @@ export function renderVolunteer(root) {
           </div>
           <h3 class="text-2xl sm:text-3xl font-black text-white">Application Successfully Recorded!</h3>
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-            Thank you for stepping up! Your volunteer application has been written directly to the centralized database table. Our single administrator will review your skills (${escapeHtml(state.lastSkillAtSubmit)}) and coordinate your deployment for upcoming Mombasa outreach.
+            Thank you for stepping up! Your volunteer application has been written directly to the centralized database table. Our single administrator will review your skills (${escapeHtml(state.lastSkillAtSubmit)}) and coordinate your deployment for upcoming Harbor City outreach.
           </p>
           <button type="button" id="roi-vol-return"
             class="w-full py-4 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-extrabold text-xs uppercase tracking-wider">Return to Community Portal</button>
@@ -232,7 +232,7 @@ export function renderVolunteer(root) {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Changemaker Application';
       showToast('Submission failed: we could not reach the server. Please try again shortly.');
-      console.error('[ROI] volunteer submission failed:', err);
+      console.error('[DEMO] volunteer submission failed:', err);
     }
   });
 

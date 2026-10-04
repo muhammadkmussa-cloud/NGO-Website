@@ -10,7 +10,7 @@ export function renderPortfolio(root) {
           ${icon('award', 'w-3.5 h-3.5')}
           <span>Case studies</span>
         </div>
-        <h1 class="text-4xl font-black text-white">ROI Digital Solutions portfolio</h1>
+        <h1 class="text-4xl font-black text-white">DEMO Digital Solutions portfolio</h1>
         <p class="text-slate-300">Work shipped for coastal partners — ticketing, labs, and media. <a href="#/solutions" class="text-sky-400 font-bold">Request a briefing</a>.</p>
       </div>
       <div id="roi-portfolio-grid" class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -25,7 +25,7 @@ export function renderPortfolio(root) {
     grid.innerHTML = list.map((p) => `
       <article class="bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden">
         <div class="aspect-[16/9] bg-slate-900">
-          ${imageWithFallback(p.image_url || '', p.title, 'w-full h-full object-cover', p.client || 'ROI')}
+          ${imageWithFallback(p.image_url || '', p.title, 'w-full h-full object-cover', p.client || 'DEMO')}
         </div>
         <div class="p-6 space-y-2">
           ${p.is_featured ? '<span class="text-[10px] uppercase text-amber-400 font-black">Featured</span>' : ''}
