@@ -41,7 +41,13 @@ class TicketCheckInService
             return $base + ['result' => 'void', 'admissible' => false, 'detail' => 'Ticket has been voided.'];
         }
         if ($ticket->status === 'checked_in') {
-            return $base + ['result' => 'already', 'admissible' => false, 'detail' => 'Ticket already checked in.'];
+            $when = $ticket->checked_in_at;
+            $detail = $when
+                ? 'Ticket already checked in at '
+                    . $when->copy()->setTimezone('Africa/Nairobi')->format('Y-m-d H:i') . ' EAT.'
+                : 'Ticket already checked in.';
+
+            return $base + ['result' => 'already', 'admissible' => false, 'detail' => $detail];
         }
         if ($ticket->order && $ticket->order->status !== 'Completed') {
             return $base + ['result' => 'unpaid', 'admissible' => false, 'detail' => 'Order is not paid.'];

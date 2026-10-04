@@ -16,10 +16,6 @@ export function renderFooter(container) {
             <p class="text-xs leading-relaxed text-slate-400 pt-1">
               Dedicated to uplifting vulnerable youth across coastal Kenya through ethical mentorship, digital education, and impactful social transformation programs anchored in community solidarity.
             </p>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-sky-400">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Flagship Asset: Vijana Na Maadili</span>
-            </div>
           </div>
 
           <div class="space-y-3">

@@ -29,6 +29,8 @@ class TicketService
      */
     public function checkout(array $payload, string $origin): array
     {
+        $payload['buyer_email'] = strtolower(trim((string) $payload['buyer_email']));
+
         $result = DB::transaction(function () use ($payload, $origin) {
             $merged = [];
             foreach ($payload['items'] as $line) {
@@ -95,6 +97,21 @@ class TicketService
                 $amount += $lineTotal;
                 $currency = $type->currency ?: 'KES';
                 $resolved[] = ['type' => $type, 'quantity' => $qty, 'unit_price' => (float) $type->price];
+            }
+
+            foreach ($resolved as $line) {
+                $cappedType = $line['type'];
+                $cap = $cappedType->maxPerOrder();
+                $alreadyPurchased = $this->cumulativePurchasedForEmail(
+                    $eventId,
+                    (int) $cappedType->id,
+                    (string) $payload['buyer_email']
+                );
+                if ($alreadyPurchased + $line['quantity'] > $cap) {
+                    abort(response()->json([
+                        'detail' => "This email has already reached the limit of {$cap} \"{$cappedType->name}\" ticket(s) for this event.",
+                    ], 400));
+                }
             }
 
             if ($amount > 0 && ! config('roi.payments_enabled')) {
@@ -214,6 +231,21 @@ class TicketService
         }
 
         return $result;
+    }
+
+    private function cumulativePurchasedForEmail(int $eventId, int $ticketTypeId, string $buyerEmail): int
+    {
+        return (int) TicketOrderItem::query()
+            ->join('ticket_orders', 'ticket_orders.id', '=', 'ticket_order_items.ticket_order_id')
+            ->where('ticket_orders.event_id', $eventId)
+            ->where('ticket_order_items.ticket_type_id', $ticketTypeId)
+            ->whereRaw('lower(ticket_orders.buyer_email) = ?', [$buyerEmail])
+            ->where('ticket_orders.status', 'not like', 'Failed%')
+            ->where(function ($query) {
+                $query->where('ticket_orders.status', 'Completed')
+                    ->orWhere('ticket_orders.created_at', '>=', now()->subMinutes(60));
+            })
+            ->sum('ticket_order_items.quantity');
     }
 
     public function retryStk(TicketOrder $order, ?string $phone, string $origin): TicketOrder

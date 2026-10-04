@@ -25,7 +25,7 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
               </h1>
 
               <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                The <strong class="text-white">Reaching Out Initiative (ROI)</strong> is Mombasa’s premier digital ecosystem dedicated to uplifting vulnerable youth through mentorship, tech education, and our flagship annual <em class="text-amber-400 not-italic font-semibold">Vijana Na Maadili</em> conference.
+                <strong class="text-white">Reaching Out Initiative (ROI)</strong> is a community-driven organization in Mombasa dedicated to empowering young people, supporting vulnerable communities, and creating meaningful opportunities for positive change through youth empowerment, mentorship, Islamic and values-based programmes, community service, and our flagship annual <em class="text-amber-400 not-italic font-semibold">Vijana Na Maadili</em> conference.
               </p>
 
               <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
@@ -108,7 +108,7 @@ export function renderHome(root, onOpenDonate, onSelectVideo) {
           <div class="space-y-4 max-w-2xl text-center lg:text-left">
             <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-black text-[11px] uppercase tracking-wider">Annual Flagship Conference</span>
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">Vijana Na Maadili 2026</h2>
-            <p class="text-sm sm:text-base text-slate-300 leading-relaxed">Convening hundreds of youth, changemakers, and industry titans in Mombasa to ground ethical leadership and ignite economic independence across East Africa.</p>
+            <p class="text-sm sm:text-base text-slate-300 leading-relaxed">Convening hundreds of youth, changemakers, and industry titans in Mombasa to ground ethical leadership and ignite economic independence across Coastal Kenya.</p>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">

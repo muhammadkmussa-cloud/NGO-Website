@@ -93,7 +93,7 @@ export function renderTicketOrder(root, params = {}) {
       <a href="#/events" class="text-xs font-bold text-sky-400">${icon('arrow-up-right', 'w-3 h-3 inline rotate-180')} Events</a>
       <a href="#/tickets/recover" class="text-xs font-bold text-slate-400">Lost your tickets?</a>
       <div class="bg-slate-950 border border-slate-800 rounded-3xl p-8 space-y-4">
-        <span class="text-[10px] uppercase tracking-wider text-amber-400 font-bold">Payment ${escapeHtml(order.reference)}</span>
+        <span class="text-[10px] uppercase tracking-wider text-amber-400 font-bold">${pending ? 'Payment' : 'Order'} ${escapeHtml(order.reference)}</span>
         <h1 class="text-2xl font-black text-white">${escapeHtml(order.event?.title || 'Ticket order')}</h1>
         <p class="text-sm text-slate-300">Status: <strong class="text-white">${escapeHtml(order.status)}</strong></p>
         <p class="text-sm text-slate-400">${escapeHtml(order.buyer_name)} · ${escapeHtml(order.buyer_email)}</p>

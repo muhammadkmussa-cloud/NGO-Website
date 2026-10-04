@@ -25,14 +25,17 @@ release_id="$(date -u +%Y%m%dT%H%M%SZ)"
 release_dir="$releases_dir/$release_id"
 mkdir -p "$release_dir"
 tar -xzf "$archive" -C "$release_dir"
+shared_storage="$(dirname "$shared_env")/storage/app/public"
 ln -s "$shared_env" "$release_dir/.env"
 mkdir -p \
-  "$release_dir/storage/app/public" \
+  "$shared_storage" \
+  "$release_dir/storage/app" \
   "$release_dir/storage/framework/cache/data" \
   "$release_dir/storage/framework/sessions" \
   "$release_dir/storage/framework/views" \
   "$release_dir/storage/logs" \
   "$release_dir/bootstrap/cache"
+ln -s "$shared_storage" "$release_dir/storage/app/public"
 
 (
   cd "$release_dir"

@@ -1,5 +1,7 @@
 <?php
 
+use App\Support\PledgeConfig;
+
 return [
     'project_name' => env('PROJECT_NAME', 'Reaching Out Initiative (ROI) API'),
     'project_version' => env('PROJECT_VERSION', '2.0.0'),
@@ -15,6 +17,11 @@ return [
     // Operational kill switch for all new paid transactions. Complimentary
     // tickets remain available; paid donation/ticket initiation fails closed.
     'payments_enabled' => filter_var(env('PAYMENTS_ENABLED', false), FILTER_VALIDATE_BOOL),
+
+    // Fail-open email realism check on new ticket checkouts: disposable-domain
+    // blocklist, then MX/A lookup with a best-effort SMTP mailbox probe.
+    // Uncertain outcomes always allow the purchase.
+    'email_existence_check' => filter_var(env('EMAIL_EXISTENCE_CHECK', true), FILTER_VALIDATE_BOOL),
 
     // Security & Single Admin Slot Auth
     'jwt_secret_key' => env('JWT_SECRET_KEY'),
@@ -48,6 +55,19 @@ return [
     // Shared secret for POST /api/youtube/cron-sync. Required in production (F-03):
     // the scheduler passes it as ?secret= (or X-Cron-Secret header). Empty + production => 403.
     'youtube_cron_secret' => env('YOUTUBE_CRON_SECRET', ''),
+
+    // Monthly pledge collection (M-Pesa-first).
+    // Reminder schedule: days AFTER the due date to re-nudge while unpaid
+    // (spec §11; empty disables reminders entirely).
+    'pledge_reminder_days' => PledgeConfig::parseReminderDays((string) env('PLEDGE_REMINDER_DAYS', '1,3,7')),
+    // Cap on reminder emails processed per cron run (spec §20 — keeps a large
+    // backlog from becoming one giant SMTP burst).
+    'pledge_email_batch_size' => PledgeConfig::parseBatchSize((string) env('PLEDGE_EMAIL_BATCH_SIZE', '25')),
+    // Billing months and due dates are computed in this timezone (spec §19)
+    // while timestamps stay on the app's UTC storage convention.
+    'pledge_timezone' => PledgeConfig::normalizeTimezone((string) env('PLEDGE_TIMEZONE', 'Africa/Nairobi')),
+    // Secure /pledges/pay/{token} links expire after this many hours (spec §6).
+    'pledge_payment_link_ttl_hours' => PledgeConfig::parseLinkTtlHours((string) env('PLEDGE_PAYMENT_LINK_TTL_HOURS', '168')),
 
     // Vanity dashboard constants (parity with FastAPI implementation)
     'system_health_default' => 'Optimal (Vercel + Supabase Synchronized)',

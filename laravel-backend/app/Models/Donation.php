@@ -14,9 +14,15 @@ class Donation extends Model
     protected $fillable = [
         'donor_name', 'email', 'amount', 'currency', 'gateway', 'frequency',
         'reference', 'checkout_request_id', 'merchant_request_id', 'status',
+        'subscription_code', 'subscription_token', 'subscription_status',
+        'subscription_manage_url', 'manage_link_expires_at', 'next_payment_date',
     ];
 
-    protected $casts = ['amount' => 'float', 'created_at' => 'datetime'];
+    protected $casts = [
+        'amount' => 'float',
+        'created_at' => 'datetime',
+        'manage_link_expires_at' => 'datetime',
+    ];
 
     protected static function booted(): void
     {
@@ -43,6 +49,13 @@ class Donation extends Model
             'checkout_request_id' => $this->checkout_request_id,
             'merchant_request_id' => $this->merchant_request_id,
             'status' => $this->status,
+            // Non-sensitive pledge state for the return page badge. The hosted
+            // manage/cancel URL is deliberately NOT included — it is served
+            // only by GET /api/payments/subscription/{reference}/manage.
+            'subscription' => $this->subscription_status !== null ? [
+                'status' => $this->subscription_status,
+                'next_payment_date' => $this->next_payment_date,
+            ] : null,
             'authorization_url' => $authorizationUrl,
             'customer_message' => $customerMessage,
             'created_at' => $this->iso($this->created_at),

@@ -14,6 +14,9 @@ const dist = join(root, 'dist');
 const laravelPublic = join(root, '..', 'laravel-backend', 'public');
 
 mkdirSync(join(dist, 'assets'), { recursive: true });
+// Prune first: cpSync merges, so a source file deleted in an old commit
+// (e.g. the orphaned adminCheckIn.js) would otherwise survive forever.
+rmSync(join(dist, 'js'), { recursive: true, force: true });
 cpSync(join(root, 'src/js'), join(dist, 'js'), { recursive: true });
 
 // The source shell points at /src/js/main.js; the build serves /js/main.js.

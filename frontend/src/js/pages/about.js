@@ -11,10 +11,10 @@ const PILLARS = [
     description: 'Rigorous 12-week character, integrity, and leadership readiness circles pairing vulnerable coastal youth with accomplished community professionals.'
   },
   {
-    title: 'Digital Education & Tech',
+    title: 'Digital Education & Software Services',
     iconName: 'book-open',
     color: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
-    description: 'Mobile digital computer labs teaching coding fundamentals, web design, digital marketing, and remote freelancing skills across Tudor and Kisauni.'
+    description: 'We teach coding, web design, digital marketing, and freelancing while building websites, web apps, portfolios, and custom software systems.'
   },
   {
     title: 'Impactful Social Programs',
@@ -26,9 +26,10 @@ const PILLARS = [
 
 const TIMELINE = [
   { year: '2021', title: 'Origins in Mombasa, Kenya', desc: 'Founded by passionate local changemakers who recognized the urgent need for structured youth support amidst rising coastal unemployment.' },
-  { year: '2023', title: 'Launch of Vijana Na Maadili', desc: 'Inaugural flagship youth empowerment conference held at Swahilipot Hub, convening over 300 delegates for ethical leadership training.' },
-  { year: '2025', title: 'Mobile Tech & Media Hub Expansion', desc: "Established 'Reaching Out Media' (ROI TV) to amplify youth storytelling alongside mobile coding bootcamps in informal settlements." },
-  { year: '2026', title: 'Digital Ecosystem Redesign', desc: 'Deploying our enterprise-grade web platform with global payment gateways (Paystack/M-Pesa) and automated YouTube syndication.' }
+  { year: '2023', title: 'Official CBO Registration', desc: 'Officially registered as a Community-Based Organization (CBO), establishing the foundation for our youth empowerment initiatives.' },
+  { year: '2024', title: 'Vijana Na Maadili Vol 1', desc: 'Launched the first Vijana Na Maadili, bringing together over 400 youth for spiritual enrichment and ethical leadership.' },
+  { year: '2025', title: 'Vijana Na Maadili Vol 2', desc: 'Held the second Vijana Na Maadili, bringing together over 600 youth under the theme “Safari ya Ramadhani.”' },
+  { year: '2026', title: 'Vijana Na Maadili Vol 3', desc: 'The third Vijana Na Maadili will be held under the theme “MIND VS NAFS”, alongside the launch of ROI Digital Solutions.' }
 ];
 
 export function renderAbout(root) {
@@ -96,13 +97,6 @@ export function renderAbout(root) {
         </div>
 
         <div id="roi-leaders-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
-      </div>
-
-      <div class="max-w-3xl mx-auto px-4 text-center">
-        <div class="p-6 rounded-3xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs text-slate-400">
-          ${icon('sparkles', 'w-5 h-5 text-amber-400 shrink-0')}
-          <span>Officially registered CBO in Mombasa, Kenya. Dedicated to transparency, verified governance, and uplifting youth empowerment.</span>
-        </div>
       </div>
 
     </div>`;

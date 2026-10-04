@@ -36,3 +36,6 @@ laravel-backend/public/js/
 # OS & Editor
 .DS_Store
 Thumbs.db
+
+# Playwright MCP recon artifacts
+.playwright-mcp/

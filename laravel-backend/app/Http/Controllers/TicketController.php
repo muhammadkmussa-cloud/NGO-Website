@@ -7,7 +7,9 @@ use App\Models\Ticket;
 use App\Models\TicketOrder;
 use App\Models\TicketType;
 use App\Services\AuditLogger;
+use App\Services\EmailExistenceService;
 use App\Services\PaystackService;
+use App\Services\TicketCheckInService;
 use App\Services\TicketService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,6 +20,7 @@ class TicketController extends Controller
         protected TicketService $tickets,
         protected PaystackService $paystack,
         protected AuditLogger $audit,
+        protected EmailExistenceService $emails,
     ) {
     }
 
@@ -56,6 +59,8 @@ class TicketController extends Controller
             'items.*.ticket_type_id' => ['required', 'integer'],
             'items.*.quantity' => ['required', 'integer', 'min:1', 'max:20'],
         ]);
+
+        $this->emails->assertAcceptable($data['buyer_email']);
 
         $origin = $request->headers->get('origin') ?: $request->getSchemeAndHttpHost();
         $result = $this->tickets->checkout($data, $origin);
@@ -103,17 +108,19 @@ class TicketController extends Controller
     /** GET /api/tickets/orders/{reference}/verify?email= */
     public function verifyOrder(Request $request, string $reference): JsonResponse
     {
-        if (! config('roi.payments_enabled')) {
-            return response()->json(['detail' => 'Payments are temporarily unavailable.'], 503);
-        }
-
         $order = $this->orderForEmail($request, $reference);
         if (!$order) {
             return $this->orderNotFound();
         }
 
+        // Settled orders (incl. complimentary) are a read-only check — no
+        // gateway call — so they must verify even while payments are disabled.
         if ($order->status === 'Completed') {
             return response()->json($order->toApiArray());
+        }
+
+        if (! config('roi.payments_enabled')) {
+            return response()->json(['detail' => 'Payments are temporarily unavailable.'], 503);
         }
 
         if (strtolower($order->gateway) === 'paystack') {
@@ -242,7 +249,7 @@ class TicketController extends Controller
     /** GET /api/gate/tickets/{code} */
     public function gateInspect(string $code): JsonResponse
     {
-        $service = app(\App\Services\TicketCheckInService::class);
+        $service = app(TicketCheckInService::class);
         $payload = $service->inspectPayload($service->find($code));
         if ($payload['result'] === 'not_found') {
             return response()->json(['detail' => $payload['detail'], 'result' => 'not_found'], 404);
@@ -254,52 +261,63 @@ class TicketController extends Controller
     /** POST /api/gate/tickets/{code}/check-in */
     public function gateCheckIn(string $code): JsonResponse
     {
-        $service = app(\App\Services\TicketCheckInService::class);
+        $service = app(TicketCheckInService::class);
         $ticket = $service->find($code);
-        $inspect = $service->inspectPayload($ticket);
-        if ($inspect['result'] === 'not_found') {
-            return response()->json(['detail' => 'Ticket not found', 'result' => 'not_found'], 404);
-        }
-        if ($inspect['result'] === 'void') {
-            return response()->json(['detail' => 'Ticket has been voided.', 'result' => 'void'] + $inspect, 400);
-        }
-        if ($inspect['result'] === 'already') {
-            return response()->json(['detail' => 'Ticket already checked in.', 'result' => 'already'] + $inspect, 409);
-        }
-        if ($inspect['result'] === 'unpaid') {
-            return response()->json(['detail' => 'Order is not paid.', 'result' => 'unpaid'] + $inspect, 409);
+        if ($reject = $this->checkInRejection($service, $ticket)) {
+            return $reject;
         }
 
-        $ticket->status = 'checked_in';
-        $ticket->checked_in_at = now();
-        $ticket->save();
-        $this->audit->record('gate_station', 'ticket checked in', "Code {$ticket->code}");
+        return $this->commitCheckIn($service, $ticket, 'gate_station', $code);
+    }
+
+    /**
+     * Shared gate/admin pre-check: returns the JSON rejection for anything
+     * that is not ready for admission, or null when the ticket may proceed.
+     */
+    private function checkInRejection(TicketCheckInService $service, ?Ticket $ticket): ?JsonResponse
+    {
+        $inspect = $service->inspectPayload($ticket);
+
+        return match ($inspect['result']) {
+            'not_found' => response()->json(['detail' => $inspect['detail'], 'result' => 'not_found'], 404),
+            'void' => response()->json(['detail' => 'Ticket has been voided.', 'result' => 'void'] + $inspect, 400),
+            'already' => response()->json(['detail' => $inspect['detail'], 'result' => 'already'] + $inspect, 409),
+            'unpaid' => response()->json(['detail' => 'Order is not paid.', 'result' => 'unpaid'] + $inspect, 409),
+            default => null,
+        };
+    }
+
+    /**
+     * Atomically flips valid → checked_in so two stations racing the same QR
+     * can never both admit it; the loser re-inspects and gets the proper
+     * already/void rejection instead of a second admit.
+     */
+    private function commitCheckIn(TicketCheckInService $service, Ticket $ticket, string $actor, string $code): JsonResponse
+    {
+        $won = Ticket::whereKey($ticket->id)
+            ->where('status', 'valid')
+            ->whereHas('order', fn ($q) => $q->where('status', 'Completed'))
+            ->update(['status' => 'checked_in', 'checked_in_at' => now()]);
+
+        if ($won === 0) {
+            $reject = $this->checkInRejection($service, $service->find($code));
+            if ($reject) {
+                return $reject;
+            }
+
+            return response()->json([
+                'detail' => 'Ticket state changed. Please scan again.',
+                'result' => 'conflict',
+            ], 409);
+        }
+
+        $this->audit->record($actor, 'ticket checked in', "Code {$ticket->code}");
 
         return response()->json($service->gateArray($ticket->fresh(['ticketType', 'order.event'])) + [
             'result' => 'admitted',
             'admissible' => false,
             'detail' => 'Admitted.',
         ]);
-    }
-
-    /** POST /api/gate/tickets/{code}/undo-check-in */
-    public function gateUndoCheckIn(string $code): JsonResponse
-    {
-        $service = app(\App\Services\TicketCheckInService::class);
-        $ticket = $service->find($code);
-        if (!$ticket) {
-            return response()->json(['detail' => 'Ticket not found', 'result' => 'not_found'], 404);
-        }
-        if ($ticket->status !== 'checked_in') {
-            return response()->json(['detail' => 'Ticket is not checked in.', 'result' => 'not_checked_in'], 409);
-        }
-
-        $ticket->status = 'valid';
-        $ticket->checked_in_at = null;
-        $ticket->save();
-        $this->audit->record('gate_station', 'ticket check-in undone', "Code {$ticket->code}");
-
-        return response()->json($service->inspectPayload($ticket->fresh(['ticketType', 'order.event'])));
     }
 
     // --- Admin ---
@@ -323,7 +341,7 @@ class TicketController extends Controller
             'name' => ['required', 'string', 'max:120'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0', 'max:1000000000'],
-            'currency' => ['sometimes', 'string', 'in:KES,USD,EUR,GBP'],
+            'currency' => ['sometimes', 'string', 'in:KES,USD'],
             'quantity' => ['nullable', 'integer', 'min:1'],
             'sales_start' => ['nullable', 'date'],
             'sales_end' => ['nullable', 'date'],
@@ -354,7 +372,7 @@ class TicketController extends Controller
             'name' => ['sometimes', 'string', 'max:120'],
             'description' => ['nullable', 'string'],
             'price' => ['sometimes', 'numeric', 'min:0', 'max:1000000000'],
-            'currency' => ['sometimes', 'string', 'in:KES,USD,EUR,GBP'],
+            'currency' => ['sometimes', 'string', 'in:KES,USD'],
             'quantity' => ['nullable', 'integer', 'min:1'],
             'sales_start' => ['nullable', 'date'],
             'sales_end' => ['nullable', 'date'],
@@ -491,7 +509,7 @@ class TicketController extends Controller
     /** GET /api/admin/tickets/{code} — gate inspect without mutating */
     public function inspectTicket(string $code): JsonResponse
     {
-        $service = app(\App\Services\TicketCheckInService::class);
+        $service = app(TicketCheckInService::class);
         $payload = $service->inspectPayload($service->find($code));
         $status = match ($payload['result']) {
             'not_found' => 404,
@@ -507,49 +525,33 @@ class TicketController extends Controller
     /** POST /api/admin/tickets/{code}/check-in */
     public function checkIn(Request $request, string $code): JsonResponse
     {
-        $service = app(\App\Services\TicketCheckInService::class);
+        $service = app(TicketCheckInService::class);
         $ticket = $service->find($code);
-        $inspect = $service->inspectPayload($ticket);
-        if ($inspect['result'] === 'not_found') {
-            return response()->json(['detail' => 'Ticket not found', 'result' => 'not_found'], 404);
-        }
-        if ($inspect['result'] === 'void') {
-            return response()->json(['detail' => 'Ticket has been voided.', 'result' => 'void'] + $inspect, 400);
-        }
-        if ($inspect['result'] === 'already') {
-            return response()->json(['detail' => 'Ticket already checked in.', 'result' => 'already'] + $inspect, 409);
-        }
-        if ($inspect['result'] === 'unpaid') {
-            return response()->json(['detail' => 'Order is not paid.', 'result' => 'unpaid'] + $inspect, 409);
+        if ($reject = $this->checkInRejection($service, $ticket)) {
+            return $reject;
         }
 
-        $ticket->status = 'checked_in';
-        $ticket->checked_in_at = now();
-        $ticket->save();
-        $this->audit->record($this->adminEmail($request), 'ticket checked in', "Code {$ticket->code}");
-
-        return response()->json($service->gateArray($ticket->fresh(['ticketType', 'order.event'])) + [
-            'result' => 'admitted',
-            'admissible' => false,
-            'detail' => 'Admitted.',
-        ]);
+        return $this->commitCheckIn($service, $ticket, $this->adminEmail($request), $code);
     }
 
     /** POST /api/admin/tickets/{code}/undo-check-in */
     public function undoCheckIn(Request $request, string $code): JsonResponse
     {
-        $service = app(\App\Services\TicketCheckInService::class);
+        $service = app(TicketCheckInService::class);
         $ticket = $service->find($code);
         if (!$ticket) {
             return response()->json(['detail' => 'Ticket not found', 'result' => 'not_found'], 404);
         }
-        if ($ticket->status !== 'checked_in') {
+
+        // Conditional flip: a stale undo can never clobber a re-admit that
+        // landed after this request read the ticket.
+        $won = Ticket::whereKey($ticket->id)
+            ->where('status', 'checked_in')
+            ->update(['status' => 'valid', 'checked_in_at' => null]);
+        if ($won === 0) {
             return response()->json(['detail' => 'Ticket is not checked in.', 'result' => 'not_checked_in'], 409);
         }
 
-        $ticket->status = 'valid';
-        $ticket->checked_in_at = null;
-        $ticket->save();
         $this->audit->record($this->adminEmail($request), 'ticket check-in undone', "Code {$ticket->code}");
 
         return response()->json($service->inspectPayload($ticket->fresh(['ticketType', 'order.event'])));

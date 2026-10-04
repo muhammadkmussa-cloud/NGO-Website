@@ -65,9 +65,7 @@ export function renderChecking(root) {
         <div class="font-mono text-lg">${escapeHtml(state.last.code || '')}</div>
         <p class="text-sm">${escapeHtml(state.last.event_title || '')}</p>
         <p class="text-xs opacity-80">${escapeHtml(state.last.ticket_type_name || '')} · ${escapeHtml(state.last.detail || '')}</p>
-        ${state.last.result === 'already' ? `<button type="button" id="roi-gate-undo" class="mt-2 px-3 py-2 rounded-lg bg-slate-900/50 text-xs font-bold">Undo check-in</button>` : ''}
       </div>`;
-    resultEl.querySelector('#roi-gate-undo')?.addEventListener('click', () => undo(state.last.code));
     logEl.innerHTML = state.log.map((row) => `
       <div class="text-xs bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 flex justify-between">
         <span class="font-mono text-amber-300">${escapeHtml(row.code)}</span>
@@ -94,13 +92,6 @@ export function renderChecking(root) {
       state.last = null;
     }
     paintResult();
-  }
-
-  async function undo(code) {
-    const res = await request('POST', `/gate/tickets/${encodeURIComponent(code)}/undo-check-in`);
-    state.last = res.data || state.last;
-    paintResult();
-    showToast('Check-in undone.');
   }
 
   async function toggleCamera() {

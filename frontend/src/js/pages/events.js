@@ -30,7 +30,9 @@ function eventCard(evt) {
             <span>${escapeHtml(evt.date)}</span>
           </div>
           <h3 class="text-lg font-black text-white group-hover:text-amber-400 transition-colors leading-snug">${escapeHtml(evt.title)}</h3>
-          <p class="text-xs text-slate-300 leading-relaxed line-clamp-3">${escapeHtml(evt.description)}</p>
+          <p id="roi-desc-${evt.id}" class="text-xs text-slate-300 leading-relaxed line-clamp-3">${escapeHtml(evt.description)}</p>
+          <button type="button" data-more="${evt.id}" aria-expanded="false" aria-controls="roi-desc-${evt.id}"
+            class="hidden text-xs font-bold text-sky-400 hover:text-sky-300 transition-colors">More</button>
         </div>
 
         <div class="pt-4 border-t border-slate-800 space-y-3 text-xs text-slate-400">
@@ -67,10 +69,6 @@ export function renderEvents(root) {
     <div class="py-16 sm:py-24 bg-slate-900 min-h-screen space-y-16">
 
       <div class="max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-3xl mx-auto space-y-4">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold">
-          ${icon('calendar', 'w-3.5 h-3.5')}
-          <span>Mombasa Community Calendar</span>
-        </div>
         <h1 class="text-4xl sm:text-6xl font-black text-white">
           Community Events & Youth Conferences in Mombasa
         </h1>
@@ -152,6 +150,17 @@ export function renderEvents(root) {
         if (evt) openRsvpModal(evt);
       })
     );
+    bodyEl.querySelectorAll('[data-more]').forEach((btn) => {
+      const p = bodyEl.querySelector(`#roi-desc-${btn.dataset.more}`);
+      if (!p || p.scrollHeight <= p.clientHeight + 1) return;
+      btn.classList.remove('hidden');
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        p.classList.toggle('line-clamp-3', expanded);
+        btn.textContent = expanded ? 'More' : 'Less';
+      });
+    });
   }
 
   function openRsvpModal(evt) {

@@ -8,6 +8,20 @@ export function checkoutCurrency(gateway, ticketCurrency = 'KES') {
   return isMpesaGateway(gateway) ? 'KES' : (ticketCurrency || 'KES');
 }
 
+// Checkout UI mode for a cart of selected ticket lines:
+//   'empty' → nothing selected yet, 'free' → every line is KES 0,
+//   'paid'  → at least one priced line (mixed carts count as paid).
+export function checkoutMode(items) {
+  if (!items || items.length === 0) return 'empty';
+  return items.every((l) => Number(l.type?.price || 0) === 0) ? 'free' : 'paid';
+}
+
+// Free carts must not send a real gateway — 'Free' is stored on the order
+// (backend skips gateway logic whenever the amount is 0).
+export function checkoutGateway(mode, selectedGateway) {
+  return mode === 'free' ? 'Free' : selectedGateway;
+}
+
 export function validateTicketPayment({ items, gateway, buyerPhone, total }) {
   if (!items || items.length === 0) {
     return 'Select at least one ticket.';

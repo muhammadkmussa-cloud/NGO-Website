@@ -131,6 +131,25 @@ class PaymentsDisabledTest extends TestCase
         $this->assertSame(0, $order->tickets()->count());
     }
 
+    public function test_completed_order_verifies_while_payments_are_disabled(): void
+    {
+        $type = TicketType::where('price', 0)->firstOrFail();
+        $checkout = $this->postJson('/api/tickets/checkout', [
+            'event_id' => $type->event_id,
+            'buyer_name' => 'Settled Order Guest',
+            'buyer_email' => 'settled-order@example.test',
+            'gateway' => 'Free',
+            'items' => [['ticket_type_id' => $type->id, 'quantity' => 1]],
+        ])->assertCreated()
+            ->assertJsonPath('status', 'Completed');
+
+        // setUp() keeps payments disabled: a settled order is read-only and
+        // must not be blocked by the payments gate (order pages verify it).
+        $this->getJson("/api/tickets/orders/{$checkout->json('reference')}/verify?email=settled-order@example.test")
+            ->assertOk()
+            ->assertJsonPath('status', 'Completed');
+    }
+
     public function test_paystack_webhook_returns_503_without_mutating_records(): void
     {
         $order = $this->createPendingPaystackOrder();

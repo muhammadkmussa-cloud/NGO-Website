@@ -58,36 +58,79 @@ class AppServiceProvider extends ServiceProvider
         // which would let traffic on one endpoint starve another's budget.
         RateLimiter::for('stk-retry', function (Request $request) {
             return [
-                Limit::perHour(5)->by('ref:' . ($request->route('reference') ?: '')),
-                Limit::perMinute(6)->by('stk-ip:' . ($request->ip() ?: '127.0.0.1')),
+                Limit::perHour(5)->by('ref:'.($request->route('reference') ?: '')),
+                Limit::perMinute(6)->by('stk-ip:'.($request->ip() ?: '127.0.0.1')),
             ];
         });
 
         RateLimiter::for('payments-checkout', function (Request $request) {
-            return Limit::perMinute(10)->by('pay-ck:' . ($request->ip() ?: '127.0.0.1'));
+            return Limit::perMinute(10)->by('pay-ck:'.($request->ip() ?: '127.0.0.1'));
         });
 
         RateLimiter::for('payments-verify', function (Request $request) {
-            return Limit::perMinute(30)->by('pay-vf:' . ($request->ip() ?: '127.0.0.1'));
+            return Limit::perMinute(30)->by('pay-vf:'.($request->ip() ?: '127.0.0.1'));
+        });
+
+        // M-2: the manage-link endpoint mints hosted card-update/cancel URLs —
+        // give it its own budget so verify traffic can't starve it (and vice
+        // versa), capped per reference so one pledge can't be probed at scale.
+        RateLimiter::for('payments-manage', function (Request $request) {
+            return [
+                Limit::perMinute(10)->by('pay-mg:'.($request->route('reference') ?: '')),
+                Limit::perMinute(20)->by('pay-mg-ip:'.($request->ip() ?: '127.0.0.1')),
+            ];
         });
 
         RateLimiter::for('ticket-orders', function (Request $request) {
-            return Limit::perMinute(30)->by('ord:' . ($request->ip() ?: '127.0.0.1'));
+            return Limit::perMinute(30)->by('ord:'.($request->ip() ?: '127.0.0.1'));
+        });
+
+        // Monthly pledge collection: creation dispatches live STK prompts and
+        // pay retries can too — tight per-IP budgets (spec §18).
+        RateLimiter::for('pledges-create', function (Request $request) {
+            return Limit::perMinute(5)->by('pled-new:'.($request->ip() ?: '127.0.0.1'));
+        });
+
+        RateLimiter::for('pledges-pay', function (Request $request) {
+            return [
+                Limit::perMinute(6)->by('pled-pay:'.($request->route('token') ?: '')),
+                Limit::perMinute(20)->by('pled-pay-ip:'.($request->ip() ?: '127.0.0.1')),
+            ];
+        });
+
+        // The payment PAGE is read-only and must never starve POST /pay or the
+        // status poll — separate buckets (spec §7/§10). Keyed per token, so it
+        // needs its own per-IP backstop: otherwise every distinct bogus token
+        // gets a fresh 20/min budget (the web group has no global throttle).
+        RateLimiter::for('pledges-pay-page', function (Request $request) {
+            return [
+                Limit::perMinute(20)->by('pled-pg:'.($request->route('token') ?: '')),
+                Limit::perMinute(60)->by('pled-pg-ip:'.($request->ip() ?: '127.0.0.1')),
+            ];
+        });
+
+        // §10 polling: the pay page may poll every 5s for a bounded window —
+        // give status its own per-token budget so polling can't 429 the POST.
+        RateLimiter::for('pledges-pay-status', function (Request $request) {
+            return [
+                Limit::perMinute(20)->by('pled-st:'.($request->route('token') ?: '')),
+                Limit::perMinute(60)->by('pled-st-ip:'.($request->ip() ?: '127.0.0.1')),
+            ];
         });
 
         RateLimiter::for('ticket-lookup', function (Request $request) {
-            return Limit::perMinute(20)->by('lookup:' . ($request->ip() ?: '127.0.0.1'));
+            return Limit::perMinute(20)->by('lookup:'.($request->ip() ?: '127.0.0.1'));
         });
 
         // M-1 follow-up: convert every remaining unnamed throttle:N,1 to a named
         // limiter — unnamed buckets share one domain|IP counter per app, letting
         // traffic on one public form starve admin login or ticket checkout.
-        RateLimiter::for('auth-login', fn (Request $r) => Limit::perMinute(5)->by('login:' . ($r->ip() ?: '127.0.0.1')));
-        RateLimiter::for('public-form', fn (Request $r) => Limit::perMinute(20)->by('form:' . ($r->ip() ?: '127.0.0.1')));
-        RateLimiter::for('solution-inquiry', fn (Request $r) => Limit::perMinute(10)->by('inquiry:' . ($r->ip() ?: '127.0.0.1')));
-        RateLimiter::for('ticket-checkout', fn (Request $r) => Limit::perMinute(20)->by('tck-co:' . ($r->ip() ?: '127.0.0.1')));
-        RateLimiter::for('ticket-recover', fn (Request $r) => Limit::perMinute(8)->by('tck-rec:' . ($r->ip() ?: '127.0.0.1')));
-        RateLimiter::for('ticket-lookup-order', fn (Request $r) => Limit::perMinute(20)->by('tck-lo:' . ($r->ip() ?: '127.0.0.1')));
+        RateLimiter::for('auth-login', fn (Request $r) => Limit::perMinute(5)->by('login:'.($r->ip() ?: '127.0.0.1')));
+        RateLimiter::for('public-form', fn (Request $r) => Limit::perMinute(20)->by('form:'.($r->ip() ?: '127.0.0.1')));
+        RateLimiter::for('solution-inquiry', fn (Request $r) => Limit::perMinute(10)->by('inquiry:'.($r->ip() ?: '127.0.0.1')));
+        RateLimiter::for('ticket-checkout', fn (Request $r) => Limit::perMinute(20)->by('tck-co:'.($r->ip() ?: '127.0.0.1')));
+        RateLimiter::for('ticket-recover', fn (Request $r) => Limit::perMinute(8)->by('tck-rec:'.($r->ip() ?: '127.0.0.1')));
+        RateLimiter::for('ticket-lookup-order', fn (Request $r) => Limit::perMinute(20)->by('tck-lo:'.($r->ip() ?: '127.0.0.1')));
     }
 
     /**
@@ -174,14 +217,14 @@ class AppServiceProvider extends ServiceProvider
                 fn (string $fragment) => $fragment !== '' && str_contains(strtolower($secret), $fragment)
             );
 
-        if (!$weak) {
+        if (! $weak) {
             return;
         }
 
         if ($environment === 'production') {
             throw new \RuntimeException(
                 'JWT_SECRET_KEY is missing, too short (<32 chars), or a known template value. '
-                . 'Generate one with: base64_encode(random_bytes(32)) — refusing to boot.'
+                .'Generate one with: base64_encode(random_bytes(32)) — refusing to boot.'
             );
         }
 

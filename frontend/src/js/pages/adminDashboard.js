@@ -9,6 +9,7 @@ import { escapeHtml, fmtDate, showToast } from '../ui.js';
 import { ROI_LOGO_DATA_URI } from '../assets/logoDataUri.js';
 import { isOpenInquiry, nextInquiryStatuses } from '../payments/inquiryWorkflow.js';
 import { normalizeTicketCode } from '../payments/ticketCheckIn.js';
+import { eatToUtc, utcToEat } from '../tz.js';
 
 export function renderAdminDashboard(root) {
   const auth = getAuthState();
@@ -27,8 +28,7 @@ export function renderAdminDashboard(root) {
       total_donations_kes: 254500,
       total_events: 14,
       total_articles: 18,
-      recent_inquiries_count: 5,
-      system_health: 'Optimal (Vercel + Supabase Synchronized)'
+      recent_inquiries_count: 5
     },
     blogs: [],
     eventsList: [],
@@ -113,14 +113,6 @@ export function renderAdminDashboard(root) {
       </aside>
 
       <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-10 overflow-y-auto max-w-7xl">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <div class="flex items-center gap-2 text-emerald-400 font-semibold">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-            <span id="roi-health-label">Application Health Status: ${escapeHtml(state.stats.system_health)}</span>
-          </div>
-          <div class="text-slate-400 font-mono">Location: Mombasa HQ • Token Expiry: 8 Hours Guard</div>
-        </div>
-
         <div id="roi-panel-root"></div>
       </main>
 
@@ -187,7 +179,6 @@ export function renderAdminDashboard(root) {
       console.warn('Using offline simulated admin dashboard data');
     }
 
-    root.querySelector('#roi-health-label').textContent = `Application Health Status: ${state.stats.system_health}`;
     paint();
   }
 
@@ -521,6 +512,7 @@ export function renderAdminDashboard(root) {
           <input id="roi-checkin-code" value="${escapeHtml(state.checkInCode)}" placeholder="Scan or type ticket code (ROI-XXXX-XXXX)" class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-xs">
           <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-600 text-white font-black text-xs">Check in</button>
         </form>
+        <div id="roi-checkin-result"></div>
 
         <div class="overflow-x-auto bg-slate-900 border border-slate-800 rounded-2xl">
           <table class="w-full text-left text-xs">
@@ -997,6 +989,8 @@ export function renderAdminDashboard(root) {
       const input = form.querySelector('#roi-checkin-code');
       const code = normalizeTicketCode(input.value);
       if (!code) return;
+      const resultEl = root.querySelector('#roi-checkin-result');
+      if (resultEl) resultEl.innerHTML = '';
       try {
         const res = await request('POST', `/admin/tickets/${encodeURIComponent(code)}/check-in`);
         const r = res.data?.result;
@@ -1007,7 +1001,40 @@ export function renderAdminDashboard(root) {
           input.value = '';
           paint();
         } else if (r === 'already') {
-          showToast('Ticket already checked in.');
+          const detail = res.data?.detail || 'Ticket already checked in.';
+          // Re-query after the await: paint() may have rebuilt the panel.
+          const live = root.querySelector('#roi-checkin-result');
+          if (live) {
+            live.innerHTML = `
+              <div class="mt-3 flex flex-wrap items-center justify-between gap-3 bg-amber-500/10 border border-amber-500/40 rounded-xl px-4 py-3">
+                <span class="text-xs text-amber-100">${escapeHtml(detail)}</span>
+                <button type="button" id="roi-checkin-undo" class="px-3 py-1.5 rounded-lg bg-slate-900/70 text-[11px] font-bold text-white">Undo check-in</button>
+              </div>`;
+            const undoBtn = live.querySelector('#roi-checkin-undo');
+            undoBtn?.addEventListener('click', async () => {
+              if (undoBtn.disabled) return;
+              undoBtn.disabled = true;
+              try {
+                const u = await request('POST', `/admin/tickets/${encodeURIComponent(code)}/undo-check-in`);
+                if (u.ok) {
+                  showToast('Check-in undone.');
+                  const chip = root.querySelector('#roi-checkin-result');
+                  if (chip) chip.innerHTML = '';
+                  const ts = await request('GET', '/admin/ticket-stats').catch(() => null);
+                  if (ts?.data) state.ticketStats = ts.data;
+                  paint();
+                } else {
+                  undoBtn.disabled = false;
+                  showToast(u.data?.detail || 'Undo failed.');
+                }
+              } catch (err) {
+                undoBtn.disabled = false;
+                showToast(err.message || 'Undo failed.');
+              }
+            });
+          } else {
+            showToast(detail);
+          }
         } else if (r === 'void') {
           showToast('Ticket has been voided.');
         } else if (r === 'unpaid') {
@@ -1091,8 +1118,8 @@ export function renderAdminDashboard(root) {
             price: String(t.price),
             quantity: t.quantity == null ? '' : String(t.quantity),
             max_per_order: String(t.max_per_order || 10),
-            sales_start: t.sales_start ? String(t.sales_start).slice(0, 16) : '',
-            sales_end: t.sales_end ? String(t.sales_end).slice(0, 16) : '',
+            sales_start: utcToEat(t.sales_start),
+            sales_end: utcToEat(t.sales_end),
             is_active: t.is_active
           };
           openTicketModal();
@@ -1713,10 +1740,11 @@ export function renderAdminDashboard(root) {
               <input type="number" min="0" required placeholder="Price" value="${escapeHtml(String(state.ticketForm.price || '0'))}" data-tf="price" class="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
               <input type="number" min="1" placeholder="Qty (blank=∞)" value="${escapeHtml(String(state.ticketForm.quantity || ''))}" data-tf="quantity" class="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
             </div>
-            <input type="number" min="1" max="20" placeholder="Max per order" value="${escapeHtml(String(state.ticketForm.max_per_order || '10'))}" data-tf="max_per_order" class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+            <input type="number" min="1" max="20" placeholder="Max per email (total)" value="${escapeHtml(String(state.ticketForm.max_per_order || '10'))}" data-tf="max_per_order" aria-describedby="tf-max-per-email-help" class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+            <p id="tf-max-per-email-help" class="text-slate-400 mt-1">Per order, and as a cumulative total across all of that email's orders.</p>
             <div class="grid grid-cols-2 gap-3">
-              <label class="text-slate-400">Sales start<input type="datetime-local" value="${escapeHtml(state.ticketForm.sales_start || '')}" data-tf="sales_start" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white"></label>
-              <label class="text-slate-400">Sales end<input type="datetime-local" value="${escapeHtml(state.ticketForm.sales_end || '')}" data-tf="sales_end" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white"></label>
+              <label class="text-slate-400">Sales start (EAT)<input type="datetime-local" value="${escapeHtml(state.ticketForm.sales_start || '')}" data-tf="sales_start" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white"></label>
+              <label class="text-slate-400">Sales end (EAT)<input type="datetime-local" value="${escapeHtml(state.ticketForm.sales_end || '')}" data-tf="sales_end" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white"></label>
             </div>
             <label class="flex items-center gap-2 text-slate-300"><input type="checkbox" data-tf="is_active" ${state.ticketForm.is_active ? 'checked' : ''}> Active</label>
             <button type="submit" class="w-full py-4 rounded-xl bg-amber-400 text-slate-950 font-black uppercase">Save ticket type</button>
@@ -1735,8 +1763,8 @@ export function renderAdminDashboard(root) {
       payload.price = Number(payload.price);
       payload.max_per_order = Number(payload.max_per_order || 10);
       payload.quantity = payload.quantity === '' ? null : Number(payload.quantity);
-      payload.sales_start = payload.sales_start || null;
-      payload.sales_end = payload.sales_end || null;
+      payload.sales_start = payload.sales_start ? (eatToUtc(payload.sales_start) ?? payload.sales_start) : null;
+      payload.sales_end = payload.sales_end ? (eatToUtc(payload.sales_end) ?? payload.sales_end) : null;
       payload.currency = 'KES';
       try {
         if (state.editingTicketType) {

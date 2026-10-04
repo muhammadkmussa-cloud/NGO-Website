@@ -22,6 +22,7 @@ import { renderTickets } from './pages/tickets.js';
 import { renderTicketOrder } from './pages/ticketOrder.js';
 import { renderTicketRecover } from './pages/ticketRecover.js';
 import { renderTicketPortal } from './pages/ticketPortal.js';
+import { renderDonateVerify } from './pages/donateVerify.js';
 import { renderSolutions } from './pages/solutions.js';
 import { renderPortfolio } from './pages/portfolio.js';
 import { renderStatus } from './pages/status.js';
@@ -81,6 +82,7 @@ register('/tickets/recover', renderTicketRecover);
 register('/tickets/order/:reference', renderTicketOrder);
 register('/tickets/portal/:token', renderTicketPortal);
 register('/tickets/:eventId', renderTickets);
+register('/donate/verify/:reference', renderDonateVerify);
 
 startRouter(() => {
   mountRoute();

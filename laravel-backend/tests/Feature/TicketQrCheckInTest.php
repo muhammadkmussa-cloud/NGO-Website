@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Ticket;
 use App\Models\TicketType;
 use App\Services\TicketCheckInService;
 use Database\Seeders\RoiSeeder;
@@ -66,9 +67,12 @@ class TicketQrCheckInTest extends TestCase
             ->assertJsonPath('status', 'checked_in')
             ->assertJsonPath('event_title', $checkout->json('event.title'));
 
-        $this->withAdmin()->postJson("/api/admin/tickets/{$code}/check-in")
+        $admittedAt = Ticket::where('code', $code)->firstOrFail()->checked_in_at;
+        $dup = $this->withAdmin()->postJson("/api/admin/tickets/{$code}/check-in")
             ->assertStatus(409)
             ->assertJsonPath('result', 'already');
+        $expected = $admittedAt->copy()->setTimezone('Africa/Nairobi')->format('Y-m-d H:i');
+        $this->assertStringContainsString("already checked in at {$expected} EAT.", $dup->json('detail'));
 
         $this->withAdmin()->postJson("/api/admin/tickets/{$code}/undo-check-in")
             ->assertOk()

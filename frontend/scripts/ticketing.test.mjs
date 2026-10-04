@@ -1,8 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readdirSync, readFileSync } from 'node:fs';
 import { FALLBACK_EVENTS, FALLBACK_PORTFOLIO, FALLBACK_SOLUTIONS, FALLBACK_TICKET_CATALOG } from '../src/js/data/fallbackData.js';
 import {
   checkoutCurrency,
+  checkoutGateway,
+  checkoutMode,
   isMpesaGateway,
   isTerminalOrderStatus,
   shouldPollPayment,
@@ -23,6 +26,14 @@ import {
   sanitizeHealthPayload,
   shouldRetryRequest
 } from '../src/js/payments/hardening.js';
+import { eatToUtc, utcToEat } from '../src/js/tz.js';
+import {
+  formatNextPaymentDate,
+  interpretDonationStatus,
+  interpretSubscriptionBadge,
+  isRetryableVerifyError,
+  normalizeDonateReference
+} from '../src/js/payments/donateFlow.js';
 
 test('fallback catalog returns flagship ticket types', () => {
   const catalog = FALLBACK_TICKET_CATALOG(101);
@@ -105,6 +116,65 @@ test('sale controls cap quantity and label states', () => {
   assert.equal(maxPurchasable({ max_per_order: 6, remaining: 2, unlimited: false, on_sale: true }), 2);
   assert.equal(canIncrement({ on_sale: true, max_per_order: 2, remaining: 5 }, 2), false);
   assert.equal(canIncrement({ on_sale: false, max_per_order: 5, remaining: 5 }, 0), false);
+});
+
+test('free carts claim without payment chrome, paid carts keep gateways', () => {
+  assert.equal(checkoutMode([]), 'empty');
+  assert.equal(checkoutMode([{ type: { price: 0 }, quantity: 2 }]), 'free');
+  assert.equal(checkoutMode([{ type: { price: 500 }, quantity: 1 }]), 'paid');
+  assert.equal(checkoutMode([{ type: { price: 0 } }, { type: { price: 100 } }]), 'paid');
+  assert.equal(checkoutGateway('free', 'Paystack'), 'Free');
+  assert.equal(checkoutGateway('paid', 'M-Pesa'), 'M-Pesa');
+  assert.equal(checkoutGateway('empty', 'Paystack'), 'Paystack');
+  assert.equal(validateTicketPayment({ items: [{ ticket_type_id: 1, quantity: 1 }], gateway: 'Free', buyerPhone: '', total: 0 }), null);
+});
+
+test('admin sales windows convert between EAT and UTC', () => {
+  assert.equal(eatToUtc('2026-12-01T09:00'), '2026-12-01T06:00');
+  assert.equal(utcToEat('2026-12-01T06:00'), '2026-12-01T09:00');
+  assert.equal(eatToUtc('2026-09-30T20:29'), '2026-09-30T17:29');
+  assert.equal(utcToEat('2026-09-30T17:29'), '2026-09-30T20:29');
+  assert.equal(eatToUtc(''), null);
+  assert.equal(utcToEat(''), '');
+  assert.equal(utcToEat(eatToUtc('2026-06-15T14:45')), '2026-06-15T14:45');
+  assert.equal(eatToUtc(utcToEat('2026-06-15T14:45')), '2026-06-15T14:45');
+});
+
+test('every src module parses (import smoke test)', async () => {
+  const base = new URL('../src/js/', import.meta.url);
+  const files = readdirSync(base, { recursive: true })
+    .map(String)
+    .filter((f) => f.endsWith('.js') && !f.includes('vendor') && f !== 'main.js');
+  // main.js is excluded: it touches document/window at import time (browser only).
+  assert.ok(files.length > 10, 'expected to find source modules');
+  const previousWindow = global.window;
+  const previousDocument = global.document;
+  // api.js/ui.js/router.js/header.js touch window/document at import time;
+  // stub them so Node can parse every module. main.js stays excluded (DOM app bootstrap).
+  global.window = {
+    ROI_API_BASE_URL: '/api',
+    addEventListener() {},
+    removeEventListener() {},
+    location: { pathname: '/', hash: '', search: '' }
+  };
+  global.document = {
+    addEventListener() {},
+    removeEventListener() {},
+    getElementById: () => null,
+    querySelector: () => null,
+    querySelectorAll: () => [],
+    createElement: () => ({ style: {}, classList: { add() {}, remove() {} }, setAttribute() {}, appendChild() {} }),
+    body: { appendChild() {} },
+    documentElement: { classList: { add() {}, remove() {} } }
+  };
+  try {
+    for (const f of files) {
+      await import(new URL(f, base));
+    }
+  } finally {
+    global.window = previousWindow;
+    global.document = previousDocument;
+  }
 });
 
 test('digital solutions fallback catalog', () => {
@@ -207,4 +277,216 @@ test('hash route patterns resolve ticket paths', () => {
   assert.ok(m);
   assert.equal(m[1], '42');
   assert.deepEqual(keys, ['eventId']);
+});
+
+test('gate page exposes no undo; admin desk exposes undo', () => {
+  const gate = readFileSync(new URL('../src/js/pages/checking.js', import.meta.url), 'utf8');
+  assert.equal(gate.includes('roi-gate-undo'), false);
+  assert.equal(gate.includes('undo-check-in'), false);
+
+  const admin = readFileSync(new URL('../src/js/pages/adminDashboard.js', import.meta.url), 'utf8');
+  assert.ok(admin.includes('id="roi-checkin-undo"'));
+  assert.ok(admin.includes('/undo-check-in'));
+  assert.equal(admin.includes('/gate/tickets/'), false);
+});
+
+test('donation verify status mapping drives polling and tone', () => {
+  const completed = interpretDonationStatus('Completed');
+  assert.equal(completed.tone, 'ok');
+  assert.equal(completed.poll, false);
+
+  const failed = interpretDonationStatus('Failed (Abandoned)');
+  assert.equal(failed.tone, 'fail');
+  assert.equal(failed.poll, false);
+
+  const pending = interpretDonationStatus('Pending Paystack Checkout');
+  assert.equal(pending.tone, 'pending');
+  assert.equal(pending.poll, true);
+
+  const unreachable = interpretDonationStatus('Verification Failed (Gateway Unreachable)');
+  assert.equal(unreachable.tone, 'pending');
+  assert.equal(unreachable.poll, true);
+
+  const unknown = interpretDonationStatus('Something New');
+  assert.equal(unknown.tone, 'pending');
+  assert.equal(unknown.poll, true);
+
+  const empty = interpretDonationStatus('');
+  assert.equal(empty.tone, 'pending');
+  assert.equal(empty.poll, true);
+});
+
+test('donations: reference normalization + retryable classification', () => {
+  // Paystack appends ?reference=…&trxref=… after the hash fragment.
+  assert.equal(normalizeDonateReference('REF?reference=REF&trxref=REF'), 'REF');
+  assert.equal(normalizeDonateReference('REF'), 'REF');
+  assert.equal(normalizeDonateReference('  spaced  '), 'spaced');
+  assert.equal(normalizeDonateReference(undefined), '');
+  assert.equal(normalizeDonateReference(null), '');
+
+  assert.equal(isRetryableVerifyError(undefined), true); // network/abort/timeout
+  assert.equal(isRetryableVerifyError(429), true); // shared verify throttle
+  assert.equal(isRetryableVerifyError(500), true);
+  assert.equal(isRetryableVerifyError(502), true); // gateway unreachable
+  assert.equal(isRetryableVerifyError(503), true); // payments disabled
+  assert.equal(isRetryableVerifyError(400), false);
+  assert.equal(isRetryableVerifyError(403), false);
+  assert.equal(isRetryableVerifyError(404), false);
+});
+
+test('donation return route is registered hash-safe', () => {
+  const main = readFileSync(new URL('../src/js/main.js', import.meta.url), 'utf8');
+  assert.ok(main.includes("register('/donate/verify/:reference'"));
+
+  const controller = readFileSync(
+    new URL('../../laravel-backend/app/Http/Controllers/PaymentController.php', import.meta.url),
+    'utf8'
+  );
+  assert.ok(controller.includes('/#/donate/verify/'));
+  assert.equal(controller.includes('/donate/verify?reference='), false);
+});
+
+test('donation modal: KES+USD only, loading state, no M-Pesa gateway, conditional KCB card', () => {
+  const modal = readFileSync(new URL('../src/js/components/donationModal.js', import.meta.url), 'utf8');
+
+  // KES + USD only — Paystack (Kenya) rejects EUR/GBP with "no active channel".
+  assert.ok(modal.includes("['KES', 'USD']"));
+  assert.equal(modal.includes('EUR'), false);
+  assert.equal(modal.includes('GBP'), false);
+  assert.ok(modal.includes('International cards welcome'));
+
+  // A1: paybills starts null (loading) so the modal never flashes
+  // "temporarily unavailable" while the API is in flight.
+  assert.ok(modal.includes('let paybills = null'));
+  assert.ok(modal.includes('data-payments-loading'));
+  assert.ok(modal.includes('Loading contribution channels'));
+
+  // A4: M-Pesa Push gateway hidden until Daraja is configured in prod.
+  assert.equal(modal.includes('data-set-gateway'), false);
+
+  // A5: KCB card only renders when the backend actually returns one.
+  assert.ok(modal.includes('pb.kcb_mpesa || null'));
+  assert.ok(modal.includes('${kcb ? `'));
+});
+
+test('monthly pledge badge maps subscription states for the return page', () => {
+  assert.equal(interpretSubscriptionBadge(null), null);
+  assert.equal(interpretSubscriptionBadge(undefined), null);
+  assert.equal(interpretSubscriptionBadge({}), null);
+  assert.equal(interpretSubscriptionBadge({ status: '' }), null);
+
+  const active = interpretSubscriptionBadge({
+    status: 'active',
+    next_payment_date: '2026-11-01T00:00:00.000Z'
+  });
+  assert.equal(active.tone, 'ok');
+  assert.match(active.label, /active/i);
+  assert.match(active.detail, /Next charge/);
+
+  const cancelling = interpretSubscriptionBadge({ status: 'cancelling' });
+  assert.equal(cancelling.tone, 'pending');
+  assert.match(cancelling.detail, /will not renew/);
+
+  const disabled = interpretSubscriptionBadge({ status: 'disabled' });
+  assert.equal(disabled.tone, 'fail');
+  assert.match(disabled.detail, /No further charges/);
+
+  const pastDue = interpretSubscriptionBadge({ status: 'past_due' });
+  assert.equal(pastDue.tone, 'fail');
+  assert.match(pastDue.detail, /Manage/);
+
+  // Unknown status never crashes — stays a neutral pending badge.
+  const unknown = interpretSubscriptionBadge({ status: 'weird' });
+  assert.equal(unknown.tone, 'pending');
+});
+
+test('formatNextPaymentDate renders humans and tolerates junk', () => {
+  assert.equal(formatNextPaymentDate(null), '');
+  assert.equal(formatNextPaymentDate(undefined), '');
+  assert.equal(formatNextPaymentDate(''), '');
+  assert.equal(formatNextPaymentDate('not-a-date'), '');
+  assert.match(formatNextPaymentDate('2026-11-01T00:00:00.000Z'), /2026/);
+});
+
+test('monthly pledge UI wiring: modal note, verify badge, manage link', () => {
+  const modal = readFileSync(new URL('../src/js/components/donationModal.js', import.meta.url), 'utf8');
+  assert.ok(modal.includes("freqBtn('monthly', 'Monthly Pledge')"));
+  assert.ok(modal.includes("s.frequency === 'monthly'"));
+  assert.ok(modal.includes('Charged automatically each month'));
+
+  const verify = readFileSync(new URL('../src/js/pages/donateVerify.js', import.meta.url), 'utf8');
+  assert.ok(verify.includes('interpretSubscriptionBadge'));
+  assert.ok(verify.includes('id="roi-verify-manage"'));
+  assert.ok(verify.includes('getDonationManageLink'));
+  // The page never renders raw pledge secrets.
+  assert.equal(verify.includes('subscription_code'), false);
+  assert.equal(verify.includes('subscription_token'), false);
+
+  const api = readFileSync(new URL('../src/js/api.js', import.meta.url), 'utf8');
+  assert.ok(api.includes('export const getDonationManageLink'));
+  assert.ok(api.includes('`/payments/subscription/${encodeURIComponent(reference || \'\')}/manage`'));
+
+  const controller = readFileSync(
+    new URL('../../laravel-backend/app/Http/Controllers/PaymentController.php', import.meta.url),
+    'utf8'
+  );
+  assert.ok(controller.includes('function subscriptionManage'));
+  assert.ok(controller.includes('createOrGetMonthlyPlan'));
+});
+
+test('A1: monthly pledge Card|Mobile Money selector routes to /api/pledges', () => {
+  const modal = readFileSync(new URL('../src/js/components/donationModal.js', import.meta.url), 'utf8');
+  const api = readFileSync(new URL('../src/js/api.js', import.meta.url), 'utf8');
+  const controller = readFileSync(
+    new URL('../../laravel-backend/app/Http/Controllers/PledgeController.php', import.meta.url),
+    'utf8'
+  );
+
+  // Selector exists only for KES monthly pledges (USD monthly = card-only).
+  assert.ok(modal.includes("s.frequency === 'monthly' && s.currency === 'KES'"));
+  assert.ok(modal.includes('data-set-pledge-method'));
+  assert.ok(modal.includes("'card', 'credit-card', 'Card'"));
+  assert.ok(modal.includes("'mobile_money', 'smartphone', 'Mobile Money'"));
+  // A4: the old Daraja gateway toggle never comes back — Mobile Money is a
+  // pledge payment method, not a global gateway switch.
+  assert.equal(modal.includes('data-set-gateway'), false);
+
+  // Choosing Mobile Money reveals the phone field (it never existed before)
+  // and requires the email that carries the receipt + secure link.
+  assert.ok(modal.includes('data-donor-phone'));
+  assert.ok(modal.includes("'Email is required for a monthly pledge"));
+
+  // The new rail posts to /api/pledges; the card path still uses checkout.
+  assert.ok(modal.includes('createMonthlyPledge'));
+  assert.ok(api.includes('export const createMonthlyPledge'));
+  assert.ok(api.includes("request('POST', '/pledges'"));
+  assert.ok(modal.includes('initiateDonation'));
+
+  // Branch-aware copy: card wording is preserved, M-Pesa wording exists.
+  assert.ok(modal.includes('Charged automatically each month by card'));
+  assert.ok(modal.includes('M-Pesa prompt on your phone'));
+
+  // Backend contract: truthful charge_error payload + KES ceiling + phone.
+  assert.ok(controller.includes("'charge_error'"));
+  assert.ok(controller.includes('max:150000'));
+  assert.ok(controller.includes("'phone' => ['required'"));
+});
+
+test('monthly pledges require an email on both rails', () => {
+  const modal = readFileSync(new URL('../src/js/components/donationModal.js', import.meta.url), 'utf8');
+  const payments = readFileSync(
+    new URL('../../laravel-backend/app/Http/Controllers/PaymentController.php', import.meta.url),
+    'utf8'
+  );
+
+  // Frontend: the monthly guard and the input's required attribute cover card
+  // AND mobile money (no longer M-Pesa-only).
+  assert.ok(modal.includes("state.frequency === 'monthly' && !email"));
+  assert.ok(modal.includes("state.frequency === 'monthly' ? ' required' : ''"));
+  // The donor@example.com sentinel fallback is one-time only.
+  assert.ok(modal.includes("state.frequency === 'monthly' ? email : (email || 'donor@example.com')"));
+
+  // Backend: /payments/checkout requires a valid email when frequency=monthly.
+  assert.ok(payments.includes('Rule::requiredIf'));
+  assert.ok(payments.includes("=== 'monthly'"));
 });

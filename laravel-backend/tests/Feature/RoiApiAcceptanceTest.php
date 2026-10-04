@@ -597,6 +597,67 @@ class RoiApiAcceptanceTest extends TestCase
         ]);
     }
 
+    public function test_checkout_rejects_unsupported_currency(): void
+    {
+        // Paystack (Kenya) supports KES and USD only — EUR/GBP must be refused
+        // before they ever reach the gateway.
+        $this->postJson('/api/payments/checkout', [
+            'email' => 'donor@example.com', 'amount' => 25, 'currency' => 'EUR', 'gateway' => 'Paystack',
+        ])
+            ->assertStatus(422)
+            ->assertJsonPath('detail.0.loc', ['body', 'currency'])
+            ->assertJsonPath('detail.0.type', 'value_error');
+    }
+
+    public function test_mpesa_checkout_requires_kes(): void
+    {
+        $this->postJson('/api/payments/checkout', [
+            'amount' => 25, 'currency' => 'USD', 'gateway' => 'M-Pesa', 'phone_number' => '0712345678',
+        ])->assertStatus(400)->assertJsonPath('detail', 'M-Pesa contributions must be in KES.');
+
+        // Guard ordering: the KES check runs after the sub-1 guard and before
+        // formatPhone — a malformed phone must not reach phone validation, and a
+        // sub-1 amount must still hit the amount guard first.
+        $this->postJson('/api/payments/checkout', [
+            'amount' => 25, 'currency' => 'USD', 'gateway' => 'M-Pesa', 'phone_number' => 'abc',
+        ])->assertStatus(400)->assertJsonPath('detail', 'M-Pesa contributions must be in KES.');
+
+        $this->postJson('/api/payments/checkout', [
+            'amount' => 0.5, 'currency' => 'KES', 'gateway' => 'M-Pesa', 'phone_number' => '0712345678',
+        ])->assertStatus(400)->assertJsonPath('detail', 'M-Pesa contributions must be at least KES 1.');
+    }
+
+    public function test_paybills_omits_kcb_card_when_shortcode_missing(): void
+    {
+        config(['roi.mpesa_shortcode' => '']);
+
+        $this->getJson('/api/payments/paybills')->assertOk()
+            ->assertJsonPath('enabled', true)
+            ->assertJsonPath('kcb_mpesa', null)
+            ->assertJsonPath('equity_bank.paybill', '000002');
+    }
+
+    public function test_paystack_initialize_failure_returns_friendly_error(): void
+    {
+        config(['roi.allow_dev_payment_bypasses' => false]);
+        Http::fake([
+            'https://api.paystack.co/*' => Http::response([
+                'status' => false,
+                'message' => 'Currency not supported by merchant',
+                'code' => 'unsupported_currency',
+            ], 403),
+        ]);
+
+        $this->postJson('/api/payments/checkout', [
+            'email' => 'friendly.error@test.ke', 'amount' => 25, 'currency' => 'USD', 'gateway' => 'Paystack',
+        ])
+            ->assertStatus(403)
+            ->assertJsonPath('detail', 'This currency is not available for donations yet. Please choose KES or USD.');
+
+        // No ledger record is written when the gateway rejects the initialize.
+        $this->assertDatabaseMissing('donations', ['email' => 'friendly.error@test.ke']);
+    }
+
     // ------------------------------------------------------------- YouTube
 
     public function test_youtube_channel_videos_quota_guard_serves_cache(): void

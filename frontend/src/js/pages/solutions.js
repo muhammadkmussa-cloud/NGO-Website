@@ -53,19 +53,6 @@ export function renderSolutions(root) {
               </a>
             </div>
           </div>
-
-          <div class="lg:col-span-5">
-            <div class="bg-slate-950/80 border border-slate-800 rounded-3xl p-8 space-y-5">
-              <h3 class="text-xs font-black uppercase tracking-widest text-amber-400">Why organizations choose us</h3>
-              <ul class="space-y-4 text-sm text-slate-300">
-                <li class="flex items-start gap-3"><span class="text-emerald-400 shrink-0 mt-0.5">${icon('check-circle-2', 'w-4 h-4')}</span>Production-grade software, not brochure sites</li>
-                <li class="flex items-start gap-3"><span class="text-emerald-400 shrink-0 mt-0.5">${icon('check-circle-2', 'w-4 h-4')}</span>Direct Safaricom Daraja &amp; Paystack integrations</li>
-                <li class="flex items-start gap-3"><span class="text-emerald-400 shrink-0 mt-0.5">${icon('check-circle-2', 'w-4 h-4')}</span>Kenyan context: offline-first, CBC curriculum, NEMIS</li>
-                <li class="flex items-start gap-3"><span class="text-emerald-400 shrink-0 mt-0.5">${icon('check-circle-2', 'w-4 h-4')}</span>Profits fund youth programs across Mombasa</li>
-              </ul>
-              <a href="#portfolio" class="block pt-3 border-t border-slate-800 text-sm font-bold text-sky-400 hover:text-sky-300">See our work ${icon('arrow-right', 'w-4 h-4 inline')}</a>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -129,7 +116,7 @@ export function renderSolutions(root) {
       <!-- 4. SERVICES -->
       <section id="services" class="py-20 sm:py-24 border-b border-slate-800 scroll-mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          ${sectionHeader('What We Build', 'bg-sky-500/10 border border-sky-500/30 text-sky-400', 'Fifteen service lines, one accountable team')}
+          ${sectionHeader('What We Build', 'bg-sky-500/10 border border-sky-500/30 text-sky-400', 'Sixteen service lines, one accountable team')}
           <div id="roi-services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
             <div class="bg-slate-950 animate-pulse h-56 rounded-3xl"></div>
             <div class="bg-slate-950 animate-pulse h-56 rounded-3xl"></div>
@@ -365,7 +352,7 @@ export function renderSolutions(root) {
   getPortfolio().then((items) => {
     const grid = root.querySelector('#roi-portfolio-grid');
     if (!grid) return;
-    const list = (items || []).filter((p) => p.is_featured !== false).slice(0, 6);
+    const list = (items || []).filter((p) => p.is_featured !== false).slice(0, 9);
     grid.innerHTML = list.map((p) => `
       <article class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden flex flex-col hover:border-amber-500/40 transition-colors">
         <div class="aspect-[16/9] bg-slate-950">

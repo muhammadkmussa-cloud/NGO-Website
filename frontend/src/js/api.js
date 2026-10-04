@@ -194,10 +194,12 @@ function emailQuery(email) {
   return email ? `?email=${encodeURIComponent(email)}` : '';
 }
 
-export const getPaybills = () => safeGet('/payments/paybills', {
+export const PAYBILLS_FALLBACK = {
   enabled: false,
   message: 'Our secure contribution channels are being prepared. Please contact our team in the meantime.'
-});
+};
+
+export const getPaybills = () => safeGet('/payments/paybills', PAYBILLS_FALLBACK);
 
 export const retryTicketStk = async (reference, buyerPhone, email) => {
   const res = await request('POST', `/tickets/orders/${encodeURIComponent(reference || '')}/stk-retry`, {
@@ -211,6 +213,27 @@ export const retryTicketStk = async (reference, buyerPhone, email) => {
 export const initiateDonation = async (data) => {
   // H-1: money flows must never fabricate success — errors always surface.
   const res = await request('POST', '/payments/checkout', data);
+  if (!res.ok) throw Object.assign(new Error(res.data?.detail || 'Request failed'), { response: res.response });
+  return res.data;
+};
+
+// Monthly M-Pesa pledge (plan A1): creates the pledge + first STK prompt in
+// one call. Card pledges keep the Phase B `initiateDonation` path above — the
+// two rails never mix (spec §14).
+export const createMonthlyPledge = async (data) => {
+  const res = await request('POST', '/pledges', data);
+  if (!res.ok) throw Object.assign(new Error(res.data?.detail || 'Request failed'), { response: res.response });
+  return res.data;
+};
+
+// Donation/ticket payment verification by reference alone (sanitized payload
+// unless the donor email is confirmed server-side).
+export const verifyDonationPayment = (reference) =>
+  safeGet(`/payments/verify/${encodeURIComponent(reference || '')}`, null);
+
+// Hosted Paystack pledge page (view card / cancel) for a monthly reference.
+export const getDonationManageLink = async (reference) => {
+  const res = await request('GET', `/payments/subscription/${encodeURIComponent(reference || '')}/manage`);
   if (!res.ok) throw Object.assign(new Error(res.data?.detail || 'Request failed'), { response: res.response });
   return res.data;
 };
